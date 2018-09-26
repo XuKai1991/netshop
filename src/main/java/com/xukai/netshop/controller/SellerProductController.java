@@ -1,0 +1,140 @@
+package com.xukai.netshop.controller;
+
+import com.xukai.netshop.dataobject.ProductCategory;
+import com.xukai.netshop.dataobject.ProductInfo;
+import com.xukai.netshop.enums.ResultEnum;
+import com.xukai.netshop.exception.SellException;
+import com.xukai.netshop.form.ProductForm;
+import com.xukai.netshop.service.CategoryService;
+import com.xukai.netshop.service.ProductService;
+import com.xukai.netshop.utils.KeyUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
+import java.util.List;
+
+/**
+ * Author: Xukai
+ * Description:
+ * CreateDate: 2018/6/29 13:53
+ * Modified By:
+ */
+@Controller
+@RequestMapping("/seller/product")
+@Slf4j
+public class SellerProductController {
+
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @GetMapping("/list")
+    public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        Page<ProductInfo> productInfoPage = productService.findAll(new PageRequest(page - 1, size));
+        ModelAndView mav = new ModelAndView("product/list");
+        mav.addObject("productInfoPage", productInfoPage);
+        mav.addObject("currentPage", page);
+        mav.addObject("size", size);
+        return mav;
+    }
+
+    @GetMapping("/off_sale")
+    public ModelAndView offSale(@RequestParam("productId") String productId) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("url", "/netshop/seller/product/list");
+        try {
+            productService.offSale(productId);
+        } catch (SellException e) {
+            log.error("【卖家端商品下架】发生异常{}", e);
+            mav.addObject("msg", e.getMessage());
+            mav.setViewName("common/error");
+            return mav;
+        }
+        mav.addObject("msg", ResultEnum.PRODUCT_OFFSALE_SUCCESS.getMessage());
+        mav.setViewName("common/success");
+        return mav;
+    }
+
+    @GetMapping("/on_sale")
+    public ModelAndView onSale(@RequestParam("productId") String productId) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("url", "/netshop/seller/product/list");
+        try {
+            productService.onSale(productId);
+        } catch (SellException e) {
+            log.error("【卖家端商品上架】发生异常{}", e);
+            mav.addObject("msg", e.getMessage());
+            mav.setViewName("common/error");
+            return mav;
+        }
+        mav.addObject("msg", ResultEnum.PRODUCT_ONSALE_SUCCESS.getMessage());
+        mav.setViewName("common/success");
+        return mav;
+    }
+
+    @GetMapping("/index")
+    public ModelAndView index(@RequestParam(value = "productId", required = false) String productId) {
+        ModelAndView mav = new ModelAndView();
+        ProductInfo productInfo;
+        if (!StringUtils.isEmpty(productId)) {
+            try {
+                productInfo = productService.findOne(productId);
+            } catch (SellException e) {
+                log.error("【卖家端查询商品详情】发生异常{}", e);
+                mav.addObject("msg", e.getMessage());
+                mav.addObject("url", "/netshop/seller/product/list");
+                mav.setViewName("common/error");
+                return mav;
+            }
+            mav.addObject("productInfo", productInfo);
+        }
+        List<ProductCategory> categoryList = categoryService.findAll();
+        mav.addObject("categoryList", categoryList);
+        mav.setViewName("product/index");
+        return mav;
+    }
+
+    @PostMapping("/save")
+    public ModelAndView save(@Valid ProductForm productForm, BindingResult bindingResult) {
+        ModelAndView mav = new ModelAndView();
+        if (bindingResult.hasErrors()) {
+            mav.addObject("msg", bindingResult.getFieldError().getDefaultMessage());
+            mav.addObject("url", "/netshop/seller/product/index");
+            mav.setViewName("common/error");
+            return mav;
+        }
+        ProductInfo productInfo = new ProductInfo();
+        try {
+            if (StringUtils.isEmpty(productForm.getProductId())) {
+                productForm.setProductId(KeyUtils.genUniqueKey());
+            } else {
+                productInfo = productService.findOne(productForm.getProductId());
+            }
+            BeanUtils.copyProperties(productForm, productInfo);
+            productService.save(productInfo);
+        } catch (SellException e) {
+            log.error("【卖家端保存商品详情】发生异常{}", e);
+            mav.addObject("msg", e.getMessage());
+            mav.addObject("url", "/netshop/seller/product/index?productId=" + productForm.getProductId());
+            mav.setViewName("common/error");
+            return mav;
+        }
+        mav.addObject("url", "/netshop/seller/product/list");
+        mav.setViewName("common/success");
+        return mav;
+    }
+}

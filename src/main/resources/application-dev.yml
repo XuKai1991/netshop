@@ -1,0 +1,29 @@
+server:
+  port: 80
+  context-path: /netshop
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1/netshop?characterEncoding=utf-8&useSSL=false
+    type: com.alibaba.druid.pool.DruidDataSource
+
+  jpa:
+    show-sql: true
+    database: mysql
+
+  jackson:
+    default-property-inclusion: non_null
+
+  freemarker:
+    allow-request-override: false
+    cache: false
+    check-template-location: true
+    charset: utf-8
+    content-type: text/html
+
+cookieConfig:
+  token: token
+  expire: 300  #5分钟
