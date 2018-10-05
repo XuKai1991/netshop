@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Date;
+
 /**
  * Author: Xukai
  * Description:
@@ -13,5 +15,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface OrderMasterRepository extends JpaRepository<OrderMaster, String> {
 
-    Page<OrderMaster> findByBuyerId(String buyerId, Pageable pageable);
+    Page<OrderMaster> findByBuyerIdOrderByCreateTimeDesc(String buyerId, Pageable pageable);
+
+    Page<OrderMaster> findByCreateTimeBeforeOrderByCreateTimeDesc(Date date, Pageable pageable);
+
+    int deleteByOrderId(String orderId);
 }

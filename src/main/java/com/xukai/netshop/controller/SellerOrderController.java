@@ -30,6 +30,7 @@ public class SellerOrderController {
 
     /**
      * 从第一页开始, size
+     *
      * @param page
      * @param size
      * @return
@@ -37,7 +38,7 @@ public class SellerOrderController {
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
         Page<OrderDTO> orderDTOPage = orderService.findList(new PageRequest(page - 1, size));
-        ModelAndView mav = new ModelAndView("order/list");
+        ModelAndView mav = new ModelAndView("sell/order/list");
         mav.addObject("orderDTOPage", orderDTOPage);
         mav.addObject("currentPage", page);
         mav.addObject("size", size);
@@ -46,6 +47,7 @@ public class SellerOrderController {
 
     /**
      * 取消订单
+     *
      * @param orderId
      * @return
      */
@@ -54,20 +56,21 @@ public class SellerOrderController {
         ModelAndView mav = new ModelAndView();
         mav.addObject("url", "/netshop/seller/order/list");
         try {
-            orderService.cancel(orderService.findOne(orderId));
+            orderService.cancel(orderId);
         } catch (SellException e) {
             log.error("【卖家端取消订单】发生异常{}", e);
             mav.addObject("msg", e.getMessage());
-            mav.setViewName("common/error");
+            mav.setViewName("sell/common/error");
             return mav;
         }
         mav.addObject("msg", ResultEnum.ORDER_CANCEL_SUCCESS.getMessage());
-        mav.setViewName("common/success");
+        mav.setViewName("sell/common/success");
         return mav;
     }
 
     /**
      * 查看订单详情
+     *
      * @param orderId
      * @return
      */
@@ -81,16 +84,17 @@ public class SellerOrderController {
             log.error("【卖家端查询订单详情】发生异常{}", e);
             mav.addObject("msg", e.getMessage());
             mav.addObject("url", "/netshop/seller/order/list");
-            mav.setViewName("common/error");
+            mav.setViewName("sell/common/error");
             return mav;
         }
         mav.addObject("orderDTO", orderDTO);
-        mav.setViewName("order/detail");
+        mav.setViewName("sell/order/detail");
         return mav;
     }
 
     /**
      * 完结订单
+     *
      * @param orderId
      * @return
      */
@@ -99,16 +103,32 @@ public class SellerOrderController {
         ModelAndView mav = new ModelAndView();
         mav.addObject("url", "/netshop/seller/order/list");
         try {
-            orderService.finish(orderService.findOne(orderId));
+            orderService.finish(orderId);
         } catch (SellException e) {
             log.error("【卖家端完结订单】发生异常{}", e);
             mav.addObject("msg", e.getMessage());
-            mav.setViewName("common/error");
+            mav.setViewName("sell/common/error");
             return mav;
         }
         mav.addObject("msg", ResultEnum.ORDER_FINISH_SUCCESS.getMessage());
-        mav.setViewName("common/success");
+        mav.setViewName("sell/common/success");
         return mav;
+    }
 
+    @GetMapping("/delete")
+    public ModelAndView delete(@RequestParam("orderId") String orderId) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("url", "/netshop/seller/order/list");
+        try {
+            orderService.sellerDelete(orderId);
+        } catch (SellException e) {
+            log.error("【卖家端删除订单】发生异常{}", e);
+            mav.addObject("msg", e.getMessage());
+            mav.setViewName("sell/common/error");
+            return mav;
+        }
+        mav.addObject("msg", ResultEnum.ORDER_DELETE_SUCCESS.getMessage());
+        mav.setViewName("sell/common/success");
+        return mav;
     }
 }

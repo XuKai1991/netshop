@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>错误提示</title>
+    <title>成功提示</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -9,13 +9,12 @@
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-12 column">
-            <div class="alert alert-dismissable alert-danger">
+            <div class="alert alert-dismissable alert-success">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 <h4>
-                    错误!
-                </h4>
-                <strong>${msg}</strong>
-                <a href="${url}" class="alert-link">&nbsp;&nbsp;<a id="remainTime" style="font-weight: bold;">3</a>s后自动跳转</a>
+                    成功!
+                </h4> <strong>${msg!""}</strong>
+                <a href="${url}" class="alert-link">&nbsp;&nbsp;<a id="remainTime" style="font-weight: bold;">2</a>s后自动跳转</a>
             </div>
         </div>
     </div>
@@ -24,7 +23,7 @@
 </body>
 
 <script type="text/javascript">
-    var remainTime = 3;
+    var remainTime = 2;
 
     //每秒执行一次
     window.setInterval("setRemainTime()", 1000);
@@ -37,7 +36,5 @@
             location.href = "${url}";
         }
     }
-
 </script>
-
 </html>

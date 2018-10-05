@@ -25,43 +25,47 @@ import java.util.Date;
 public class OrderMaster {
 
     /**
-     * 订单id.
+     * 订单id
      */
     @Id
     private String orderId;
 
     /**
-     * 买家id.
+     * 买家id
      */
     private String buyerId;
 
     /**
-     * 买家名字.
+     * 买家名字
      */
     private String buyerName;
 
     /**
-     * 买家手机号.
+     * 买家手机号
      */
     private String buyerPhone;
 
     /**
-     * 买家地址.
+     * 买家地址
      */
     private String buyerAddress;
 
     /**
-     * 订单应付总金额.
+     * 订单应付总金额
      */
     private BigDecimal orderAmount;
 
     /**
-     * 订单实付总金额.
+     * 订单实付总金额
      */
     private BigDecimal orderActualAmount;
 
     /**
-     * 订单状态, 默认为0新下单.
+     * 订单状态, 默认为0
+     * 0:新下单
+     * 1:完成
+     * 2:取消
+     * 3:买家删除
      */
     private Integer orderStatus = OrderStatusEnum.NEW.getCode();
 

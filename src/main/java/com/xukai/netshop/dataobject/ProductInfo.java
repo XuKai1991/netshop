@@ -30,37 +30,52 @@ public class ProductInfo {
     private String productId;
 
     /**
-     * 名字.
+     * 名字
      */
     private String productName;
 
     /**
-     * 单价.
+     * 单价
      */
     private BigDecimal productPrice;
 
     /**
-     * 库存.
+     * 商品颜色
+     */
+    private String productColor;
+
+    /**
+     * 商品尺码
+     */
+    private String productSize;
+
+    /**
+     * 库存
      */
     private Integer productStock;
 
     /**
-     * 描述.
+     * 描述
      */
     private String productDescription;
 
     /**
-     * 小图.
+     * 主图
      */
-    private String productIcon;
+    private String productImgMd;
 
     /**
-     * 状态, 0正常/1下架.
+     * 详情展示图
+     */
+    private String productDetailImg;
+
+    /**
+     * 状态, 0正常/1下架
      */
     private Integer productStatus = ProductStatusEnum.UP.getCode();
 
     /**
-     * 类目编号.
+     * 类目编号
      */
     private Integer categoryType;
 

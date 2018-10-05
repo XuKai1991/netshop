@@ -10,6 +10,6 @@ import com.xukai.netshop.dataobject.SellerInfo;
  */
 public interface SellerService {
 
-    SellerInfo findSellerInfoByOpenid(String username, String password);
+    SellerInfo findByUsernameAndPassword(String username, String password);
 
 }

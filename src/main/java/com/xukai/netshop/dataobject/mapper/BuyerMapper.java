@@ -16,12 +16,31 @@ public interface BuyerMapper {
 
     @Select("select * from buyer_info where username=#{username} and password=#{password}")
     @Results({
-            @Result(column = "id", property = "id"),
+            @Result(column = "buyer_id", property = "buyerId"),
             @Result(column = "username", property = "username"),
-            @Result(column = "password", property = "password")
+            @Result(column = "password", property = "password"),
+            @Result(column = "phone", property = "phone"),
+            @Result(column = "email", property = "email")
     })
     BuyerInfo findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
 
     @Select("select * from buyer_info where username=#{username}")
+    @Results({
+            @Result(column = "buyer_id", property = "buyerId"),
+            @Result(column = "username", property = "username"),
+            @Result(column = "password", property = "password"),
+            @Result(column = "phone", property = "phone"),
+            @Result(column = "email", property = "email")
+    })
     BuyerInfo checkUsername(@Param("username") String username);
+
+    @Select("select * from buyer_info where email=#{email}")
+    @Results({
+            @Result(column = "buyer_id", property = "buyerId"),
+            @Result(column = "username", property = "username"),
+            @Result(column = "password", property = "password"),
+            @Result(column = "phone", property = "phone"),
+            @Result(column = "email", property = "email")
+    })
+    BuyerInfo checkEmail(@Param("email") String email);
 }

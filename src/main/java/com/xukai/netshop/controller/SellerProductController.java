@@ -44,8 +44,10 @@ public class SellerProductController {
 
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        ModelAndView mav = new ModelAndView("sell/product/list");
         Page<ProductInfo> productInfoPage = productService.findAll(new PageRequest(page - 1, size));
-        ModelAndView mav = new ModelAndView("product/list");
+        List<ProductCategory> categoryList = categoryService.findAll();
+        mav.addObject("categoryList", categoryList);
         mav.addObject("productInfoPage", productInfoPage);
         mav.addObject("currentPage", page);
         mav.addObject("size", size);
@@ -61,11 +63,11 @@ public class SellerProductController {
         } catch (SellException e) {
             log.error("【卖家端商品下架】发生异常{}", e);
             mav.addObject("msg", e.getMessage());
-            mav.setViewName("common/error");
+            mav.setViewName("sell/common/error");
             return mav;
         }
         mav.addObject("msg", ResultEnum.PRODUCT_OFFSALE_SUCCESS.getMessage());
-        mav.setViewName("common/success");
+        mav.setViewName("sell/common/success");
         return mav;
     }
 
@@ -78,11 +80,11 @@ public class SellerProductController {
         } catch (SellException e) {
             log.error("【卖家端商品上架】发生异常{}", e);
             mav.addObject("msg", e.getMessage());
-            mav.setViewName("common/error");
+            mav.setViewName("sell/common/error");
             return mav;
         }
         mav.addObject("msg", ResultEnum.PRODUCT_ONSALE_SUCCESS.getMessage());
-        mav.setViewName("common/success");
+        mav.setViewName("sell/common/success");
         return mav;
     }
 
@@ -97,14 +99,14 @@ public class SellerProductController {
                 log.error("【卖家端查询商品详情】发生异常{}", e);
                 mav.addObject("msg", e.getMessage());
                 mav.addObject("url", "/netshop/seller/product/list");
-                mav.setViewName("common/error");
+                mav.setViewName("sell/common/error");
                 return mav;
             }
             mav.addObject("productInfo", productInfo);
         }
         List<ProductCategory> categoryList = categoryService.findAll();
         mav.addObject("categoryList", categoryList);
-        mav.setViewName("product/index");
+        mav.setViewName("sell/product/index");
         return mav;
     }
 
@@ -114,7 +116,7 @@ public class SellerProductController {
         if (bindingResult.hasErrors()) {
             mav.addObject("msg", bindingResult.getFieldError().getDefaultMessage());
             mav.addObject("url", "/netshop/seller/product/index");
-            mav.setViewName("common/error");
+            mav.setViewName("sell/common/error");
             return mav;
         }
         ProductInfo productInfo = new ProductInfo();
@@ -130,11 +132,11 @@ public class SellerProductController {
             log.error("【卖家端保存商品详情】发生异常{}", e);
             mav.addObject("msg", e.getMessage());
             mav.addObject("url", "/netshop/seller/product/index?productId=" + productForm.getProductId());
-            mav.setViewName("common/error");
+            mav.setViewName("sell/common/error");
             return mav;
         }
         mav.addObject("url", "/netshop/seller/product/list");
-        mav.setViewName("common/success");
+        mav.setViewName("sell/common/success");
         return mav;
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * @author: Xukai
@@ -26,8 +27,18 @@ public class OrderMasterRepositoryTest {
 
     @Test
     public void findByBuyerId() {
-        PageRequest pageRequest = new PageRequest(0,2);
-        Page<OrderMaster> result = orderMasterRepository.findByBuyerId("12345", pageRequest);
+        PageRequest pageRequest = new PageRequest(0, 2);
+        Page<OrderMaster> result = orderMasterRepository.findByBuyerIdOrderByCreateTimeDesc("12345", pageRequest);
+        Assert.assertNotNull(result);
+        for (OrderMaster orderMaster : result) {
+            System.out.println(orderMaster);
+        }
+    }
+
+    @Test
+    public void findAllOrderByCreateTime() {
+        PageRequest pageRequest = new PageRequest(0, 5);
+        Page<OrderMaster> result = orderMasterRepository.findByCreateTimeBeforeOrderByCreateTimeDesc(new Date(), pageRequest);
         Assert.assertNotNull(result);
         for (OrderMaster orderMaster : result) {
             System.out.println(orderMaster);

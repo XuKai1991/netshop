@@ -39,13 +39,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductInfo> findUpAll() {
-        return productInfoRepository.findByProductStatusIn(ProductStatusEnum.UP.getCode());
+    public Page<ProductInfo> findUpAll(Pageable pageable) {
+        return productInfoRepository.findByProductStatusOrderByCreateTimeDesc(ProductStatusEnum.UP.getCode(), pageable);
     }
 
     @Override
     public Page<ProductInfo> findAll(Pageable pageable) {
         return productInfoRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<ProductInfo> findByCategory(Integer categoryType, Pageable pageable) {
+        return productInfoRepository.findByCategoryTypeAndProductStatusOrderByCreateTimeDesc(categoryType, ProductStatusEnum.UP.getCode(), pageable);
     }
 
     @Override
@@ -55,10 +60,11 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 增加库存
+     *
      * @param cartDTOList
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = SellException.class)
     public void increaseStock(List<CartDTO> cartDTOList) {
         for (CartDTO cartDTO : cartDTOList) {
             ProductInfo productInfo = productInfoRepository.findOne(cartDTO.getProductId());
@@ -71,7 +77,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = SellException.class)
     public void decreaseStock(List<CartDTO> cartDTOList) {
         for (CartDTO cartDTO : cartDTOList) {
             ProductInfo productInfo = productInfoRepository.findOne(cartDTO.getProductId());

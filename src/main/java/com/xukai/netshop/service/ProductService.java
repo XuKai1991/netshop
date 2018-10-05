@@ -21,7 +21,7 @@ public interface ProductService {
      * 查询在售的全部商品
      * @return
      */
-    List<ProductInfo> findUpAll();
+    Page<ProductInfo> findUpAll(Pageable pageable);
 
     /**
      * 查询所有商品，带分页
@@ -30,6 +30,18 @@ public interface ProductService {
      */
     Page<ProductInfo> findAll(Pageable pageable);
 
+    /**
+     * 查询特定类别下的商品，带分页
+     * @param pageable
+     * @return
+     */
+    Page<ProductInfo> findByCategory(Integer categoryType, Pageable pageable);
+
+    /**
+     * 保存商品
+     * @param productInfo
+     * @return
+     */
     ProductInfo save(ProductInfo productInfo);
 
     /**

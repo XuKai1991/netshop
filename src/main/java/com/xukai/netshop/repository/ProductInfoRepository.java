@@ -2,9 +2,9 @@ package com.xukai.netshop.repository;
 
 
 import com.xukai.netshop.dataobject.ProductInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 /**
  * Author: Xukai
@@ -14,5 +14,7 @@ import java.util.List;
  */
 public interface ProductInfoRepository extends JpaRepository<ProductInfo, String> {
 
-    List<ProductInfo> findByProductStatusIn(Integer productStatus);
+    Page<ProductInfo> findByCategoryTypeAndProductStatusOrderByCreateTimeDesc(Integer categoryType, Integer productStatus, Pageable pageable);
+
+    Page<ProductInfo> findByProductStatusOrderByCreateTimeDesc(Integer productStatus, Pageable pageable);
 }

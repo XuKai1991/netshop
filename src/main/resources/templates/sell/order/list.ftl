@@ -21,13 +21,13 @@
                             <th>实付金额</th>
                             <th>订单状态</th>
                             <th>创建时间</th>
-                            <th colspan="2">操作</th>
+                            <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
 
                         <#list orderDTOPage.content as orderDTO>
-                        <tr>
+                        <tr align="center">
                             <td>${orderDTO.orderId}</td>
                             <td>${orderDTO.buyerName}</td>
                             <td>${orderDTO.buyerPhone}</td>
@@ -36,10 +36,14 @@
                             <td>${orderDTO.orderActualAmount}</td>
                             <td>${orderDTO.getOrderStatusEnum().message}</td>
                             <td>${orderDTO.createTime}</td>
-                            <td><a href="/netshop/seller/order/detail?orderId=${orderDTO.orderId}">详情</a></td>
                             <td>
+                                <a href="/netshop/seller/order/detail?orderId=${orderDTO.orderId}">详情</a>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
                                 <#if orderDTO.getOrderStatusEnum().message == "新订单">
                                     <a href="/netshop/seller/order/cancel?orderId=${orderDTO.orderId}">取消</a>
+                                </#if>
+                                <#if orderDTO.getOrderStatusEnum().message == "买家删除" || orderDTO.getOrderStatusEnum().message == "已取消" || orderDTO.getOrderStatusEnum().message == "完结">
+                                    <a href="/netshop/seller/order/delete?orderId=${orderDTO.orderId}">删除</a>
                                 </#if>
                             </td>
                         </tr>
@@ -72,7 +76,8 @@
                         <li class="disabled"><a href="#">尾页</a></li>
                     <#else>
                         <li><a href="/netshop/seller/order/list?page=${currentPage + 1}&size=${size}">下一页</a></li>
-                        <li><a href="/netshop/seller/order/list?page=${orderDTOPage.getTotalPages()}&size=${size}">尾页</a>
+                        <li>
+                            <a href="/netshop/seller/order/list?page=${orderDTOPage.getTotalPages()}&size=${size}">尾页</a>
                         </li>
                     </#if>
                     </ul>
@@ -100,7 +105,9 @@
                 <button onclick="javascript:document.getElementById('notice').pause()" type="button"
                         class="btn btn-default" data-dismiss="modal">关闭
                 </button>
-                <button onclick="location.reload()" type="button" class="btn btn-primary">查看新的订单</button>
+                <button onclick="javascrtpt:window.location='http://localhost/netshop/seller/order/list'" type="button"
+                        class="btn btn-primary">查看新的订单
+                </button>
             </div>
         </div>
     </div>

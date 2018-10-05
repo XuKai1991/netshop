@@ -26,6 +26,16 @@ public class ProductForm {
     private BigDecimal productPrice;
 
     /**
+     * 商品颜色
+     */
+    private String productColor;
+
+    /**
+     * 商品尺码
+     */
+    private String productSize;
+
+    /**
      * 库存.
      */
     private Integer productStock;
@@ -36,9 +46,14 @@ public class ProductForm {
     private String productDescription;
 
     /**
-     * 小图.
+     * 主图
      */
-    private String productIcon;
+    private String productImgMd;
+
+    /**
+     * 详情展示图
+     */
+    private String productDetailImg;
 
     /**
      * 类目编号.

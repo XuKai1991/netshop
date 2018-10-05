@@ -24,8 +24,6 @@ public class BuyerMapperTest {
 
     @Test
     public void register() {
-        BuyerInfo buyerInfo = new BuyerInfo("12345", "zhangsan", "123", "138000000", "xxx@qq.com");
-        buyerMapper.register(buyerInfo);
     }
 
     @Test

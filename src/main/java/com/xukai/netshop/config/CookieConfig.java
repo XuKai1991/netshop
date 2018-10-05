@@ -16,9 +16,19 @@ import org.springframework.stereotype.Component;
 public class CookieConfig {
 
     /**
-     * token标识
+     * buyerId标识
      */
-    public String token;
+    public String buyerId;
+
+    /**
+     * buyerName标识
+     */
+    public String buyerName;
+
+    /**
+     * sellerId标识
+     */
+    public String sellerId;
 
     /**
      * 超时时间

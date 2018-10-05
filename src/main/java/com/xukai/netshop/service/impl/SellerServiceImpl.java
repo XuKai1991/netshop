@@ -19,7 +19,7 @@ public class SellerServiceImpl implements SellerService {
     private SellerMapper sellerMapper;
 
     @Override
-    public SellerInfo findSellerInfoByOpenid(String username, String password) {
+    public SellerInfo findByUsernameAndPassword(String username, String password) {
         return sellerMapper.findByUsernameAndPassword(username, password);
     }
 }

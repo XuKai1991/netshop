@@ -9,7 +9,7 @@ package com.xukai.netshop.utils;
 public class MathUtils {
 
     /**
-     * 比较2个金额是否相等
+     * 比较金额是否相等
      */
     public static Boolean equals(Double d1, Double d2, Double moneyDiffScale) {
         Double result = Math.abs(d1 - d2);

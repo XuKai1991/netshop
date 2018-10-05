@@ -46,12 +46,22 @@ public class OrderDetail {
     private BigDecimal productPrice;
 
     /**
+     * 商品颜色
+     */
+    private String productColor;
+
+    /**
+     * 商品尺码
+     */
+    private String productSize;
+
+    /**
      * 商品数量.
      */
     private Integer productQuantity;
 
     /**
-     * 商品小图.
+     * 商品图
      */
-    private String productIcon;
+    private String productImgMd;
 }

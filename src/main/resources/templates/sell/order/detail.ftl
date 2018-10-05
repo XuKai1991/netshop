@@ -34,17 +34,23 @@
                         <tr>
                             <th>商品货号</th>
                             <th>商品名称</th>
-                            <th>价格</th>
+                            <th>商品图</th>
+                            <th>单价</th>
+                            <th>颜色</th>
+                            <th>尺码</th>
                             <th>数量</th>
                             <th>总额</th>
                         </tr>
                         </thead>
                         <tbody>
                         <#list orderDTO.orderDetailList as orderDetail>
-                        <tr>
+                        <tr align="center">
                             <td>${orderDetail.productId}</td>
                             <td>${orderDetail.productName}</td>
+                            <td><img height="100" width="100" src="${(orderDetail.productImgMd)!''}" alt=""></td>
                             <td>${orderDetail.productPrice}</td>
+                            <td>${orderDetail.productColor}</td>
+                            <td>${orderDetail.productSize}</td>
                             <td>${orderDetail.productQuantity}</td>
                             <td>${orderDetail.productQuantity * orderDetail.productPrice}</td>
                         </tr>

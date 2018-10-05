@@ -36,8 +36,7 @@ public class BuyerInfo {
      */
     private String email;
 
-    public BuyerInfo(String buyerId, String username, String password, String phone, String email) {
-        this.buyerId = buyerId;
+    public BuyerInfo(String username, String password, String phone, String email) {
         this.username = username;
         this.password = password;
         this.phone = phone;

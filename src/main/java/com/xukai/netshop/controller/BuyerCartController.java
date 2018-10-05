@@ -1,10 +1,17 @@
 package com.xukai.netshop.controller;
 
+import com.xukai.netshop.VO.ResultVO;
+import com.xukai.netshop.config.CookieConfig;
+import com.xukai.netshop.dataobject.CartMaster;
+import com.xukai.netshop.dto.CartDTO;
+import com.xukai.netshop.service.BuyerCartService;
+import com.xukai.netshop.utils.CookieUtils;
+import com.xukai.netshop.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author: Xukai
@@ -17,11 +24,102 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class BuyerCartController {
 
-    @GetMapping("/add")
-    public String addCart(@RequestParam("productId")String productId, @RequestParam("productQuantity")String productQuantity){
+    @Autowired
+    private CookieConfig cookieConfig;
 
+    @Autowired
+    private BuyerCartService buyerCartService;
 
+    /**
+     * 获取买家的购物车数据列表
+     *
+     * @param request
+     * @return
+     */
+    @GetMapping("/list")
+    public ResultVO findByBuyerId(HttpServletRequest request) {
+        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        CartMaster cartMaster = buyerCartService.list(buyerId);
+        return ResultVOUtil.success(cartMaster);
+    }
 
-        return "";
+    /**
+     * 添加商品到购物车
+     *
+     * @param cartDTO
+     * @param request
+     */
+    @PostMapping("/add")
+    public ResultVO addToCart(CartDTO cartDTO, HttpServletRequest request) {
+        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        CartMaster result = buyerCartService.addItem(cartDTO, buyerId);
+        if (result == null) {
+            return ResultVOUtil.error(0, "fail");
+        }
+        return ResultVOUtil.success();
+    }
+
+    /**
+     * 增加购物车内的商品数量
+     *
+     * @param itemId
+     * @param request
+     */
+    @GetMapping("/increase")
+    public ResultVO increaseCartItemNum(String itemId, HttpServletRequest request) {
+        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        CartMaster result = buyerCartService.increaseItemNum(itemId, buyerId);
+        if (result == null) {
+            return ResultVOUtil.error(0, "fail");
+        }
+        return ResultVOUtil.success();
+    }
+
+    /**
+     * 减少购物车内的商品数量
+     *
+     * @param itemId
+     * @param request
+     */
+    @GetMapping("/decrease")
+    public ResultVO decreaseCartItemNum(String itemId, HttpServletRequest request) {
+        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        CartMaster result = buyerCartService.decreaseItemNum(itemId, buyerId);
+        if (result == null) {
+            return ResultVOUtil.error(0, "fail");
+        }
+        return ResultVOUtil.success();
+    }
+
+    /**
+     * 单条删除购物车中商品
+     *
+     * @param itemId
+     * @param request
+     */
+    @GetMapping("/delete")
+    public ResultVO deleteCartItem(String itemId, HttpServletRequest request) {
+        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        CartMaster result = buyerCartService.deleteItem(itemId, buyerId);
+        if (result == null) {
+            return ResultVOUtil.error(0, "fail");
+        }
+        return ResultVOUtil.success();
+    }
+
+    /**
+     * 批量删除购物车中商品
+     *
+     * @param itemIds
+     * @param request
+     */
+    @GetMapping("/batchDelete")
+    public ResultVO deleteCartItems(String itemIds, HttpServletRequest request) {
+        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        CartMaster result = buyerCartService.deleteItems(itemIds, buyerId);
+        if (result == null) {
+            return ResultVOUtil.error(0, "fail");
+        }
+        return ResultVOUtil.success();
     }
 }

@@ -14,7 +14,12 @@ import java.math.BigDecimal;
 public class CartDTO {
 
     /**
-     * 商品Id.
+     * 购物车内物品ID
+     */
+    private String itemId;
+
+    /**
+     * 商品Id
      */
     private String productId;
 
@@ -24,9 +29,24 @@ public class CartDTO {
     private String productName;
 
     /**
-     * 商品小图
+     * 商品图
      */
-    private String productIcon;
+    private String productImgMd;
+
+    /**
+     * 商品颜色
+     */
+    private String productColor;
+
+    /**
+     * 商品尺码
+     */
+    private String productSize;
+
+    /**
+     * 状态, 0正常/1下架
+     */
+    private Integer productStatus;
 
     /**
      * 单价
@@ -43,4 +63,12 @@ public class CartDTO {
         this.productQuantity = productQuantity;
     }
 
+    public CartDTO(String productId, String productName, String productImgMd, String productColor, String productSize, BigDecimal productPrice) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productImgMd = productImgMd;
+        this.productColor = productColor;
+        this.productSize = productSize;
+        this.productPrice = productPrice;
+    }
 }

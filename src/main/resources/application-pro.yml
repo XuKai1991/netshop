@@ -1,32 +1,54 @@
 server:
-  port: 8080
-  context-path: /sell
+  port: 8085
+  context-path: /netshop
 
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    password: 123456
-    url: jdbc:mysql://192.168.25.150/sell?characterEncoding=utf-8&useSSL=false
+    password: Xukai0110@
+    url: jdbc:mysql://106.14.183.207/netshop?characterEncoding=utf-8&useSSL=false
     type: com.alibaba.druid.pool.DruidDataSource
 
-#logging:
-#  pattern:
-#    console: "%d - %msg%n"   #日志格式  时间 - 消息（回车）
-#  file: E:/sell.log  #日志输出目录
-#  level:     #可以直接设置全局日志级别
-#    com.sell.service.LogTest: debug #针对具体类设置日志级别
+  jpa:
+    show-sql: true
+    database: mysql
 
-#  Redis单机版配置
-#  Redis数据库索引（默认为0）
-#  spring.redis.database=0
-#  redis:
-#    host: 127.0.0.1
-#    port: 6379
-#    password: 123456
-#    timeout: 6000     # 连接超时时间（毫秒）
-#    pool:
-#      max-active: 8   # 连接池最大连接数（使用负值表示没有限制）
-#      max-wait: -1    # 连接池最大阻塞等待时间（使用负值表示没有限制）
-#      max-idle: 20    # 连接池中的最大空闲连接
-#      min-idle: 0     # 连接池中的最小空闲连接
+  jackson:
+    default-property-inclusion: non_null
+
+  freemarker:
+    allow-request-override: false
+    cache: false
+    check-template-location: true
+    charset: utf-8
+    content-type: text/html
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    content-type: text/html
+    cache: false
+
+cookieConfig:
+  buyerId: buyerId
+  buyerName: buyerName
+  sellerId: sellerId
+  expire: 3600  #5分钟
+
+fdfs:
+  so-timeout: 1500
+  connect-timeout: 600
+  thumb-image:
+    width: 210
+    height: 210
+  tracker-list: 106.14.183.207:22122
+  pool:
+    jmx-enabled: false
+
+baseUrl:
+  front_base_url: http://localhost:8081
+  back_base_url: http://localhost:8085
+  image_server_url: http://106.14.183.207/

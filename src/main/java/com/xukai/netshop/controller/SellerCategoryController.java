@@ -35,7 +35,7 @@ public class SellerCategoryController {
     @GetMapping("/list")
     public ModelAndView list() {
         List<ProductCategory> categoryList = categoryService.findAll();
-        ModelAndView mav = new ModelAndView("category/list");
+        ModelAndView mav = new ModelAndView("sell/category/list");
         mav.addObject("categoryList", categoryList);
         return mav;
     }
@@ -51,12 +51,12 @@ public class SellerCategoryController {
                 log.error("【卖家端查询商品类目】发生异常{}", e);
                 mav.addObject("msg", e.getMessage());
                 mav.addObject("url", "/netshop/seller/category/list");
-                mav.setViewName("common/error");
+                mav.setViewName("sell/common/error");
                 return mav;
             }
             mav.addObject("category", category);
         }
-        mav.setViewName("category/index");
+        mav.setViewName("sell/category/index");
         return mav;
     }
 
@@ -66,7 +66,7 @@ public class SellerCategoryController {
         if (bindingResult.hasErrors()) {
             mav.addObject("msg", bindingResult.getFieldError().getDefaultMessage());
             mav.addObject("url", "/netshop/seller/category/index");
-            mav.setViewName("common/error");
+            mav.setViewName("sell/common/error");
             return mav;
         }
         ProductCategory category = new ProductCategory();
@@ -78,13 +78,13 @@ public class SellerCategoryController {
             log.error("【卖家端保存商品类目】发生异常{}", e);
             mav.addObject("msg", e.getMessage());
             mav.addObject("url", "/netshop/seller/category/index?categoryId=" + categoryForm.getCategoryId());
-            mav.setViewName("common/error");
+            mav.setViewName("sell/common/error");
             return mav;
         }
         BeanUtils.copyProperties(categoryForm, category);
         categoryService.save(category);
         mav.addObject("url", "/netshop/seller/category/list");
-        mav.setViewName("common/success");
+        mav.setViewName("sell/common/success");
         return mav;
     }
 }

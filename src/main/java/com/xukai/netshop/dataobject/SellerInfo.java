@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class SellerInfo {
 
-    private Integer id;
+    private String id;
 
     private String username;
 

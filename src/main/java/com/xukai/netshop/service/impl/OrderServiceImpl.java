@@ -9,6 +9,7 @@ import com.xukai.netshop.dto.OrderDTO;
 import com.xukai.netshop.enums.OrderStatusEnum;
 import com.xukai.netshop.enums.ProductStatusEnum;
 import com.xukai.netshop.enums.ResultEnum;
+import com.xukai.netshop.exception.BuyException;
 import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.repository.OrderDetailRepository;
 import com.xukai.netshop.repository.OrderMasterRepository;
@@ -29,6 +30,7 @@ import org.springframework.util.CollectionUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,13 +80,16 @@ public class OrderServiceImpl implements OrderService {
                     add(orderAmount);
             orderDetail.setOrderId(orderId);
             orderDetail.setDetailId(KeyUtils.genUniqueKey());
-            BeanUtils.copyProperties(productInfo, orderDetail);
+            orderDetail.setProductPrice(productInfo.getProductPrice());
+            orderDetail.setProductImgMd(productInfo.getProductImgMd());
+            orderDetail.setProductName(productInfo.getProductName());
             orderDetailRepository.save(orderDetail);
         }
         orderDetailList.removeAll(toDelete);
         // 订单写入数据库
         orderDTO.setOrderId(orderId);
         orderDTO.setOrderAmount(orderAmount);
+        orderDTO.setOrderActualAmount(orderAmount);
         orderDTO.setOrderStatus(OrderStatusEnum.NEW.getCode());
         OrderMaster orderMaster = new OrderMaster();
         BeanUtils.copyProperties(orderDTO, orderMaster);
@@ -120,15 +125,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<OrderDTO> findList(String buyerId, Pageable pageable) {
-        Page<OrderMaster> orderMasterPage = orderMasterRepository.findByBuyerId(buyerId, pageable);
+        Page<OrderMaster> orderMasterPage = orderMasterRepository.findByBuyerIdOrderByCreateTimeDesc(buyerId, pageable);
         List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
         return new PageImpl<>(orderDTOList, pageable, orderMasterPage.getTotalElements());
     }
 
     @Override
-    @Transactional
-    public OrderDTO cancel(OrderDTO orderDTO) {
-        OrderMaster orderMaster = orderMasterRepository.findOne(orderDTO.getOrderId());
+    @Transactional(rollbackFor = SellException.class)
+    public void cancel(String orderId) {
+        OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
         // 判断订单状态
         if (!orderMaster.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
             log.error("【取消订单】订单状态不正确, orderId={}, orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
@@ -142,7 +147,7 @@ public class OrderServiceImpl implements OrderService {
             throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
         }
         // 返回库存
-        List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(orderDTO.getOrderId());
+        List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(orderId);
         if (CollectionUtils.isEmpty(orderDetailList)) {
             log.error("【取消订单】订单中无商品详情, orderId={}", orderMaster.getOrderId());
             throw new SellException(ResultEnum.ORDER_DETAIL_EMPTY);
@@ -151,15 +156,11 @@ public class OrderServiceImpl implements OrderService {
                 .map(e -> new CartDTO(e.getProductId(), e.getProductQuantity()))
                 .collect(Collectors.toList());
         productService.increaseStock(cartDTOList);
-        BeanUtils.copyProperties(orderMaster, orderDTO);
-        orderDTO.setOrderDetailList(orderDetailList);
-        return orderDTO;
     }
 
     @Override
-    @Transactional
-    public OrderDTO finish(OrderDTO orderDTO) {
-        OrderMaster orderMaster = orderMasterRepository.findOne(orderDTO.getOrderId());
+    public void finish(String orderId) {
+        OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
         // 判断订单状态
         if (!orderMaster.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
             log.error("【完结订单】订单状态不正确, orderId={}, orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
@@ -172,19 +173,17 @@ public class OrderServiceImpl implements OrderService {
             log.error("【完结订单】更新失败, orderId={}", orderMaster.getOrderId());
             throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
         }
-        BeanUtils.copyProperties(orderMaster, orderDTO);
-        return orderDTO;
     }
 
     @Override
     public Page<OrderDTO> findList(Pageable pageable) {
-        Page<OrderMaster> orderMasterPage = orderMasterRepository.findAll(pageable);
+        Page<OrderMaster> orderMasterPage = orderMasterRepository.findByCreateTimeBeforeOrderByCreateTimeDesc(new Date(), pageable);
         List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
         return new PageImpl<>(orderDTOList, pageable, orderMasterPage.getTotalElements());
     }
 
     @Override
-    public OrderDTO findAndCheckOrderOne(String orderId, String buyerId) {
+    public void findAndCheckOrderOne(String orderId, String buyerId) {
         OrderDTO orderDTO = findOne(orderId);
         if (orderDTO == null) {
             log.error("【查询订单】订单不存在, orderId={}", orderId);
@@ -195,6 +194,43 @@ public class OrderServiceImpl implements OrderService {
             log.error("【查询订单】订单操作权限错误. buyerId={}, orderDTO={}", buyerId, orderDTO);
             throw new SellException(ResultEnum.ORDER_OWNER_ERROR);
         }
-        return orderDTO;
+    }
+
+    @Override
+    public void buyerDelete(String orderId) {
+        OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
+        // 判断订单状态
+        if (!orderMaster.getOrderStatus().equals(OrderStatusEnum.CANCEL.getCode()) && !orderMaster.getOrderStatus().equals(OrderStatusEnum.FINISHED.getCode())) {
+            log.error("【买家删除订单】订单状态不正确, orderId={}, orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
+            throw new BuyException(ResultEnum.ORDER_STATUS_ERROR);
+        }
+        // 修改订单状态
+        orderMaster.setOrderStatus(OrderStatusEnum.BUYER_DEL.getCode());
+        OrderMaster updateResult = orderMasterRepository.save(orderMaster);
+        if (updateResult == null) {
+            log.error("【买家删除订单】更新失败, orderId={}", orderMaster.getOrderId());
+            throw new BuyException(ResultEnum.ORDER_STATUS_ERROR);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = BuyException.class)
+    public void sellerDelete(String orderId) {
+        OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
+        // 判断订单状态
+        if (!orderMaster.getOrderStatus().equals(OrderStatusEnum.CANCEL.getCode()) && !orderMaster.getOrderStatus().equals(OrderStatusEnum.FINISHED.getCode()) && !orderMaster.getOrderStatus().equals(OrderStatusEnum.BUYER_DEL.getCode())) {
+            log.error("【买家删除订单】订单状态不正确, orderId={}, orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
+            throw new BuyException(ResultEnum.ORDER_STATUS_ERROR);
+        }
+        // 先删除订单详情
+        int delOrderDetailResult = orderDetailRepository.deleteByOrderId(orderId);
+        if (delOrderDetailResult == 0) {
+            throw new BuyException(ResultEnum.ORDERDETAIL_NOT_EXIST);
+        }
+        // 再删除订单
+        int delOrderResult = orderMasterRepository.deleteByOrderId(orderId);
+        if (delOrderResult == 0) {
+            throw new BuyException(ResultEnum.ORDER_NOT_EXIST);
+        }
     }
 }

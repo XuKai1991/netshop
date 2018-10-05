@@ -30,6 +30,10 @@ public class CartMaster {
     /**
      * 购物车内容
      */
-    private String cartList;
+    private String cartItems;
 
+    public CartMaster(String buyerId, String cartItems) {
+        this.buyerId = buyerId;
+        this.cartItems = cartItems;
+    }
 }

@@ -23,7 +23,7 @@ public interface OrderService {
     OrderDTO findOne(String orderId);
 
     /**
-     * 查询订单列表.
+     * 根据买家ID查询订单列表.
      */
     Page<OrderDTO> findList(String buyerId, Pageable pageable);
 
@@ -35,19 +35,33 @@ public interface OrderService {
     /**
      * 取消订单.
      */
-    OrderDTO cancel(OrderDTO orderDTO);
+    void cancel(String orderId);
 
     /**
      * 完结订单.
      */
-    OrderDTO finish(OrderDTO orderDTO);
+    void finish(String orderId);
+
+    /**
+     * 买家删除订单
+     *
+     * @param orderId
+     */
+    void buyerDelete(String orderId);
+
+    /**
+     * 买家删除订单
+     *
+     * @param orderId
+     */
+    void sellerDelete(String orderId);
 
     /**
      * 查找并验证订单
+     *
      * @param orderId
      * @param openid
-     * @return
      */
-    OrderDTO findAndCheckOrderOne(String orderId, String openid);
+    void findAndCheckOrderOne(String orderId, String openid);
 
 }
