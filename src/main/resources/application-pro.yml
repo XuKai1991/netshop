@@ -49,6 +49,6 @@ fdfs:
     jmx-enabled: false
 
 baseUrl:
-  front_base_url: http://localhost:8081
-  back_base_url: http://localhost:8085
+  front_base_url: http://106.14.183.207:8081
+  back_base_url: http://106.14.183.207:8085
   image_server_url: http://106.14.183.207/
