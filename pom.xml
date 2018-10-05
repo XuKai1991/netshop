@@ -77,13 +77,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- tomcat 支持-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- mysql 数据库相关 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
