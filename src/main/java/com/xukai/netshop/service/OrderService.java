@@ -64,4 +64,13 @@ public interface OrderService {
      */
     void findAndCheckOrderOne(String orderId, String openid);
 
+    /**
+     * 修改订单实付金额
+     *
+     * @param orderId
+     * @param amount
+     * @param actualAmount
+     */
+    void editActualAmount(String orderId, String amount, String actualAmount);
+
 }

@@ -99,7 +99,6 @@ public class OrderServiceImpl implements OrderService {
                 .map(e -> new CartDTO(e.getProductId(), e.getProductQuantity()))
                 .collect(Collectors.toList());
         productService.decreaseStock(cartDTOList);
-
         // 发送websocket消息
         webSocket.sendMessage(orderDTO.getOrderId());
         return orderDTO;
@@ -185,10 +184,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void findAndCheckOrderOne(String orderId, String buyerId) {
         OrderDTO orderDTO = findOne(orderId);
-        if (orderDTO == null) {
-            log.error("【查询订单】订单不存在, orderId={}", orderId);
-            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
-        }
         //判断是否是自己的订单
         if (!orderDTO.getBuyerId().equals(buyerId)) {
             log.error("【查询订单】订单操作权限错误. buyerId={}, orderDTO={}", buyerId, orderDTO);
@@ -219,7 +214,7 @@ public class OrderServiceImpl implements OrderService {
         OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
         // 判断订单状态
         if (!orderMaster.getOrderStatus().equals(OrderStatusEnum.CANCEL.getCode()) && !orderMaster.getOrderStatus().equals(OrderStatusEnum.FINISHED.getCode()) && !orderMaster.getOrderStatus().equals(OrderStatusEnum.BUYER_DEL.getCode())) {
-            log.error("【买家删除订单】订单状态不正确, orderId={}, orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
+            log.error("【卖家删除订单】订单状态不正确, orderId={}, orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
             throw new BuyException(ResultEnum.ORDER_STATUS_ERROR);
         }
         // 先删除订单详情
@@ -231,6 +226,31 @@ public class OrderServiceImpl implements OrderService {
         int delOrderResult = orderMasterRepository.deleteByOrderId(orderId);
         if (delOrderResult == 0) {
             throw new BuyException(ResultEnum.ORDER_NOT_EXIST);
+        }
+    }
+
+    @Override
+    public void editActualAmount(String orderId, String amount, String actualAmount) {
+        OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
+        if (orderMaster == null) {
+            log.error("【卖家修改订单】订单不存在, orderId={}", orderId);
+            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+        }
+        // 判断订单状态
+        if (!orderMaster.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
+            log.error("【卖家修改订单】订单状态不正确, orderId={}, orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
+            throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
+        }
+        // 判断应付价格是否就是页面显示的价格，防止伪造
+        if (orderMaster.getOrderAmount().compareTo(new BigDecimal(amount)) != 0) {
+            log.error("【卖家修改订单】订单数据不匹配，实际应支付金额为{}，页面参数为{}", orderMaster.getOrderAmount(), amount);
+            throw new SellException(ResultEnum.PARAM_ERROR);
+        }
+        orderMaster.setOrderActualAmount(new BigDecimal(actualAmount));
+        OrderMaster updateResult = orderMasterRepository.save(orderMaster);
+        if (updateResult == null) {
+            log.error("【卖家修改订单】修改失败, orderId={}", orderMaster.getOrderId());
+            throw new SellException(ResultEnum.ORDER_EDIT_FAIL);
         }
     }
 }

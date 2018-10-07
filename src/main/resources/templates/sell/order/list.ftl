@@ -1,4 +1,4 @@
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <#include "../common/header.ftl">
 <body>
 <div id="wrapper" class="toggled">
@@ -10,7 +10,7 @@
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-md-12 column">
-                    <table class="table table-bordered table-condensed">
+                    <table class="table table-bordered table-condensed table-striped">
                         <thead>
                         <tr>
                             <th>订单编号</th>
@@ -25,7 +25,6 @@
                         </tr>
                         </thead>
                         <tbody>
-
                         <#list orderDTOPage.content as orderDTO>
                         <tr align="center">
                             <td>${orderDTO.orderId}</td>
@@ -37,13 +36,18 @@
                             <td>${orderDTO.getOrderStatusEnum().message}</td>
                             <td>${orderDTO.createTime}</td>
                             <td>
-                                <a href="/netshop/seller/order/detail?orderId=${orderDTO.orderId}">详情</a>
-                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="/netshop/seller/order/detail?orderId=${orderDTO.orderId}" type="button"
+                                   class="btn btn-default btn-primary">详情</a>
                                 <#if orderDTO.getOrderStatusEnum().message == "新订单">
-                                    <a href="/netshop/seller/order/cancel?orderId=${orderDTO.orderId}">取消</a>
+                                <a href="/netshop/seller/order/cancel?orderId=${orderDTO.orderId}" type="button"
+                                   class="btn btn-default btn-danger">取消</a>
+                                <a href="javascript:preEditOrder(${orderDTO.orderId}, ${orderDTO.orderAmount}, ${orderDTO.orderActualAmount})"
+                                   type="button"
+                                   class="btn btn-default btn-danger">修改</a>
                                 </#if>
                                 <#if orderDTO.getOrderStatusEnum().message == "买家删除" || orderDTO.getOrderStatusEnum().message == "已取消" || orderDTO.getOrderStatusEnum().message == "完结">
-                                    <a href="/netshop/seller/order/delete?orderId=${orderDTO.orderId}">删除</a>
+                                <a href="javascript:preDeleteOrder(${orderDTO.orderId})" type="button"
+                                   class="btn btn-primary">删除</a>
                                 </#if>
                             </td>
                         </tr>
@@ -113,6 +117,57 @@
     </div>
 </div>
 
+<#-- 删除提示 -->
+<div id="delModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">删除订单</h4>
+            </div>
+            <div class="modal-body">
+                <p>您确定要删除该订单吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <a type="button" class="btn btn-primary" href="javascript:deleteOrder()">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<#-- 修改提示 -->
+<div id="editModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改订单</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">实付金额</span>
+                    <input id="amountForEdit" type="text" class="form-control" aria-describedby="basic-addon1"
+                           disabled="disabled"/>
+                </div>
+                </br>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">应付金额</span>
+                    <input id="actualAmountForEdit" type="text" class="form-control" aria-describedby="basic-addon1">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <a type="button" class="btn btn-primary" href="javascript:editOrder()">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <#--播放音乐-->
 <audio id="notice" loop="loop">
     <source src="/netshop/mp3/song.mp3" type="audio/mpeg"/>
@@ -122,6 +177,7 @@
 <script src="https://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
     var webSocket = null;
+
     if ('WebSocket' in window) {
         webSocket = new WebSocket("ws://localhost:80/netshop/webSocket");
     } else {
@@ -151,7 +207,45 @@
         webSocket.close();
     }
 
-</script>
+    var orderId = "";
 
+    // 删除订单确认提示
+    function preDeleteOrder(id) {
+        orderId = id;
+        //加载提示框
+        $('#delModal').modal();
+    }
+
+    // 删除订单
+    function deleteOrder() {
+        window.location.href = "/netshop/seller/order/delete?orderId=" + orderId;
+    }
+
+    // 修改订单确认提示
+    function preEditOrder(id, amount, actualAmount) {
+        orderId = id;
+        $("#amountForEdit").val(amount);
+        $("#actualAmountForEdit").val(actualAmount);
+        $('#editModal').modal();
+    }
+
+    // 修改订单
+    function editOrder() {
+        var amount = $("#amountForEdit").val();
+        var actualAmount = $("#actualAmountForEdit").val();
+        $.post("/netshop/seller/order/edit", {
+            orderId: orderId,
+            amount: amount,
+            actualAmount: actualAmount
+        }, function (result) {
+            if (result.msg == "success") {
+                $('#editModal').modal("hide");
+                location.reload();
+            }else{
+
+            }
+        });
+    }
+</script>
 </body>
 </html>

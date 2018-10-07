@@ -26,7 +26,7 @@
         </li>
 
         <li>
-            <a href="/netshop/seller/logout"><i class="fa fa-fw fa-list-alt"></i> 登出</a>
+            <a href="/netshop/seller/logout"><i class="fa fa-fw fa-list-alt"></i>注销</a>
         </li>
     </ul>
 </nav>

@@ -15,13 +15,15 @@
                         <thead>
                         <tr>
                             <th>订单编号</th>
-                            <th>订单总金额</th>
+                            <th>应付金额</th>
+                            <th>实付金额</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td>${orderDTO.orderId}</td>
                             <td>${orderDTO.orderAmount}</td>
+                            <td>${orderDTO.orderActualAmount}</td>
                         </tr>
                         </tbody>
                     </table>

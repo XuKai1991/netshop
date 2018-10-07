@@ -10,11 +10,7 @@ import com.xukai.netshop.utils.CookieUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
@@ -27,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * @createDate: 2018/7/9 17:40
  * @modified By:
  */
-@Controller
+@RestController
 @RequestMapping("/seller")
 @Slf4j
 public class SellerUserController {

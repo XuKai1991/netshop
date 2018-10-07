@@ -11,7 +11,7 @@
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-md-12 column">
-                    <table class="table table-bordered table-condensed">
+                    <table class="table table-bordered table-condensed table-striped">
                         <thead>
                         <tr>
                             <th>货号</th>
@@ -22,7 +22,7 @@
                             <th>颜色</th>
                             <th>尺码</th>
                             <th>库存</th>
-                            <#--<th>描述</th>-->
+                        <#--<th>描述</th>-->
                             <th>类目</th>
                             <th>状态</th>
                             <th>创建时间</th>
@@ -42,24 +42,28 @@
                             <td>${productInfo.productColor}</td>
                             <td>${productInfo.productSize}</td>
                             <td>${productInfo.productStock}</td>
-                            <#--<td>${productInfo.productDescription}</td>-->
+                        <#--<td>${productInfo.productDescription}</td>-->
                             <td>
                                 <#list categoryList as category>
                                     <#if (productInfo.categoryType)?? && productInfo.categoryType == category.categoryType>
                                         ${category.getCategoryName()}
                                     </#if>
                                 </#list>
-                                ${productInfo.categoryType}
                             </td>
                             <td>${productInfo.getProductStatusEnum().message}</td>
                             <td>${productInfo.getCreateTime()}</td>
                             <td>${productInfo.getUpdateTime()}</td>
-                            <td><a href="/netshop/seller/product/index?productId=${productInfo.productId}">修改</a></td>
+                            <td><a href="/netshop/seller/product/index?productId=${productInfo.productId}" type="button"
+                                   class="btn btn-default btn-primary">修改</a></td>
                             <td>
                                 <#if productInfo.getProductStatusEnum().message == "在售">
-                                    <a href="/netshop/seller/product/off_sale?productId=${productInfo.productId}">下架</a>
+                                    <a href="/netshop/seller/product/off_sale?productId=${productInfo.productId}"
+                                       type="button"
+                                       class="btn btn-default btn-danger">下架</a>
                                 <#else>
-                                    <a href="/netshop/seller/product/on_sale?productId=${productInfo.productId}">上架</a>
+                                    <a href="/netshop/seller/product/on_sale?productId=${productInfo.productId}"
+                                       type="button"
+                                       class="btn btn-default btn-danger">上架</a>
                                 </#if>
                             </td>
                         </tr>

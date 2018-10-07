@@ -1,17 +1,16 @@
 package com.xukai.netshop.controller;
 
+import com.xukai.netshop.VO.ResultVO;
 import com.xukai.netshop.dto.OrderDTO;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.service.OrderService;
+import com.xukai.netshop.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -20,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
  * CreateDate: 2018/6/28 10:48
  * Modified By:
  */
-@Controller
+@RestController
 @RequestMapping("/seller/order")
 @Slf4j
 public class SellerOrderController {
@@ -130,5 +129,16 @@ public class SellerOrderController {
         mav.addObject("msg", ResultEnum.ORDER_DELETE_SUCCESS.getMessage());
         mav.setViewName("sell/common/success");
         return mav;
+    }
+
+    @PostMapping("/edit")
+    public ResultVO editActualAmount(String orderId, String amount, String actualAmount) {
+        try {
+            orderService.editActualAmount(orderId, amount, actualAmount);
+        } catch (SellException e) {
+            log.error("【卖家端修改订单】发生异常{}", e);
+            return ResultVOUtil.error(e.getCode(), e.getMessage());
+        }
+        return ResultVOUtil.success();
     }
 }
