@@ -1,7 +1,6 @@
 package com.xukai.netshop.controller;
 
 import com.xukai.netshop.VO.ResultVO;
-import com.xukai.netshop.config.BaseUrlConfig;
 import com.xukai.netshop.config.CookieConfig;
 import com.xukai.netshop.dataobject.BuyerInfo;
 import com.xukai.netshop.enums.ResultEnum;
@@ -10,7 +9,6 @@ import com.xukai.netshop.service.BuyerService;
 import com.xukai.netshop.utils.CookieUtils;
 import com.xukai.netshop.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,9 +33,6 @@ public class BuyerUserController {
 
     @Autowired
     private CookieConfig cookieConfig;
-
-    @Autowired
-    private BaseUrlConfig baseUrlConfig;
 
     /**
      * 跳转登录页
@@ -121,8 +116,8 @@ public class BuyerUserController {
      * @return
      */
     @PostMapping("/login")
-    public ModelAndView login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView();
+    public ResultVO login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) {
+        // ModelAndView mav = new ModelAndView();
         BuyerInfo buyerInfo = buyerService.findByUsernameAndPassword(username, password);
         if (buyerInfo == null) {
             throw new BuyException(ResultEnum.BUYER_LOGIN_FAIL);
@@ -130,13 +125,13 @@ public class BuyerUserController {
         // 设置token至cookie
         CookieUtils.set(cookieConfig.getBuyerId(), buyerInfo.getBuyerId(), cookieConfig.getExpire(), response);
         CookieUtils.set(cookieConfig.getBuyerName(), buyerInfo.getUsername(), cookieConfig.getExpire(), response);
-        String buyRequestURI = (String) request.getSession().getAttribute("buyRequestURI");
-        if (StringUtils.isNotEmpty(buyRequestURI)) {
-            mav.setViewName("redirect:" + baseUrlConfig.getBack_base_url() + buyRequestURI);
-        } else {
-            mav.setViewName("redirect:" + baseUrlConfig.getBack_base_url() + "/buyer/index");
-        }
-        return mav;
+        // String buyRequestURI = (String) request.getSession().getAttribute("buyRequestURI");
+        // if (StringUtils.isNotEmpty(buyRequestURI)) {
+        //     mav.setViewName("redirect:" + baseUrlConfig.getBack_base_url() + buyRequestURI);
+        // } else {
+        //     mav.setViewName("redirect:" + baseUrlConfig.getBack_base_url() + "/buyer/index");
+        // }
+        return ResultVOUtil.success();
     }
 
     /**

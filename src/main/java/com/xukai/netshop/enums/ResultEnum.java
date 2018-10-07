@@ -45,6 +45,7 @@ public enum ResultEnum {
     PICTURE_DELETE_FAIL(31, "图片删除失败"),
     ORDER_EDIT_SUCCESS(32, "订单修改成功"),
     ORDER_EDIT_FAIL(33, "订单修改成功"),
+    LOGIN_STATUS_ERROR(34, "用户未登录"),
 
     PARAM_ERROR(100, "参数不正确");
 
