@@ -19,6 +19,7 @@
                             <th>主图</th>
                             <th>展示图</th>
                             <th>单价</th>
+                            <th>进价</th>
                             <th>颜色</th>
                             <th>尺码</th>
                             <th>库存</th>
@@ -39,6 +40,7 @@
                             <td><img height="50" width="50" src="${productInfo.productImgMd}" alt=""></td>
                             <td><img height="50" width="50" src="${productInfo.productDetailImg}" alt=""></td>
                             <td>${productInfo.productPrice}</td>
+                            <td>${productInfo.productPurchasePrice}</td>
                             <td>${productInfo.productColor}</td>
                             <td>${productInfo.productSize}</td>
                             <td>${productInfo.productStock}</td>
@@ -54,7 +56,7 @@
                             <td>${productInfo.getCreateTime()}</td>
                             <td>${productInfo.getUpdateTime()}</td>
                             <td><a href="/netshop/seller/product/index?productId=${productInfo.productId}" type="button"
-                                   class="btn btn-default btn-primary">修改</a></td>
+                                   class="btn btn-default btn-danger">修改</a></td>
                             <td>
                                 <#if productInfo.getProductStatusEnum().message == "在售">
                                     <a href="/netshop/seller/product/off_sale?productId=${productInfo.productId}"
@@ -117,13 +119,13 @@
                 </h4>
             </div>
             <div class="modal-body">
-                你有新的订单
+                您有新的订单
             </div>
             <div class="modal-footer">
                 <button onclick="javascript:document.getElementById('notice').pause()" type="button"
                         class="btn btn-default" data-dismiss="modal">关闭
                 </button>
-                <button onclick="javascrtpt:window.location='http://localhost/netshop/seller/order/list'" type="button"
+                <button onclick="javascrtpt:window.location='/netshop/seller/order/list'" type="button"
                         class="btn btn-primary">查看新的订单
                 </button>
             </div>
@@ -136,12 +138,10 @@
     <source src="/netshop/mp3/song.mp3" type="audio/mpeg"/>
 </audio>
 
-<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
     var webSocket = null;
     if ('WebSocket' in window) {
-        webSocket = new WebSocket("ws://localhost:80/netshop/webSocket");
+        webSocket = new WebSocket("ws://localhost:8085/netshop/webSocket");
     } else {
         alert("该浏览器不支持websocket！");
     }

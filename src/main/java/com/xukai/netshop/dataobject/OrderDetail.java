@@ -1,5 +1,6 @@
 package com.xukai.netshop.dataobject;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -44,6 +45,12 @@ public class OrderDetail {
      * 商品单价.
      */
     private BigDecimal productPrice;
+
+    /**
+     * 进价
+     */
+    @JsonIgnore
+    private BigDecimal productPurchasePrice;
 
     /**
      * 商品颜色

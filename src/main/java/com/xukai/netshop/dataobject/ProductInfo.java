@@ -40,6 +40,12 @@ public class ProductInfo {
     private BigDecimal productPrice;
 
     /**
+     * 进价
+     */
+    @JsonIgnore
+    private BigDecimal productPurchasePrice;
+
+    /**
      * 商品颜色
      */
     private String productColor;

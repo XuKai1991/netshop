@@ -26,6 +26,11 @@ public class ProductForm {
     private BigDecimal productPrice;
 
     /**
+     * 进价
+     */
+    private BigDecimal productPurchasePrice;
+
+    /**
      * 商品颜色
      */
     private String productColor;

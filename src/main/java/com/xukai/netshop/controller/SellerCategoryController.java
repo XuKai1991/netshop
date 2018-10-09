@@ -1,9 +1,12 @@
 package com.xukai.netshop.controller;
 
+import com.xukai.netshop.VO.ResultVO;
 import com.xukai.netshop.dataobject.ProductCategory;
+import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.form.CategoryForm;
 import com.xukai.netshop.service.CategoryService;
+import com.xukai.netshop.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,51 +39,25 @@ public class SellerCategoryController {
         return mav;
     }
 
-    @GetMapping("/index")
-    public ModelAndView index(@RequestParam(value = "categoryId", required = false) Integer categoryId) {
-        ModelAndView mav = new ModelAndView();
-        ProductCategory category;
-        if (categoryId != null) {
-            try {
-                category = categoryService.findOne(categoryId);
-            } catch (SellException e) {
-                log.error("【卖家端查询商品类目】发生异常{}", e);
-                mav.addObject("msg", e.getMessage());
-                mav.addObject("url", "/netshop/seller/category/list");
-                mav.setViewName("sell/common/error");
-                return mav;
-            }
-            mav.addObject("category", category);
-        }
-        mav.setViewName("sell/category/index");
-        return mav;
+    @GetMapping("/detail")
+    public ResultVO detail(@RequestParam(value = "categoryId") Integer categoryId) {
+        ProductCategory category = categoryService.findOne(categoryId);
+        return ResultVOUtil.success(category);
     }
 
     @PostMapping("/save")
-    public ModelAndView save(@Valid CategoryForm categoryForm, BindingResult bindingResult) {
-        ModelAndView mav = new ModelAndView();
+    public ResultVO save(@Valid CategoryForm categoryForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            mav.addObject("msg", bindingResult.getFieldError().getDefaultMessage());
-            mav.addObject("url", "/netshop/seller/category/index");
-            mav.setViewName("sell/common/error");
-            return mav;
+            throw new SellException(ResultEnum.PARAM_ERROR);
         }
-        ProductCategory category = new ProductCategory();
-        try {
-            if (categoryForm.getCategoryId() != null) {
-                category = categoryService.findOne(categoryForm.getCategoryId());
-            }
-        } catch (SellException e) {
-            log.error("【卖家端保存商品类目】发生异常{}", e);
-            mav.addObject("msg", e.getMessage());
-            mav.addObject("url", "/netshop/seller/category/index?categoryId=" + categoryForm.getCategoryId());
-            mav.setViewName("sell/common/error");
-            return mav;
+        ProductCategory category;
+        if (categoryForm.getCategoryId() != null) {
+            category = categoryService.findOne(categoryForm.getCategoryId());
+        } else {
+            category = new ProductCategory();
         }
         BeanUtils.copyProperties(categoryForm, category);
         categoryService.save(category);
-        mav.addObject("url", "/netshop/seller/category/list");
-        mav.setViewName("sell/common/success");
-        return mav;
+        return ResultVOUtil.success();
     }
 }

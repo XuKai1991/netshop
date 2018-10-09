@@ -46,6 +46,7 @@ public enum ResultEnum {
     ORDER_EDIT_SUCCESS(32, "订单修改成功"),
     ORDER_EDIT_FAIL(33, "订单修改成功"),
     LOGIN_STATUS_ERROR(34, "用户未登录"),
+    CATEGORY_NOT_EXIST(35, "商品类目不存在"),
 
     PARAM_ERROR(100, "参数不正确");
 

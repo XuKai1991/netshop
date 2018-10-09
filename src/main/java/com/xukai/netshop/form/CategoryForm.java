@@ -1,6 +1,9 @@
 package com.xukai.netshop.form;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author: Xukai
@@ -16,10 +19,12 @@ public class CategoryForm {
     /**
      * 类目名字.
      */
+    @NotEmpty(message = "类目名称不能为空")
     private String categoryName;
 
     /**
      * 类目编号.
      */
+    @NotNull
     private Integer categoryType;
 }

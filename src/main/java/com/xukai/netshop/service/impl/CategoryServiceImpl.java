@@ -1,6 +1,8 @@
 package com.xukai.netshop.service.impl;
 
 import com.xukai.netshop.dataobject.ProductCategory;
+import com.xukai.netshop.enums.ResultEnum;
+import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.repository.ProductCategoryRepository;
 import com.xukai.netshop.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Cacheable(key = "#categoryId")
     public ProductCategory findOne(Integer categoryId) {
-        return productCategoryRepository.findOne(categoryId);
+        ProductCategory productCategory = productCategoryRepository.findOne(categoryId);
+        if (productCategory == null) {
+            throw new SellException(ResultEnum.CATEGORY_NOT_EXIST);
+        }
+        return productCategory;
     }
 
     @Override

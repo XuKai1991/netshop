@@ -13,6 +13,7 @@ import com.xukai.netshop.exception.BuyException;
 import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.repository.OrderDetailRepository;
 import com.xukai.netshop.repository.OrderMasterRepository;
+import com.xukai.netshop.repository.ProductInfoRepository;
 import com.xukai.netshop.service.OrderService;
 import com.xukai.netshop.service.ProductService;
 import com.xukai.netshop.service.WebSocket;
@@ -54,6 +55,9 @@ public class OrderServiceImpl implements OrderService {
     private ProductService productService;
 
     @Autowired
+    private ProductInfoRepository productInfoRepository;
+
+    @Autowired
     private WebSocket webSocket;
 
     @Override
@@ -81,6 +85,7 @@ public class OrderServiceImpl implements OrderService {
             orderDetail.setOrderId(orderId);
             orderDetail.setDetailId(KeyUtils.genUniqueKey());
             orderDetail.setProductPrice(productInfo.getProductPrice());
+            orderDetail.setProductPurchasePrice(productInfo.getProductPurchasePrice());
             orderDetail.setProductImgMd(productInfo.getProductImgMd());
             orderDetail.setProductName(productInfo.getProductName());
             orderDetailRepository.save(orderDetail);
@@ -112,6 +117,15 @@ public class OrderServiceImpl implements OrderService {
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
         List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(orderId);
+        // 更新订单详情中商品名称和图片，但如果商品已经被删除，就不做处理保持原状
+        ProductInfo productInfo;
+        for (OrderDetail orderDetail : orderDetailList) {
+            productInfo = productInfoRepository.findOne(orderDetail.getProductId());
+            if (productInfo != null) {
+                orderDetail.setProductName(productInfo.getProductName());
+                orderDetail.setProductImgMd(productInfo.getProductImgMd());
+            }
+        }
         if (CollectionUtils.isEmpty(orderDetailList)) {
             log.error("【查询订单详情】订单详情不存在, orderId={}", orderId);
             throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);

@@ -64,7 +64,7 @@ public class BuyerOrderController {
         }
         OrderDTO orderDTO = OrderForm2OrderDTOConverter.convert(orderForm);
         if (CollectionUtils.isEmpty(orderDTO.getOrderDetailList())) {
-            log.error("【创建订单】购物车不能为空");
+            log.error("【创建订单】订单内容不能为空");
             throw new BuyException(ResultEnum.CART_EMPTY);
         }
         // 创建订单

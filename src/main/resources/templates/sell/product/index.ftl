@@ -24,6 +24,11 @@
                                    value="${(productInfo.productPrice)!''}"/>
                         </div>
                         <div class="form-group">
+                            <label>进价</label>
+                            <input name="productPurchasePrice" type="text" class="form-control"
+                                   value="${(productInfo.productPurchasePrice)!''}"/>
+                        </div>
+                        <div class="form-group">
                             <label>颜色（使用“_”分隔）</label>
                             <input name="productColor" type="text" class="form-control"
                                    value="${(productInfo.productColor)!''}"/>

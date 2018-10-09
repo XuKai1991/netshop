@@ -115,9 +115,10 @@ public class SellerProductController {
             mav.setViewName("sell/common/error");
             return mav;
         }
-        ProductInfo productInfo = new ProductInfo();
+        ProductInfo productInfo;
         try {
             if (StringUtils.isEmpty(productForm.getProductId())) {
+                productInfo = new ProductInfo();
                 productForm.setProductId(KeyUtils.genUniqueKey());
             } else {
                 productInfo = productService.findOne(productForm.getProductId());
