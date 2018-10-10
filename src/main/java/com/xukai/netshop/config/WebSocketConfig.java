@@ -1,7 +1,7 @@
 package com.xukai.netshop.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 /**
@@ -10,7 +10,7 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
  * @createDate: 2018/7/10 18:12
  * @modified By:
  */
-@Component
+@Configuration
 public class WebSocketConfig {
 
     @Bean

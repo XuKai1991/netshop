@@ -76,6 +76,11 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    /**
+     * 减少库存
+     *
+     * @param cartDTOList
+     */
     @Override
     @Transactional(rollbackFor = SellException.class)
     public void decreaseStock(List<CartDTO> cartDTOList) {

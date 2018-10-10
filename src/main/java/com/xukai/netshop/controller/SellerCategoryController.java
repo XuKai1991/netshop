@@ -60,4 +60,21 @@ public class SellerCategoryController {
         categoryService.save(category);
         return ResultVOUtil.success();
     }
+
+    @GetMapping("/delete")
+    public ModelAndView delete(@RequestParam("categoryId") Integer categoryId) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("url", "/netshop/seller/category/list");
+        try {
+            categoryService.deleteByCategoryId(categoryId);
+        } catch (SellException e) {
+            log.error("【卖家端删除商品类目】发生异常{}", e);
+            mav.addObject("msg", e.getMessage());
+            mav.setViewName("sell/common/error");
+            return mav;
+        }
+        mav.addObject("msg", ResultEnum.CATEGORY_DELETE_SUCCESS.getMessage());
+        mav.setViewName("sell/common/success");
+        return mav;
+    }
 }

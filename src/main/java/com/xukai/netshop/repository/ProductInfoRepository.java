@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * Author: Xukai
  * Description:
@@ -17,4 +19,6 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, String
     Page<ProductInfo> findByCategoryTypeAndProductStatusOrderByCreateTimeDesc(Integer categoryType, Integer productStatus, Pageable pageable);
 
     Page<ProductInfo> findByProductStatusOrderByCreateTimeDesc(Integer productStatus, Pageable pageable);
+
+    List<ProductInfo> findByCategoryType(Integer categoryType);
 }

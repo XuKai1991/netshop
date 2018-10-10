@@ -29,15 +29,19 @@
                         <tbody>
 
                         <#list categoryList as category>
-                        <tr align="center">
+                        <tr align="center" valign="middle">
                         <#--<td>${category.categoryId}</td>-->
                             <td>${category.categoryType}</td>
                             <td>${category.categoryName}</td>
                             <td>${category.createTime}</td>
                             <td>${category.updateTime}</td>
                             <td>
-                                <a href="javascript:preEditCategory(${category.categoryId})" type="button"
-                                   class="btn btn-default btn-danger">修改</a>
+                                <#if category.categoryType != 0>
+                                    <a href="javascript:preEditCategory(${category.categoryId})" type="button"
+                                       class="btn btn-default btn-danger">修改</a>
+                                    <a href="javascript:preDeleteCategory(${category.categoryId})" type="button"
+                                       class="btn btn-default btn-danger">删除</a>
+                                </#if>
                             </td>
                         </tr>
                         </#list>
@@ -219,6 +223,7 @@
         });
     });
 
+    // 添加类目提示
     function preAddCategory() {
         $("#editModalTitle").text("新增类目");
         $("#categoryTypeForEdit").removeAttr("readonly");
@@ -228,6 +233,7 @@
         $('#editModal').modal();
     }
 
+    // 修改类目提示
     function preEditCategory(categoryId) {
         $("#editModalTitle").text("修改类目");
         $.get("/netshop/seller/category/detail", {categoryId: categoryId}, function (result) {
@@ -240,6 +246,14 @@
                 $('#editModal').modal();
             }
         });
+    }
+
+    // 删除类目提示
+    function preDeleteCategory(categoryId) {
+        $("#hintModalTitle").text("删除类目");
+        $("#hintModalBody").text("您确定要删除该类目吗？");
+        $("#hintModalConfirm").attr("href", "/netshop/seller/category/delete?categoryId=" + categoryId);
+        $("#hintModal").modal();
     }
 </script>
 </body>

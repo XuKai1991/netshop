@@ -47,6 +47,8 @@ public enum ResultEnum {
     ORDER_EDIT_FAIL(33, "订单修改成功"),
     LOGIN_STATUS_ERROR(34, "用户未登录"),
     CATEGORY_NOT_EXIST(35, "商品类目不存在"),
+    CATEGORY_DELETE_SUCCESS(36, "商品类目删除成功"),
+    CATEGORY_DELETE_FAIL(37, "商品类目删除失败"),
 
     PARAM_ERROR(100, "参数不正确");
 
