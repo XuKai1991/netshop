@@ -1,18 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
     <meta charset="UTF-8"/>
-    <title>卖家登录</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>卖家管理后台登录</title>
+    <link rel="stylesheet" type="text/css" href="/netshop/css/normalize.css"/>
+    <link rel="stylesheet" type="text/css" href="/netshop/css/demo.css"/>
+    <!--必要样式-->
+    <link rel="stylesheet" type="text/css" href="/netshop/css/component.css"/>
+    <!--[if IE]>
+    <script src="/netshop/js/html5.js"></script>
+    <![endif]-->
 </head>
 <body>
-<form name="myForm" class="form-signin" action="/netshop/seller/login" method="post">
-    <div>
-        <input type="text" name="username" id="username" placeholder="用户名" autocomplete="off"/>
+<div class="container demo-1">
+    <div class="content">
+        <div id="large-header" class="large-header">
+            <canvas id="demo-canvas"></canvas>
+            <div class="logo_box">
+                <h3>卖家管理系统</h3>
+                <form action="/netshop/seller/login" id="loginForm" name="f" method="post">
+                    <div class="input_outer">
+                        <span class="u_user"></span>
+                        <input name="username" class="text" style="color: #FFFFFF !important" type="text"
+                               placeholder="请输入账户"/>
+                    </div>
+                    <div class="input_outer">
+                        <span class="us_uer"></span>
+                        <input name="password" class="text"
+                               style="color: #FFFFFF !important; position:absolute; z-index:100;" value=""
+                               type="password" placeholder="请输入密码"/>
+                    </div>
+                    <div class="mb2">
+                        <a class="act-but submit" style="color: #FFFFFF" href="javascript:login()">登录</a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <div>
-        <input type="password" name="password" id="password" placeholder="密码"/>
-    </div>
-    <button type="submit" style="margin-top:15px;">登 录</button>
-</form>
+</div><!-- /container -->
+<script>
+    function login() {
+        $("#loginForm").submit();
+    }
+</script>
+<script src="/netshop/js/TweenLite.min.js"></script>
+<script src="/netshop/js/EasePack.min.js"></script>
+<script src="/netshop/js/rAF.js"></script>
+<script src="/netshop/js/demo-1.js"></script>
+<script src="/netshop/js/jquery-3.3.1.min.js"></script>
 </body>
 </html>

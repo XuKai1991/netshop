@@ -125,12 +125,6 @@ public class BuyerUserController {
         // 设置token至cookie
         CookieUtils.set(cookieConfig.getBuyerId(), buyerInfo.getBuyerId(), cookieConfig.getExpire(), response);
         CookieUtils.set(cookieConfig.getBuyerName(), buyerInfo.getUsername(), cookieConfig.getExpire(), response);
-        // String buyRequestURI = (String) request.getSession().getAttribute("buyRequestURI");
-        // if (StringUtils.isNotEmpty(buyRequestURI)) {
-        //     mav.setViewName("redirect:" + baseUrlConfig.getBack_base_url() + buyRequestURI);
-        // } else {
-        //     mav.setViewName("redirect:" + baseUrlConfig.getBack_base_url() + "/buyer/index");
-        // }
         return ResultVOUtil.success();
     }
 

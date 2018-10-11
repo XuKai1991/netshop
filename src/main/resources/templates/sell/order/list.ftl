@@ -10,31 +10,69 @@
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-md-12 column">
+
+                    <#--<nav class="navbar navbar-default navbar-static">-->
+                        <#--<div class="container-fluid">-->
+                            <#--<div class="navbar-header">-->
+                                <#--<button class="navbar-toggle collapsed" type="button" data-toggle="collapse"-->
+                                        <#--data-target=".bs-example-js-navbar-collapse">-->
+                                    <#--<span class="sr-only">Toggle navigation</span>-->
+                                    <#--<span class="icon-bar"></span>-->
+                                    <#--<span class="icon-bar"></span>-->
+                                    <#--<span class="icon-bar"></span>-->
+                                <#--</button>-->
+                                <#--<a class="navbar-brand" href="#">订单选项</a>-->
+                            <#--</div>-->
+                            <#--<div class="collapse navbar-collapse bs-example-js-navbar-collapse">-->
+                                <#--<ul class="nav navbar-nav">-->
+                                    <#--<li class="dropdown open">-->
+                                        <#--<a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown"-->
+                                           <#--role="button" aria-haspopup="true" aria-expanded="true">-->
+                                            <#--订单状态-->
+                                            <#--<span class="caret"></span>-->
+                                        <#--</a>-->
+                                        <#--<ul class="dropdown-menu" aria-labelledby="drop1">-->
+                                            <#--<li><a href="#">新订单</a></li>-->
+                                            <#--<li role="separator" class="divider"></li>-->
+                                            <#--<li><a href="#">已取消</a></li>-->
+                                            <#--<li role="separator" class="divider"></li>-->
+                                            <#--<li><a href="#">已完结</a></li>-->
+                                            <#--<li role="separator" class="divider"></li>-->
+                                            <#--<li><a href="#">卖家删除</a></li>-->
+                                        <#--</ul>-->
+                                    <#--</li>-->
+                                    <#---->
+                                <#--</ul>-->
+                            <#--</div>-->
+                        <#--</div>-->
+                    <#--</nav>-->
+
+
                     <table class="table table-bordered table-condensed table-striped">
                         <thead>
                         <tr>
-                            <th>订单编号</th>
-                            <th>姓名</th>
-                            <th>手机号</th>
-                            <th>地址</th>
-                            <th>应付金额</th>
-                            <th>实付金额</th>
-                            <th>订单状态</th>
-                            <th>创建时间</th>
-                            <th>操作</th>
+                            <th style="padding-left: 50">订单编号</th>
+                            <th style="padding-left: 15">姓名</th>
+                            <th style="padding-left: 35">手机号</th>
+                            <th style="padding-left: 150">地址</th>
+                            <th style="padding-left: 10">应付</th>
+                            <th style="padding-left: 10">实付</th>
+                            <th style="padding-left: 10">订单状态</th>
+                            <th style="padding-left: 45">创建时间</th>
+                            <th style="padding-left: 50">操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         <#list orderDTOPage.content as orderDTO>
                         <tr align="center">
-                            <td>${orderDTO.orderId}</td>
-                            <td>${orderDTO.buyerName}</td>
-                            <td>${orderDTO.buyerPhone}</td>
-                            <td>${orderDTO.buyerAddress}</td>
-                            <td>${orderDTO.orderAmount}</td>
-                            <td>${orderDTO.orderActualAmount}</td>
-                            <td>${orderDTO.getOrderStatusEnum().message}</td>
-                            <td>${orderDTO.createTime}</td>
+                            <td style="padding-top: 10">${orderDTO.orderId}</td>
+                            <td style="padding-top: 10">${orderDTO.buyerName}</td>
+                            <td style="padding-top: 10">${orderDTO.buyerPhone}</td>
+                            <td style="padding-top: 10">${orderDTO.buyerAddress}</td>
+                            <td style="padding-top: 10">${orderDTO.orderAmount}</td>
+                            <td style="padding-top: 10">${orderDTO.orderActualAmount}</td>
+                            <td style="padding-top: 10">${orderDTO.getOrderStatusEnum().message}</td>
+                            <td style="padding-top: 10">${orderDTO.createTime}</td>
                             <td>
                                 <a href="/netshop/seller/order/detail?orderId=${orderDTO.orderId}" type="button"
                                    class="btn btn-default btn-primary">详情</a>

@@ -13,28 +13,28 @@
             <div class="row clearfix">
                 <div class="col-md-12 column">
                     <a href="javascript:preAddCategory()" type="button"
-                       class="btn btn-default btn-primary">新增</a>
+                       class="btn btn-default btn-primary">新增类目</a>
                     </br></br>
                     <table class="table table-bordered table-condensed">
                         <thead>
                         <tr>
                         <#--<th>类目id</th>-->
-                            <th>类目编号</th>
-                            <th>类目名称</th>
-                            <th>创建时间</th>
-                            <th>修改时间</th>
-                            <th>操作</th>
+                            <th style="padding-left: 120">类目编号</th>
+                            <th style="padding-left: 90">类目名称</th>
+                            <th style="padding-left: 90">创建时间</th>
+                            <th style="padding-left: 90">修改时间</th>
+                            <th style="padding-left: 70">操作</th>
                         </tr>
                         </thead>
                         <tbody>
 
                         <#list categoryList as category>
-                        <tr align="center" valign="middle">
+                        <tr align="center">
                         <#--<td>${category.categoryId}</td>-->
-                            <td>${category.categoryType}</td>
-                            <td>${category.categoryName}</td>
-                            <td>${category.createTime}</td>
-                            <td>${category.updateTime}</td>
+                            <td style="padding-top: 10">${category.categoryType}</td>
+                            <td style="padding-top: 10">${category.categoryName}</td>
+                            <td style="padding-top: 10">${category.createTime}</td>
+                            <td style="padding-top: 10">${category.updateTime}</td>
                             <td>
                                 <#if category.categoryType != 0>
                                     <a href="javascript:preEditCategory(${category.categoryId})" type="button"

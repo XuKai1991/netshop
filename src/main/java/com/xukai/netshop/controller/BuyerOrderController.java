@@ -134,7 +134,7 @@ public class BuyerOrderController {
         String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
         if (StringUtils.isEmpty(buyerId) || StringUtils.isEmpty(orderId)) {
             log.error("【取消订单】buyerId或orderId为空");
-            throw new SellException(ResultEnum.PARAM_ERROR);
+            throw new BuyException(ResultEnum.PARAM_ERROR);
         }
         orderService.findAndCheckOrderOne(orderId, buyerId);
         orderService.cancel(orderId);

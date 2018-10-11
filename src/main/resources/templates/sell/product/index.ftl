@@ -1,4 +1,4 @@
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <#include "../common/header.ftl">
 
 <body>
@@ -13,62 +13,45 @@
             <div class="row clearfix">
                 <div class="col-md-12 column">
                     <form role="form" method="post" action="/netshop/seller/product/save">
-                        <div class="form-group">
-                            <label>名称</label>
-                            <input name="productName" type="text" class="form-control"
-                                   value="${(productInfo.productName)!''}"/>
+                        <div class="input-group">
+                            <span class="input-group-addon">名称</span>
+                            <input type="text" name="productName" style="width: 30%" class="form-control"
+                                   placeholder="" value="${(productInfo.productName)!''}">
                         </div>
-                        <div class="form-group">
-                            <label>价格</label>
-                            <input name="productPrice" type="text" class="form-control"
-                                   value="${(productInfo.productPrice)!''}"/>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">单价</span>
+                            <input type="text" name="productPrice" style="width: 30%" class="form-control"
+                                   placeholder="" value="${(productInfo.productPrice)!''}">
                         </div>
-                        <div class="form-group">
-                            <label>进价</label>
-                            <input name="productPurchasePrice" type="text" class="form-control"
-                                   value="${(productInfo.productPurchasePrice)!''}"/>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">进价</span>
+                            <input type="text" name="productPurchasePrice" style="width: 30%" class="form-control"
+                                   placeholder="" value="${(productInfo.productPurchasePrice)!''}">
                         </div>
-                        <div class="form-group">
-                            <label>颜色（使用“_”分隔）</label>
-                            <input name="productColor" type="text" class="form-control"
-                                   value="${(productInfo.productColor)!''}"/>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">颜色</span>
+                            <input type="text" name="productColor" style="width: 30%" class="form-control"
+                                   placeholder="使用'_'分隔" value="${(productInfo.productColor)!''}">
                         </div>
-                        <div class="form-group">
-                            <label>尺码</label>
-                            <input name="productSize" type="text" class="form-control"
-                                   value="${(productInfo.productSize)!''}"/>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">尺码</span>
+                            <input type="text" name="productSize" style="width: 30%" class="form-control"
+                                   placeholder="" value="${(productInfo.productSize)!''}">
                         </div>
-                        <div class="form-group">
-                            <label>库存</label>
-                            <input name="productStock" type="text" class="form-control"
-                                   value="${(productInfo.productStock)!''}"/>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">库存</span>
+                            <input type="text" name="productStock" style="width: 30%" class="form-control"
+                                   placeholder="" value="${(productInfo.productStock)!''}">
                         </div>
-                        <div class="form-group">
-                            <label>描述</label>
-                            <input name="productDescription" type="text" class="form-control"
-                                   value="${(productInfo.productDescription)!''}"/>
-                        </div>
-                        <div class="form-group">
-                            <label>主图</label>
-                            <img id="productImgMd" height="100" width="100" src="${(productInfo.productImgMd)!''}"
-                                 alt="">
-                            <input id="imgMd" name="file" accept="image/*" type="file" style="display: none"/>
-                            <input id="imgMdInput" name="productImgMd" type="text" class="form-control"
-                                   value="${(productInfo.productImgMd)!''}" style="display: none"/>
-                            <button id="submit_imgMd" type="button">确定修改图片</button>
-                        </div>
-                        <div class="form-group">
-                            <label>商品详情图</label>
-                            <img id="productDetailImg" height="100" width="100"
-                                 src="${(productInfo.productDetailImg)!''}" alt="">
-                            <input id="detailImg" name="file" accept="image/*" type="file" style="display: none"/>
-                            <button id="submit_detailImgMd" type="button">确定添加图片</button>
-                            <input id="detailImgInput" name="productDetailImg" type="text" class="form-control"
-                                   value="${(productInfo.productDetailImg)!''}"/>
-                        </div>
-                        <div class="form-group">
-                            <label>类目</label>
-                            <select name="categoryType" class="form-control">
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">类目</span>
+                            <select name="categoryType" class="form-control" style="width: 30%">
                                 <#list categoryList as category>
                                     <option value="${category.categoryType}"
                                             <#if (productInfo.categoryType)?? && productInfo.categoryType == category.categoryType>
@@ -79,6 +62,37 @@
                                 </#list>
                             </select>
                         </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">描述</span>
+                            <input type="text" name="productDescription" style="width: 60%" class="form-control"
+                                   placeholder="" value="${(productInfo.productDescription)!''}">
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">主图</span>
+                            <img id="productImgMd" height="200" width="200" src="${(productInfo.productImgMd)!''}"
+                                 alt="">
+                            <input id="imgMd" name="file" accept="image/*" type="file" style="display: none"/>
+                            <input id="imgMdInput" name="productImgMd" type="text" class="form-control"
+                                   value="${(productInfo.productImgMd)!''}" style="display: none"/>
+                            <button id="submit_imgMd" type="button">确定修改图片</button>
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">详情图</span>
+                            <img id="productDetailImg" height="100" width="100" src="/netshop/img/add.png" alt="">
+                            <input id="detailImg" name="file" accept="image/*" type="file" style="display: none"/>
+                            <button id="submit_detailImgMd" type="button">确定添加图片</button>
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">详情图URL</span>
+                            <input type="text" id="detailImgInput" name="productDetailImg" style="width: 93%"
+                                   class="form-control"
+                                   placeholder="" value="${(productInfo.productDetailImg)!''}">
+                        </div>
+                        <br>
                         <input hidden type="text" name="productId" value="${(productInfo.productId)!''}">
                         <button type="submit" class="btn btn-default">确认</button>
                     </form>
@@ -86,7 +100,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 </body>

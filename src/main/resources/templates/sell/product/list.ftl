@@ -14,50 +14,50 @@
                     <table class="table table-bordered table-condensed table-striped">
                         <thead>
                         <tr>
-                            <th>货号</th>
-                            <th>名称</th>
-                            <th>主图</th>
-                            <th>展示图</th>
-                            <th>单价</th>
-                            <th>进价</th>
-                            <th>颜色</th>
-                            <th>尺码</th>
-                            <th>库存</th>
+                            <th style="padding-left: 70">货号</th>
+                            <th style="padding-left: 7">名称</th>
+                            <th style="padding-left: 15">图片</th>
+                        <#--<th>展示图</th>-->
+                            <th style="padding-left: 8">单价</th>
+                            <th style="padding-left: 8">进价</th>
+                            <th style="padding-left: 50">颜色</th>
+                            <th style="padding-left: 40">尺码</th>
+                            <th style="padding-left: 7">库存</th>
                         <#--<th>描述</th>-->
-                            <th>类目</th>
-                            <th>状态</th>
-                            <th>创建时间</th>
-                            <th>修改时间</th>
-                            <th colspan="2">操作</th>
+                            <th style="padding-left: 7">类目</th>
+                            <th style="padding-left: 7">状态</th>
+                            <th style="padding-left: 50">创建时间</th>
+                            <th style="padding-left: 50">修改时间</th>
+                            <th style="padding-left: 45">操作</th>
                         </tr>
                         </thead>
                         <tbody>
 
                         <#list productInfoPage.content as productInfo>
                         <tr align="center">
-                            <td>${productInfo.productId}</td>
-                            <td>${productInfo.productName}</td>
+                            <td style="padding-top: 20">${productInfo.productId}</td>
+                            <td style="padding-top: 20">${productInfo.productName}</td>
                             <td><img height="50" width="50" src="${productInfo.productImgMd}" alt=""></td>
-                            <td><img height="50" width="50" src="${productInfo.productDetailImg}" alt=""></td>
-                            <td>${productInfo.productPrice}</td>
-                            <td>${productInfo.productPurchasePrice}</td>
-                            <td>${productInfo.productColor}</td>
-                            <td>${productInfo.productSize}</td>
-                            <td>${productInfo.productStock}</td>
+                        <#--<td><img height="50" width="50" src="${productInfo.productDetailImg}" alt=""></td>-->
+                            <td style="padding-top: 20">${productInfo.productPrice}</td>
+                            <td style="padding-top: 20">${productInfo.productPurchasePrice}</td>
+                            <td style="padding-top: 20">${productInfo.productColor}</td>
+                            <td style="padding-top: 20">${productInfo.productSize}</td>
+                            <td style="padding-top: 20">${productInfo.productStock}</td>
                         <#--<td>${productInfo.productDescription}</td>-->
-                            <td>
+                            <td style="padding-top: 20">
                                 <#list categoryList as category>
                                     <#if (productInfo.categoryType)?? && productInfo.categoryType == category.categoryType>
                                         ${category.getCategoryName()}
                                     </#if>
                                 </#list>
                             </td>
-                            <td>${productInfo.getProductStatusEnum().message}</td>
-                            <td>${productInfo.getCreateTime()}</td>
-                            <td>${productInfo.getUpdateTime()}</td>
-                            <td><a href="/netshop/seller/product/index?productId=${productInfo.productId}" type="button"
-                                   class="btn btn-default btn-danger">修改</a></td>
-                            <td>
+                            <td style="padding-top: 20">${productInfo.getProductStatusEnum().message}</td>
+                            <td style="padding-top: 20">${productInfo.getCreateTime()}</td>
+                            <td style="padding-top: 20">${productInfo.getUpdateTime()}</td>
+                            <td style="padding-top: 15">
+                                <a href="/netshop/seller/product/index?productId=${productInfo.productId}" type="button"
+                                   class="btn btn-default btn-danger">修改</a>
                                 <#if productInfo.getProductStatusEnum().message == "在售">
                                     <a href="/netshop/seller/product/off_sale?productId=${productInfo.productId}"
                                        type="button"
