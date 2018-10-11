@@ -14,48 +14,48 @@
                     <table class="table table-bordered table-condensed table-striped">
                         <thead>
                         <tr>
-                            <th style="padding-left: 70">货号</th>
-                            <th style="padding-left: 7">名称</th>
-                            <th style="padding-left: 15">图片</th>
+                            <th style="text-align: center">货号</th>
+                            <th style="text-align: center">名称</th>
+                            <th style="text-align: center">图片</th>
                         <#--<th>展示图</th>-->
-                            <th style="padding-left: 8">单价</th>
-                            <th style="padding-left: 8">进价</th>
-                            <th style="padding-left: 50">颜色</th>
-                            <th style="padding-left: 40">尺码</th>
-                            <th style="padding-left: 7">库存</th>
+                            <th style="text-align: center">单价</th>
+                            <th style="text-align: center">进价</th>
+                            <th style="text-align: center">颜色</th>
+                            <th style="text-align: center">尺码</th>
+                            <th style="text-align: center">库存</th>
                         <#--<th>描述</th>-->
-                            <th style="padding-left: 7">类目</th>
-                            <th style="padding-left: 7">状态</th>
-                            <th style="padding-left: 50">创建时间</th>
-                            <th style="padding-left: 50">修改时间</th>
-                            <th style="padding-left: 45">操作</th>
+                            <th style="text-align: center">类目</th>
+                            <th style="text-align: center">状态</th>
+                        <#--<th style="text-align: center">创建时间</th>-->
+                        <#--<th style="text-align: center">修改时间</th>-->
+                            <th style="text-align: center">操作</th>
                         </tr>
                         </thead>
                         <tbody>
 
                         <#list productInfoPage.content as productInfo>
                         <tr align="center">
-                            <td style="padding-top: 20">${productInfo.productId}</td>
-                            <td style="padding-top: 20">${productInfo.productName}</td>
+                            <td style="vertical-align:middle">${productInfo.productId}</td>
+                            <td style="width: 300px;vertical-align:middle">${productInfo.productName}</td>
                             <td><img height="50" width="50" src="${productInfo.productImgMd}" alt=""></td>
                         <#--<td><img height="50" width="50" src="${productInfo.productDetailImg}" alt=""></td>-->
-                            <td style="padding-top: 20">${productInfo.productPrice}</td>
-                            <td style="padding-top: 20">${productInfo.productPurchasePrice}</td>
-                            <td style="padding-top: 20">${productInfo.productColor}</td>
-                            <td style="padding-top: 20">${productInfo.productSize}</td>
-                            <td style="padding-top: 20">${productInfo.productStock}</td>
+                            <td style="vertical-align:middle">${productInfo.productPrice}</td>
+                            <td style="vertical-align:middle">${productInfo.productPurchasePrice}</td>
+                            <td style="vertical-align:middle">${productInfo.productColor}</td>
+                            <td style="vertical-align:middle">${productInfo.productSize}</td>
+                            <td style="vertical-align:middle">${productInfo.productStock}</td>
                         <#--<td>${productInfo.productDescription}</td>-->
-                            <td style="padding-top: 20">
+                            <td style="vertical-align:middle">
                                 <#list categoryList as category>
                                     <#if (productInfo.categoryType)?? && productInfo.categoryType == category.categoryType>
                                         ${category.getCategoryName()}
                                     </#if>
                                 </#list>
                             </td>
-                            <td style="padding-top: 20">${productInfo.getProductStatusEnum().message}</td>
-                            <td style="padding-top: 20">${productInfo.getCreateTime()}</td>
-                            <td style="padding-top: 20">${productInfo.getUpdateTime()}</td>
-                            <td style="padding-top: 15">
+                            <td style="vertical-align:middle">${productInfo.getProductStatusEnum().message}</td>
+                        <#--<td style="padding-top: 20">${productInfo.getCreateTime()}</td>-->
+                        <#--<td style="padding-top: 20">${productInfo.getUpdateTime()}</td>-->
+                            <td style="vertical-align:middle">
                                 <a href="/netshop/seller/product/index?productId=${productInfo.productId}" type="button"
                                    class="btn btn-default btn-danger">修改</a>
                                 <#if productInfo.getProductStatusEnum().message == "在售">

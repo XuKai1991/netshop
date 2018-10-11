@@ -50,28 +50,28 @@
                     <table class="table table-bordered table-condensed table-striped">
                         <thead>
                         <tr>
-                            <th style="padding-left: 50">订单编号</th>
-                            <th style="padding-left: 15">姓名</th>
-                            <th style="padding-left: 35">手机号</th>
-                            <th style="padding-left: 150">地址</th>
-                            <th style="padding-left: 8">应付</th>
-                            <th style="padding-left: 8">实付</th>
-                            <th style="padding-left: 10">订单状态</th>
-                            <th style="padding-left: 45">创建时间</th>
-                            <th style="padding-left: 50">操作</th>
+                            <th style="text-align: center">订单编号</th>
+                            <th style="text-align: center">姓名</th>
+                            <th style="text-align: center">手机号</th>
+                            <th style="text-align: center">地址</th>
+                            <th style="text-align: center">应付</th>
+                            <th style="text-align: center">实付</th>
+                            <th style="text-align: center">订单状态</th>
+                            <th style="text-align: center">创建时间</th>
+                            <th style="text-align: center">操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         <#list orderDTOPage.content as orderDTO>
                         <tr align="center">
-                            <td style="padding-top: 10">${orderDTO.orderId}</td>
-                            <td style="padding-top: 10">${orderDTO.buyerName}</td>
-                            <td style="padding-top: 10">${orderDTO.buyerPhone}</td>
-                            <td style="padding-top: 10">${orderDTO.buyerAddress}</td>
-                            <td style="padding-top: 10">${orderDTO.orderAmount}</td>
-                            <td style="padding-top: 10">${orderDTO.orderActualAmount}</td>
-                            <td style="padding-top: 10">${orderDTO.getOrderStatusEnum().message}</td>
-                            <td style="padding-top: 10">${orderDTO.createTime}</td>
+                            <td style="vertical-align:middle">${orderDTO.orderId}</td>
+                            <td style="vertical-align:middle">${orderDTO.buyerName}</td>
+                            <td style="vertical-align:middle">${orderDTO.buyerPhone}</td>
+                            <td style="vertical-align:middle">${orderDTO.buyerAddress}</td>
+                            <td style="vertical-align:middle">${orderDTO.orderAmount}</td>
+                            <td style="vertical-align:middle">${orderDTO.orderActualAmount}</td>
+                            <td style="vertical-align:middle">${orderDTO.getOrderStatusEnum().message}</td>
+                            <td style="vertical-align:middle">${orderDTO.createTime}</td>
                             <td>
                                 <a href="/netshop/seller/order/detail?orderId=${orderDTO.orderId}" type="button"
                                    class="btn btn-default btn-primary">详情</a>

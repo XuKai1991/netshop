@@ -14,16 +14,16 @@
                     <table class="table table-bordered table-condensed table-striped">
                         <thead>
                         <tr>
-                            <th style="padding-left: 50px">订单编号</th>
-                            <th style="padding-left: 30px">应付金额</th>
-                            <th style="padding-left: 30px">实付金额</th>
+                            <th style="text-align: center">订单编号</th>
+                            <th style="text-align: center">应付金额</th>
+                            <th style="text-align: center">实付金额</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr align="center">
-                            <td>${orderDTO.orderId}</td>
-                            <td>${orderDTO.orderAmount}</td>
-                            <td>${orderDTO.orderActualAmount}</td>
+                            <td style="vertical-align:middle">${orderDTO.orderId}</td>
+                            <td style="vertical-align:middle">${orderDTO.orderAmount}</td>
+                            <td style="vertical-align:middle">${orderDTO.orderActualAmount}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -34,31 +34,31 @@
                     <table class="table table-bordered table-condensed table-striped">
                         <thead>
                         <tr>
-                            <th style="padding-left: 80px">商品货号</th>
-                            <th style="padding-left: 50px">商品名称</th>
-                            <th style="padding-left: 90px">商品图</th>
-                            <th style="padding-left: 40px">单价</th>
-                            <th style="padding-left: 40px">进价</th>
-                            <th style="padding-left: 40px">颜色</th>
-                            <th style="padding-left: 40px">尺码</th>
-                            <th style="padding-left: 40px">数量</th>
-                            <th style="padding-left: 40px">总额</th>
+                            <th style="text-align: center">商品货号</th>
+                            <th style="text-align: center">商品名称</th>
+                            <th style="text-align: center">商品图</th>
+                            <th style="text-align: center">单价</th>
+                            <th style="text-align: center">进价</th>
+                            <th style="text-align: center">颜色</th>
+                            <th style="text-align: center">尺码</th>
+                            <th style="text-align: center">数量</th>
+                            <th style="text-align: center">总额</th>
                         </tr>
                         </thead>
                         <tbody>
                         <#list orderDTO.orderDetailList as orderDetail>
                         <tr align="center">
-                            <td style="padding-top: 70px">${orderDetail.productId}</td>
-                            <td style="padding-top: 70px">${orderDetail.productName}</td>
-                            <td>
-                                <img height="150" width="150" src="${(orderDetail.productImgMd)!''}" alt="">
+                            <td style="vertical-align:middle">${orderDetail.productId}</td>
+                            <td style="vertical-align:middle">${orderDetail.productName}</td>
+                            <td style="vertical-align:middle">
+                                <img height="200" width="200" src="${(orderDetail.productImgMd)!''}" alt="">
                             </td>
-                            <td style="padding-top: 70px">${orderDetail.productPrice}</td>
-                            <td style="padding-top: 70px">${orderDetail.productPurchasePrice}</td>
-                            <td style="padding-top: 70px">${orderDetail.productColor}</td>
-                            <td style="padding-top: 70px">${orderDetail.productSize}</td>
-                            <td style="padding-top: 70px">${orderDetail.productQuantity}</td>
-                            <td style="padding-top: 70px">${orderDetail.productQuantity * orderDetail.productPrice}</td>
+                            <td style="vertical-align:middle">${orderDetail.productPrice}</td>
+                            <td style="vertical-align:middle">${orderDetail.productPurchasePrice}</td>
+                            <td style="vertical-align:middle">${orderDetail.productColor}</td>
+                            <td style="vertical-align:middle">${orderDetail.productSize}</td>
+                            <td style="vertical-align:middle">${orderDetail.productQuantity}</td>
+                            <td style="vertical-align:middle">${orderDetail.productQuantity * orderDetail.productPrice}</td>
                         </tr>
                         </#list>
                         </tbody>

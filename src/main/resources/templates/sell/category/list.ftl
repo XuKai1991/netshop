@@ -19,11 +19,11 @@
                         <thead>
                         <tr>
                         <#--<th>类目id</th>-->
-                            <th style="padding-left: 120">类目编号</th>
-                            <th style="padding-left: 90">类目名称</th>
-                            <th style="padding-left: 90">创建时间</th>
-                            <th style="padding-left: 90">修改时间</th>
-                            <th style="padding-left: 70">操作</th>
+                            <th style="text-align: center">类目编号</th>
+                            <th style="text-align: center">类目名称</th>
+                            <th style="text-align: center">创建时间</th>
+                            <th style="text-align: center">修改时间</th>
+                            <th style="text-align: center">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -31,11 +31,11 @@
                         <#list categoryList as category>
                         <tr align="center">
                         <#--<td>${category.categoryId}</td>-->
-                            <td style="padding-top: 10">${category.categoryType}</td>
-                            <td style="padding-top: 10">${category.categoryName}</td>
-                            <td style="padding-top: 10">${category.createTime}</td>
-                            <td style="padding-top: 10">${category.updateTime}</td>
-                            <td>
+                            <td style="vertical-align:middle">${category.categoryType}</td>
+                            <td style="vertical-align:middle">${category.categoryName}</td>
+                            <td style="vertical-align:middle">${category.createTime}</td>
+                            <td style="vertical-align:middle">${category.updateTime}</td>
+                            <td style="vertical-align:middle">
                                 <#if category.categoryType != 0>
                                     <a href="javascript:preEditCategory(${category.categoryId})" type="button"
                                        class="btn btn-default btn-danger">修改</a>

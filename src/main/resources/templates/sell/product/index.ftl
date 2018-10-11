@@ -15,19 +15,19 @@
                     <form role="form" method="post" action="/netshop/seller/product/save">
                         <div class="input-group">
                             <span class="input-group-addon">名称</span>
-                            <input type="text" name="productName" style="width: 30%" class="form-control"
+                            <input type="text" name="productName" style="width: 40%" class="form-control"
                                    placeholder="" value="${(productInfo.productName)!''}">
                         </div>
                         <br>
                         <div class="input-group">
                             <span class="input-group-addon">单价</span>
-                            <input type="text" name="productPrice" style="width: 30%" class="form-control"
+                            <input type="text" name="productPrice" style="width: 10%" class="form-control"
                                    placeholder="" value="${(productInfo.productPrice)!''}">
                         </div>
                         <br>
                         <div class="input-group">
                             <span class="input-group-addon">进价</span>
-                            <input type="text" name="productPurchasePrice" style="width: 30%" class="form-control"
+                            <input type="text" name="productPurchasePrice" style="width: 10%" class="form-control"
                                    placeholder="" value="${(productInfo.productPurchasePrice)!''}">
                         </div>
                         <br>
@@ -40,18 +40,18 @@
                         <div class="input-group">
                             <span class="input-group-addon">尺码</span>
                             <input type="text" name="productSize" style="width: 30%" class="form-control"
-                                   placeholder="" value="${(productInfo.productSize)!''}">
+                                   placeholder="使用'_'分隔" value="${(productInfo.productSize)!''}">
                         </div>
                         <br>
                         <div class="input-group">
                             <span class="input-group-addon">库存</span>
-                            <input type="text" name="productStock" style="width: 30%" class="form-control"
+                            <input type="text" name="productStock" style="width: 10%" class="form-control"
                                    placeholder="" value="${(productInfo.productStock)!''}">
                         </div>
                         <br>
                         <div class="input-group">
                             <span class="input-group-addon">类目</span>
-                            <select name="categoryType" class="form-control" style="width: 30%">
+                            <select name="categoryType" class="form-control" style="width: 10%">
                                 <#list categoryList as category>
                                     <option value="${category.categoryType}"
                                             <#if (productInfo.categoryType)?? && productInfo.categoryType == category.categoryType>
