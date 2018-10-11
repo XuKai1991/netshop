@@ -41,12 +41,11 @@
                                             <#--<li><a href="#">卖家删除</a></li>-->
                                         <#--</ul>-->
                                     <#--</li>-->
-                                    <#---->
+
                                 <#--</ul>-->
                             <#--</div>-->
                         <#--</div>-->
                     <#--</nav>-->
-
 
                     <table class="table table-bordered table-condensed table-striped">
                         <thead>
@@ -55,8 +54,8 @@
                             <th style="padding-left: 15">姓名</th>
                             <th style="padding-left: 35">手机号</th>
                             <th style="padding-left: 150">地址</th>
-                            <th style="padding-left: 10">应付</th>
-                            <th style="padding-left: 10">实付</th>
+                            <th style="padding-left: 8">应付</th>
+                            <th style="padding-left: 8">实付</th>
                             <th style="padding-left: 10">订单状态</th>
                             <th style="padding-left: 45">创建时间</th>
                             <th style="padding-left: 50">操作</th>
