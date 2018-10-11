@@ -71,7 +71,7 @@
                         <br>
                         <div class="input-group">
                             <span class="input-group-addon">主图</span>
-                            <img id="productImgMd" height="200" width="200" src="${(productInfo.productImgMd)!''}"
+                            <img id="productImgMd" height="250" width="250" src="${(productInfo.productImgMd)!''}"
                                  alt="">
                             <input id="imgMd" name="file" accept="image/*" type="file" style="display: none"/>
                             <input id="imgMdInput" name="productImgMd" type="text" class="form-control"
@@ -81,7 +81,7 @@
                         <br>
                         <div class="input-group">
                             <span class="input-group-addon">详情图</span>
-                            <img id="productDetailImg" height="100" width="100" src="/netshop/img/add.png" alt="">
+                            <img id="productDetailImg" height="150" width="150" src="/netshop/img/add.png" alt="">
                             <input id="detailImg" name="file" accept="image/*" type="file" style="display: none"/>
                             <button id="submit_detailImgMd" type="button">确定添加图片</button>
                         </div>
