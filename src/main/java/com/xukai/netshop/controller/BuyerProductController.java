@@ -2,6 +2,7 @@ package com.xukai.netshop.controller;
 
 import com.xukai.netshop.VO.ResultVO;
 import com.xukai.netshop.dataobject.ProductInfo;
+import com.xukai.netshop.enums.ProductStatusEnum;
 import com.xukai.netshop.service.ProductService;
 import com.xukai.netshop.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigDecimal;
 
 /**
  * @author: Xukai
@@ -49,8 +52,16 @@ public class BuyerProductController {
      * @return
      */
     @GetMapping("/all")
-    public ResultVO<Page<ProductInfo>> getAllProduct(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
+    public ResultVO<Page<ProductInfo>> getAllProduct(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "6") Integer size) {
         Page<ProductInfo> productInfoPage = productService.findUpAll(new PageRequest(page - 1, size));
+        return ResultVOUtil.success(productInfoPage);
+    }
+
+    @GetMapping("/list")
+    public ResultVO<Page<ProductInfo>> list(ProductInfo s_productInfo, BigDecimal minPrice, BigDecimal maxPrice, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "6") Integer size) {
+        // 只让用户查到在售的商品
+        s_productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
+        Page<ProductInfo> productInfoPage = productService.findOnCondition(s_productInfo, minPrice, maxPrice, new PageRequest(page - 1, size));
         return ResultVOUtil.success(productInfoPage);
     }
 

@@ -36,7 +36,7 @@
                             <td style="vertical-align:middle">${category.createTime}</td>
                             <td style="vertical-align:middle">${category.updateTime}</td>
                             <td style="vertical-align:middle">
-                                <#if category.categoryType != 0>
+                                <#if category.categoryType != "0">
                                     <a href="javascript:preEditCategory(${category.categoryId})" type="button"
                                        class="btn btn-default btn-danger">修改</a>
                                     <a href="javascript:preDeleteCategory(${category.categoryId})" type="button"

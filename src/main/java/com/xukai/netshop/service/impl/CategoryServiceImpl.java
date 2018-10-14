@@ -63,13 +63,13 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteByCategoryId(Integer categoryId) {
         // 删除类目前需要对该类目的商品做处理
         // 下架商品，并修改商品类目为默认
-        Integer categoryType = findOne(categoryId).getCategoryType();
+        String categoryType = findOne(categoryId).getCategoryType();
         List<ProductInfo> productInfos = productInfoRepository.findByCategoryType(categoryType);
         for (ProductInfo productInfo : productInfos) {
             if (productInfo.getProductStatusEnum() == ProductStatusEnum.UP) {
                 productInfo.setProductStatus(ProductStatusEnum.Down.getCode());
             }
-            productInfo.setCategoryType(0);
+            productInfo.setCategoryType("0");
             productInfoRepository.save(productInfo);
         }
         try {

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -20,5 +21,7 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, String
 
     Page<ProductInfo> findByProductStatusOrderByCreateTimeDesc(Integer productStatus, Pageable pageable);
 
-    List<ProductInfo> findByCategoryType(Integer categoryType);
+    List<ProductInfo> findByCategoryType(String categoryType);
+
+    Page<ProductInfo> findByProductStatusNotAndProductIdLikeAndProductNameLikeAndProductPriceBetweenAndCategoryTypeLikeOrderByCreateTimeDesc(Integer productStatus, String productId, String productName, BigDecimal maxPrice, BigDecimal minPrice, String categoryType, Pageable pageable);
 }

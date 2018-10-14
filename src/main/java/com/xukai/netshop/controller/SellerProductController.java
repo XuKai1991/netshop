@@ -2,6 +2,7 @@ package com.xukai.netshop.controller;
 
 import com.xukai.netshop.dataobject.ProductCategory;
 import com.xukai.netshop.dataobject.ProductInfo;
+import com.xukai.netshop.enums.ProductStatusEnum;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.form.ProductForm;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -39,12 +41,15 @@ public class SellerProductController {
     private CategoryService categoryService;
 
     @GetMapping("/list")
-    public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
+    public ModelAndView list(ProductInfo s_productInfo, BigDecimal minPrice, BigDecimal maxPrice, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "7") Integer size) {
         ModelAndView mav = new ModelAndView("sell/product/list");
-        Page<ProductInfo> productInfoPage = productService.findAll(new PageRequest(page - 1, size));
+        Page<ProductInfo> productInfoPage = productService.findOnCondition(s_productInfo, minPrice, maxPrice, new PageRequest(page - 1, size));
         List<ProductCategory> categoryList = categoryService.findAll();
         mav.addObject("categoryList", categoryList);
         mav.addObject("productInfoPage", productInfoPage);
+        mav.addObject("s_productInfo", s_productInfo);
+        mav.addObject("minPrice", minPrice);
+        mav.addObject("maxPrice", maxPrice);
         mav.addObject("currentPage", page);
         mav.addObject("size", size);
         return mav;
@@ -119,6 +124,7 @@ public class SellerProductController {
         try {
             if (StringUtils.isEmpty(productForm.getProductId())) {
                 productInfo = new ProductInfo();
+                productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
                 productForm.setProductId(KeyUtils.genUniqueKey());
             } else {
                 productInfo = productService.findOne(productForm.getProductId());

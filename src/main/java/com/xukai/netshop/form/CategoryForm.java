@@ -26,5 +26,5 @@ public class CategoryForm {
      * 类目编号.
      */
     @NotNull
-    private Integer categoryType;
+    private String categoryType;
 }

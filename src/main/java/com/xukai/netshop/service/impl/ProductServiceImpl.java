@@ -8,12 +8,14 @@ import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.repository.ProductInfoRepository;
 import com.xukai.netshop.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -44,6 +46,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<ProductInfo> findOnCondition(ProductInfo s_productInfo, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
+        return productInfoRepository.findByProductStatusNotAndProductIdLikeAndProductNameLikeAndProductPriceBetweenAndCategoryTypeLikeOrderByCreateTimeDesc(
+                (s_productInfo.getProductStatus() == null || s_productInfo.getProductStatus() == -1) ? -1 : (1 - s_productInfo.getProductStatus()),
+                "%" + (StringUtils.isEmpty(s_productInfo.getProductId()) ? "" : s_productInfo.getProductId()) + "%",
+                "%" + (StringUtils.isEmpty(s_productInfo.getProductName()) ? "" : s_productInfo.getProductName()) + "%",
+                minPrice == null ? new BigDecimal("0") : minPrice,
+                maxPrice == null ? new BigDecimal("10000") : maxPrice,
+                "%" + (StringUtils.isEmpty(s_productInfo.getCategoryType()) ? "" : s_productInfo.getCategoryType()) + "%",
+                pageable
+        );
+    }
+
+    @Override
     public Page<ProductInfo> findAll(Pageable pageable) {
         return productInfoRepository.findAll(pageable);
     }
@@ -55,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductInfo save(ProductInfo productInfo) {
-        return productInfoRepository.save(productInfo);
+        return productInfoRepository.saveAndFlush(productInfo);
     }
 
     /**
@@ -72,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
             }
             productInfo.setProductStock(productInfo.getProductStock() + cartDTO.getProductQuantity());
-            productInfoRepository.save(productInfo);
+            productInfoRepository.saveAndFlush(productInfo);
         }
     }
 
@@ -93,12 +108,11 @@ public class ProductServiceImpl implements ProductService {
             Integer productQuantity = cartDTO.getProductQuantity();
             if (productStock >= productQuantity) {
                 productInfo.setProductStock(productStock - productQuantity);
-                productInfoRepository.save(productInfo);
+                productInfoRepository.saveAndFlush(productInfo);
             } else {
                 throw new SellException(ResultEnum.PRODUCT_NOT_ENOUGH);
             }
         }
-
     }
 
     @Override
@@ -111,7 +125,7 @@ public class ProductServiceImpl implements ProductService {
             throw new SellException(ResultEnum.PRODUCT_STATUS_ERROR);
         }
         productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
-        return productInfoRepository.save(productInfo);
+        return productInfoRepository.saveAndFlush(productInfo);
     }
 
     @Override
@@ -124,6 +138,6 @@ public class ProductServiceImpl implements ProductService {
             throw new SellException(ResultEnum.PRODUCT_STATUS_ERROR);
         }
         productInfo.setProductStatus(ProductStatusEnum.Down.getCode());
-        return productInfoRepository.save(productInfo);
+        return productInfoRepository.saveAndFlush(productInfo);
     }
 }

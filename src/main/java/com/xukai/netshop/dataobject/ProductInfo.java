@@ -76,14 +76,14 @@ public class ProductInfo {
     private String productDetailImg;
 
     /**
-     * 状态, 0正常/1下架
+     * 状态, 0在售/1停售
      */
-    private Integer productStatus = ProductStatusEnum.UP.getCode();
+    private Integer productStatus;
 
     /**
      * 类目编号
      */
-    private Integer categoryType;
+    private String categoryType;
 
     private Date createTime;
 
