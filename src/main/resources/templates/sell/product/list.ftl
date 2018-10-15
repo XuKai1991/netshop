@@ -102,7 +102,7 @@
                             <th style="text-align: center">状态</th>
                         <#--<th style="text-align: center">创建时间</th>-->
                         <#--<th style="text-align: center">修改时间</th>-->
-                            <th style="text-align: center">操作</th>
+                            <th style="text-align: center;width: 126px">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -117,11 +117,11 @@
                                     <td style="width: 300px;vertical-align:middle">${productInfo.productName}</td>
                                     <td><img height="50" width="50" src="${productInfo.productImgMd}" alt=""></td>
                                 <#--<td><img height="50" width="50" src="${productInfo.productDetailImg}" alt=""></td>-->
-                                    <td style="vertical-align:middle">${productInfo.productPrice}</td>
-                                    <td style="vertical-align:middle">${productInfo.productPurchasePrice}</td>
+                                    <td style="vertical-align:middle">${productInfo.productPrice?c}</td>
+                                    <td style="vertical-align:middle">${productInfo.productPurchasePrice?c}</td>
                                     <td style="vertical-align:middle">${productInfo.productColor}</td>
                                     <td style="vertical-align:middle">${productInfo.productSize}</td>
-                                    <td style="vertical-align:middle">${productInfo.productStock}</td>
+                                    <td style="vertical-align:middle">${productInfo.productStock?c}</td>
                                 <#--<td>${productInfo.productDescription}</td>-->
                                     <td style="vertical-align:middle">
                                         <#list categoryList as category>

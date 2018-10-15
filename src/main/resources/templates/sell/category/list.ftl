@@ -15,7 +15,7 @@
                     <a href="javascript:preAddCategory()" type="button"
                        class="btn btn-default btn-primary">新增类目</a>
                     </br></br>
-                    <table class="table table-bordered table-condensed">
+                    <table class="table table-bordered table-condensed table-striped">
                         <thead>
                         <tr>
                         <#--<th>类目id</th>-->

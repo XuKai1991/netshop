@@ -11,41 +11,41 @@
             <div class="row clearfix">
                 <div class="col-md-12 column">
 
-                    <#--<nav class="navbar navbar-default navbar-static">-->
-                        <#--<div class="container-fluid">-->
-                            <#--<div class="navbar-header">-->
-                                <#--<button class="navbar-toggle collapsed" type="button" data-toggle="collapse"-->
-                                        <#--data-target=".bs-example-js-navbar-collapse">-->
-                                    <#--<span class="sr-only">Toggle navigation</span>-->
-                                    <#--<span class="icon-bar"></span>-->
-                                    <#--<span class="icon-bar"></span>-->
-                                    <#--<span class="icon-bar"></span>-->
-                                <#--</button>-->
-                                <#--<a class="navbar-brand" href="#">订单选项</a>-->
-                            <#--</div>-->
-                            <#--<div class="collapse navbar-collapse bs-example-js-navbar-collapse">-->
-                                <#--<ul class="nav navbar-nav">-->
-                                    <#--<li class="dropdown open">-->
-                                        <#--<a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown"-->
-                                           <#--role="button" aria-haspopup="true" aria-expanded="true">-->
-                                            <#--订单状态-->
-                                            <#--<span class="caret"></span>-->
-                                        <#--</a>-->
-                                        <#--<ul class="dropdown-menu" aria-labelledby="drop1">-->
-                                            <#--<li><a href="#">新订单</a></li>-->
-                                            <#--<li role="separator" class="divider"></li>-->
-                                            <#--<li><a href="#">已取消</a></li>-->
-                                            <#--<li role="separator" class="divider"></li>-->
-                                            <#--<li><a href="#">已完结</a></li>-->
-                                            <#--<li role="separator" class="divider"></li>-->
-                                            <#--<li><a href="#">卖家删除</a></li>-->
-                                        <#--</ul>-->
-                                    <#--</li>-->
+                <#--<nav class="navbar navbar-default navbar-static">-->
+                <#--<div class="container-fluid">-->
+                <#--<div class="navbar-header">-->
+                <#--<button class="navbar-toggle collapsed" type="button" data-toggle="collapse"-->
+                <#--data-target=".bs-example-js-navbar-collapse">-->
+                <#--<span class="sr-only">Toggle navigation</span>-->
+                <#--<span class="icon-bar"></span>-->
+                <#--<span class="icon-bar"></span>-->
+                <#--<span class="icon-bar"></span>-->
+                <#--</button>-->
+                <#--<a class="navbar-brand" href="#">订单选项</a>-->
+                <#--</div>-->
+                <#--<div class="collapse navbar-collapse bs-example-js-navbar-collapse">-->
+                <#--<ul class="nav navbar-nav">-->
+                <#--<li class="dropdown open">-->
+                <#--<a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown"-->
+                <#--role="button" aria-haspopup="true" aria-expanded="true">-->
+                <#--订单状态-->
+                <#--<span class="caret"></span>-->
+                <#--</a>-->
+                <#--<ul class="dropdown-menu" aria-labelledby="drop1">-->
+                <#--<li><a href="#">新订单</a></li>-->
+                <#--<li role="separator" class="divider"></li>-->
+                <#--<li><a href="#">已取消</a></li>-->
+                <#--<li role="separator" class="divider"></li>-->
+                <#--<li><a href="#">已完结</a></li>-->
+                <#--<li role="separator" class="divider"></li>-->
+                <#--<li><a href="#">卖家删除</a></li>-->
+                <#--</ul>-->
+                <#--</li>-->
 
-                                <#--</ul>-->
-                            <#--</div>-->
-                        <#--</div>-->
-                    <#--</nav>-->
+                <#--</ul>-->
+                <#--</div>-->
+                <#--</div>-->
+                <#--</nav>-->
 
                     <table class="table table-bordered table-condensed table-striped">
                         <thead>
@@ -68,8 +68,8 @@
                             <td style="vertical-align:middle">${orderDTO.buyerName}</td>
                             <td style="vertical-align:middle">${orderDTO.buyerPhone}</td>
                             <td style="vertical-align:middle">${orderDTO.buyerAddress}</td>
-                            <td style="vertical-align:middle">${orderDTO.orderAmount}</td>
-                            <td style="vertical-align:middle">${orderDTO.orderActualAmount}</td>
+                            <td style="vertical-align:middle">${orderDTO.orderAmount?c}</td>
+                            <td style="vertical-align:middle">${orderDTO.orderActualAmount?c}</td>
                             <td style="vertical-align:middle">${orderDTO.getOrderStatusEnum().message}</td>
                             <td style="vertical-align:middle">${orderDTO.createTime}</td>
                             <td>
@@ -78,7 +78,7 @@
                                 <#if orderDTO.getOrderStatusEnum().message == "新订单">
                                 <a href="javascript:preCancelOrder(${orderDTO.orderId})" type="button"
                                    class="btn btn-default btn-danger">取消</a>
-                                <a href="javascript:preEditOrder(${orderDTO.orderId}, ${orderDTO.orderAmount}, ${orderDTO.orderActualAmount})"
+                                <a href="javascript:preEditOrder(${orderDTO.orderId}, ${orderDTO.orderAmount?c}, ${orderDTO.orderActualAmount?c})"
                                    type="button"
                                    class="btn btn-default btn-danger">修改</a>
                                 </#if>

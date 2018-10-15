@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
                 "%" + (StringUtils.isEmpty(s_productInfo.getProductId()) ? "" : s_productInfo.getProductId()) + "%",
                 "%" + (StringUtils.isEmpty(s_productInfo.getProductName()) ? "" : s_productInfo.getProductName()) + "%",
                 minPrice == null ? new BigDecimal("0") : minPrice,
-                maxPrice == null ? new BigDecimal("10000") : maxPrice,
+                maxPrice == null ? new BigDecimal("99999") : maxPrice,
                 "%" + (StringUtils.isEmpty(s_productInfo.getCategoryType()) ? "" : s_productInfo.getCategoryType()) + "%",
                 pageable
         );

@@ -22,8 +22,8 @@
                         <tbody>
                         <tr align="center">
                             <td style="vertical-align:middle">${orderDTO.orderId}</td>
-                            <td style="vertical-align:middle">${orderDTO.orderAmount}</td>
-                            <td style="vertical-align:middle">${orderDTO.orderActualAmount}</td>
+                            <td style="vertical-align:middle">${orderDTO.orderAmount?c}</td>
+                            <td style="vertical-align:middle">${orderDTO.orderActualAmount?c}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -72,7 +72,7 @@
                        class="btn btn-default btn-primary">完结订单</a>
                     <a href="javascript:preCancelOrder(${orderDTO.orderId})" type="button"
                        class="btn btn-default btn-danger">取消订单</a>
-                    <a href="javascript:preEditOrder(${orderDTO.orderId}, ${orderDTO.orderAmount}, ${orderDTO.orderActualAmount})"
+                    <a href="javascript:preEditOrder(${orderDTO.orderId}, ${orderDTO.orderAmount?c}, ${orderDTO.orderActualAmount?c})"
                        type="button"
                        class="btn btn-default btn-danger">修改订单</a>
                 </#if>

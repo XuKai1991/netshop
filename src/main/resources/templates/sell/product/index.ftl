@@ -22,13 +22,13 @@
                         <div class="input-group">
                             <span class="input-group-addon">单价</span>
                             <input type="text" name="productPrice" style="width: 10%" class="form-control"
-                                   placeholder="" value="${(productInfo.productPrice)!''}">
+                                   placeholder="" value="${(productInfo.productPrice?c)!''}">
                         </div>
                         <br>
                         <div class="input-group">
                             <span class="input-group-addon">进价</span>
                             <input type="text" name="productPurchasePrice" style="width: 10%" class="form-control"
-                                   placeholder="" value="${(productInfo.productPurchasePrice)!''}">
+                                   placeholder="" value="${(productInfo.productPurchasePrice?c)!''}">
                         </div>
                         <br>
                         <div class="input-group">
@@ -46,7 +46,7 @@
                         <div class="input-group">
                             <span class="input-group-addon">库存</span>
                             <input type="text" name="productStock" style="width: 10%" class="form-control"
-                                   placeholder="" value="${(productInfo.productStock)!''}">
+                                   placeholder="" value="${(productInfo.productStock?c)!''}">
                         </div>
                         <br>
                         <div class="input-group">
