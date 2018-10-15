@@ -1,8 +1,11 @@
 package com.xukai.netshop.service;
 
+import com.xukai.netshop.dataobject.OrderMaster;
 import com.xukai.netshop.dto.OrderDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.math.BigDecimal;
 
 /**
  * Author: Xukai
@@ -21,6 +24,16 @@ public interface OrderService {
      * 查询单个订单.
      */
     OrderDTO findOne(String orderId);
+
+    /**
+     * 根据条件搜索订单
+     * @param s_order
+     * @param minAmount
+     * @param maxAmount
+     * @param pageable
+     * @return
+     */
+    Page<OrderMaster> findOnCondition(OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount, Pageable pageable);
 
     /**
      * 根据买家ID查询订单列表.

@@ -123,8 +123,8 @@ public class BuyerUserController {
             throw new BuyException(ResultEnum.BUYER_LOGIN_FAIL);
         }
         // 设置token至cookie
-        CookieUtils.set(cookieConfig.getBuyerId(), buyerInfo.getBuyerId(), cookieConfig.getExpire(), response);
-        CookieUtils.set(cookieConfig.getBuyerName(), buyerInfo.getUsername(), cookieConfig.getExpire(), response);
+        CookieUtils.set(cookieConfig.getBuyerId(), buyerInfo.getBuyerId(), cookieConfig.getExpire(), request, response);
+        CookieUtils.set(cookieConfig.getBuyerName(), buyerInfo.getUsername(), cookieConfig.getExpire(), request, response);
         return ResultVOUtil.success();
     }
 
@@ -141,8 +141,8 @@ public class BuyerUserController {
         Cookie cookie = CookieUtils.get(cookieConfig.getBuyerId(), request);
         if (cookie != null) {
             // 清除cookie
-            CookieUtils.set(cookieConfig.getBuyerId(), null, 0, response);
-            CookieUtils.set(cookieConfig.getBuyerName(), null, 0, response);
+            CookieUtils.set(cookieConfig.getBuyerId(), null, 0, request, response);
+            CookieUtils.set(cookieConfig.getBuyerName(), null, 0, request, response);
         }
         return ResultVOUtil.success();
     }

@@ -1,10 +1,10 @@
 package com.xukai.netshop.service.impl;
 
 import com.xukai.netshop.converter.OrderMaster2OrderDTOConverter;
+import com.xukai.netshop.dataobject.CartDetail;
 import com.xukai.netshop.dataobject.OrderDetail;
 import com.xukai.netshop.dataobject.OrderMaster;
 import com.xukai.netshop.dataobject.ProductInfo;
-import com.xukai.netshop.dto.CartDTO;
 import com.xukai.netshop.dto.OrderDTO;
 import com.xukai.netshop.enums.OrderStatusEnum;
 import com.xukai.netshop.enums.ProductStatusEnum;
@@ -19,6 +19,7 @@ import com.xukai.netshop.service.ProductService;
 import com.xukai.netshop.service.WebSocket;
 import com.xukai.netshop.utils.KeyUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -100,10 +101,10 @@ public class OrderServiceImpl implements OrderService {
         BeanUtils.copyProperties(orderDTO, orderMaster);
         orderMasterRepository.save(orderMaster);
         // 扣库存
-        List<CartDTO> cartDTOList = orderDetailList.stream()
-                .map(e -> new CartDTO(e.getProductId(), e.getProductQuantity()))
+        List<CartDetail> cartDetailList = orderDetailList.stream()
+                .map(e -> new CartDetail(e.getProductId(), e.getProductQuantity()))
                 .collect(Collectors.toList());
-        productService.decreaseStock(cartDTOList);
+        productService.decreaseStock(cartDetailList);
         // 发送websocket消息
         webSocket.sendMessage(orderDTO.getOrderId());
         return orderDTO;
@@ -137,6 +138,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Page<OrderMaster> findOnCondition(OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount, Pageable pageable) {
+        if (minAmount != null && maxAmount != null && minAmount.compareTo(maxAmount) == 1) {
+            throw new SellException(ResultEnum.PARAM_ERROR);
+        }
+        return orderMasterRepository.findByOrderStatusLikeAndOrderIdLikeAndBuyerIdLikeAndBuyerNameLikeAndBuyerAddressLikeAndBuyerPhoneLikeAndOrderAmountBetweenOrderByCreateTimeDesc(
+                "%" + (StringUtils.isEmpty(s_order.getOrderStatus()) ? "" : s_order.getOrderStatus()) + "%",
+                "%" + (StringUtils.isEmpty(s_order.getOrderId()) ? "" : s_order.getOrderId()) + "%",
+                "%" + (StringUtils.isEmpty(s_order.getBuyerId()) ? "" : s_order.getBuyerId()) + "%",
+                "%" + (StringUtils.isEmpty(s_order.getBuyerName()) ? "" : s_order.getBuyerName()) + "%",
+                "%" + (StringUtils.isEmpty(s_order.getBuyerAddress()) ? "" : s_order.getBuyerAddress()) + "%",
+                "%" + (StringUtils.isEmpty(s_order.getBuyerPhone()) ? "" : s_order.getBuyerPhone()) + "%",
+                minAmount == null ? new BigDecimal("0") : minAmount,
+                maxAmount == null ? new BigDecimal("99999") : maxAmount,
+                pageable
+        );
+    }
+
+    @Override
     public Page<OrderDTO> findList(String buyerId, Pageable pageable) {
         Page<OrderMaster> orderMasterPage = orderMasterRepository.findByBuyerIdOrderByCreateTimeDesc(buyerId, pageable);
         List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
@@ -165,10 +184,10 @@ public class OrderServiceImpl implements OrderService {
             log.error("【取消订单】订单中无商品详情, orderId={}", orderMaster.getOrderId());
             throw new SellException(ResultEnum.ORDER_DETAIL_EMPTY);
         }
-        List<CartDTO> cartDTOList = orderDetailList.stream()
-                .map(e -> new CartDTO(e.getProductId(), e.getProductQuantity()))
+        List<CartDetail> cartDetailList = orderDetailList.stream()
+                .map(e -> new CartDetail(e.getProductId(), e.getProductQuantity()))
                 .collect(Collectors.toList());
-        productService.increaseStock(cartDTOList);
+        productService.increaseStock(cartDetailList);
     }
 
     @Override

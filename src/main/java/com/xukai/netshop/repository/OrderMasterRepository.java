@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -20,4 +21,8 @@ public interface OrderMasterRepository extends JpaRepository<OrderMaster, String
     Page<OrderMaster> findByCreateTimeBeforeOrderByCreateTimeDesc(Date date, Pageable pageable);
 
     int deleteByOrderId(String orderId);
+
+    Page<OrderMaster> findByOrderStatusLikeAndOrderIdLikeAndBuyerIdLikeAndBuyerNameLikeAndBuyerAddressLikeAndBuyerPhoneLikeAndOrderAmountBetweenOrderByCreateTimeDesc(
+            String orderStatus, String orderId, String buyerId, String buyerName, String buyerAddress, String buyerPhone, BigDecimal minAmount, BigDecimal maxAmount, Pageable pageable
+    );
 }

@@ -58,7 +58,7 @@ public class SellerUserController {
             return mav;
         }
         // 设置token至cookie
-        CookieUtils.set(cookieConfig.getSellerId(), sellerInfo.getId(), cookieConfig.getExpire(), response);
+        CookieUtils.set(cookieConfig.getSellerId(), sellerInfo.getId(), cookieConfig.getExpire(), request, response);
         String sellRequestURI = (String) request.getSession().getAttribute("sellRequestURI");
         if (StringUtils.isNotEmpty(sellRequestURI)) {
             mav.setViewName("redirect:" + baseUrlConfig.getBack_base_url() + sellRequestURI);
@@ -75,7 +75,7 @@ public class SellerUserController {
         Cookie cookie = CookieUtils.get(cookieConfig.getSellerId(), request);
         if (cookie != null) {
             // 清除cookie
-            CookieUtils.set(cookieConfig.getSellerId(), null, 0, response);
+            CookieUtils.set(cookieConfig.getSellerId(), null, 0, request, response);
         }
         mav.addObject("msg", ResultEnum.LOGOUT_SUCCESS.getMessage());
         mav.addObject("url", "/netshop/seller/");

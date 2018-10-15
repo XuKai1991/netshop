@@ -1,7 +1,7 @@
 package com.xukai.netshop.service;
 
 import com.xukai.netshop.dataobject.CartMaster;
-import com.xukai.netshop.dto.CartDTO;
+import com.xukai.netshop.dataobject.CartDetail;
 
 /**
  * @author: Xukai
@@ -30,11 +30,11 @@ public interface BuyerCartService {
     /**
      * 向购物车添加内容
      *
-     * @param cartDTO
+     * @param cartDetail
      * @param buyerId
      * @return
      */
-    CartMaster addItem(CartDTO cartDTO, String buyerId);
+    CartMaster addItem(CartDetail cartDetail, String buyerId);
 
     /**
      * 根据单条itemId删除购物车中的内容

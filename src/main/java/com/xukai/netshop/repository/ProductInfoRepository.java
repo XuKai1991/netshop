@@ -23,5 +23,7 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, String
 
     List<ProductInfo> findByCategoryType(String categoryType);
 
-    Page<ProductInfo> findByProductStatusNotAndProductIdLikeAndProductNameLikeAndProductPriceBetweenAndCategoryTypeLikeOrderByCreateTimeDesc(Integer productStatus, String productId, String productName, BigDecimal maxPrice, BigDecimal minPrice, String categoryType, Pageable pageable);
+    Page<ProductInfo> findByProductStatusNotAndProductIdLikeAndProductNameLikeAndProductPriceBetweenAndCategoryTypeLikeOrderByCreateTimeDesc(
+            Integer productStatus, String productId, String productName, BigDecimal minPrice, BigDecimal maxPrice, String categoryType, Pageable pageable
+    );
 }

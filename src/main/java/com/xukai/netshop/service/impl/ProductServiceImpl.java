@@ -1,7 +1,7 @@
 package com.xukai.netshop.service.impl;
 
 import com.xukai.netshop.dataobject.ProductInfo;
-import com.xukai.netshop.dto.CartDTO;
+import com.xukai.netshop.dataobject.CartDetail;
 import com.xukai.netshop.enums.ProductStatusEnum;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.SellException;
@@ -47,6 +47,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductInfo> findOnCondition(ProductInfo s_productInfo, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
+        if (minPrice != null && maxPrice != null && minPrice.compareTo(maxPrice) == 1) {
+            throw new SellException(ResultEnum.PARAM_ERROR);
+        }
         return productInfoRepository.findByProductStatusNotAndProductIdLikeAndProductNameLikeAndProductPriceBetweenAndCategoryTypeLikeOrderByCreateTimeDesc(
                 (s_productInfo.getProductStatus() == null || s_productInfo.getProductStatus() == -1) ? -1 : (1 - s_productInfo.getProductStatus()),
                 "%" + (StringUtils.isEmpty(s_productInfo.getProductId()) ? "" : s_productInfo.getProductId()) + "%",
@@ -76,17 +79,17 @@ public class ProductServiceImpl implements ProductService {
     /**
      * 增加库存
      *
-     * @param cartDTOList
+     * @param cartDetailList
      */
     @Override
     @Transactional(rollbackFor = SellException.class)
-    public void increaseStock(List<CartDTO> cartDTOList) {
-        for (CartDTO cartDTO : cartDTOList) {
-            ProductInfo productInfo = productInfoRepository.findOne(cartDTO.getProductId());
+    public void increaseStock(List<CartDetail> cartDetailList) {
+        for (CartDetail cartDetail : cartDetailList) {
+            ProductInfo productInfo = productInfoRepository.findOne(cartDetail.getProductId());
             if (productInfo == null) {
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
             }
-            productInfo.setProductStock(productInfo.getProductStock() + cartDTO.getProductQuantity());
+            productInfo.setProductStock(productInfo.getProductStock() + cartDetail.getProductQuantity());
             productInfoRepository.saveAndFlush(productInfo);
         }
     }
@@ -94,18 +97,18 @@ public class ProductServiceImpl implements ProductService {
     /**
      * 减少库存
      *
-     * @param cartDTOList
+     * @param cartDetailList
      */
     @Override
     @Transactional(rollbackFor = SellException.class)
-    public void decreaseStock(List<CartDTO> cartDTOList) {
-        for (CartDTO cartDTO : cartDTOList) {
-            ProductInfo productInfo = productInfoRepository.findOne(cartDTO.getProductId());
+    public void decreaseStock(List<CartDetail> cartDetailList) {
+        for (CartDetail cartDetail : cartDetailList) {
+            ProductInfo productInfo = productInfoRepository.findOne(cartDetail.getProductId());
             if (productInfo == null) {
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
             }
             Integer productStock = productInfo.getProductStock();
-            Integer productQuantity = cartDTO.getProductQuantity();
+            Integer productQuantity = cartDetail.getProductQuantity();
             if (productStock >= productQuantity) {
                 productInfo.setProductStock(productStock - productQuantity);
                 productInfoRepository.saveAndFlush(productInfo);

@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 解决OrderMaster不包含订单详情的问题，除了OrderMaster的所有属性外，DTO中添加了其他属性
+ * 解决OrderMaster不包含订单详情的问题，其他属性与OrderMaster相同
  * DTO：Data Transfer Object
  */
 @Data
@@ -57,7 +57,7 @@ public class OrderDTO {
     /**
      * 订单状态
      */
-    private Integer orderStatus;
+    private String orderStatus;
 
     /**
      * 创建时间.

@@ -44,7 +44,7 @@ public class ProductInfoRepositoryTest {
         BigDecimal minPrice = new BigDecimal("0");
         BigDecimal maxPrice = new BigDecimal("700");
         PageRequest pageRequest = new PageRequest(0, 4);
-        Page<ProductInfo> productInfos = productInfoRepository.findByProductStatusNotAndProductIdLikeAndProductNameLikeAndProductPriceBetweenAndCategoryTypeLikeOrderByCreateTimeDesc(productStatus, productId, productName,  minPrice, maxPrice,categoryType, pageRequest);
+        Page<ProductInfo> productInfos = productInfoRepository.findByProductStatusNotAndProductIdLikeAndProductNameLikeAndProductPriceBetweenAndCategoryTypeLikeOrderByCreateTimeDesc(productStatus, productId, productName, minPrice, maxPrice, categoryType, pageRequest);
         for (ProductInfo productInfo : productInfos) {
             log.info("==========================");
             log.info(productInfo.toString());

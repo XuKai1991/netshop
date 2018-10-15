@@ -4,7 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.xukai.netshop.VO.ResultVO;
 import com.xukai.netshop.config.CookieConfig;
 import com.xukai.netshop.converter.OrderForm2OrderDTOConverter;
-import com.xukai.netshop.dto.CartDTO;
+import com.xukai.netshop.dataobject.CartDetail;
+import com.xukai.netshop.dataobject.OrderMaster;
 import com.xukai.netshop.dto.OrderDTO;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.BuyException;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,12 +59,18 @@ public class BuyerOrderController {
      * @return
      */
     @PostMapping("/create")
-    public ResultVO<Map<String, String>> create(@Valid OrderForm orderForm, BindingResult bindingResult) {
+    public ResultVO<Map<String, String>> create(HttpServletRequest request, @Valid OrderForm orderForm, BindingResult bindingResult) {
+        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        if (StringUtils.isEmpty(buyerId)) {
+            log.error("【创建订单】buyerId为空");
+            throw new BuyException(ResultEnum.PARAM_ERROR);
+        }
         if (bindingResult.hasErrors()) {
             log.error("【创建订单】参数不正确, orderForm={}", orderForm);
             throw new BuyException(ResultEnum.PARAM_ERROR.getCode(), bindingResult.getFieldError().getDefaultMessage());
         }
         OrderDTO orderDTO = OrderForm2OrderDTOConverter.convert(orderForm);
+        orderDTO.setBuyerId(buyerId);
         if (CollectionUtils.isEmpty(orderDTO.getOrderDetailList())) {
             log.error("【创建订单】订单内容不能为空");
             throw new BuyException(ResultEnum.CART_EMPTY);
@@ -70,14 +78,14 @@ public class BuyerOrderController {
         // 创建订单
         OrderDTO createResult = orderService.create(orderDTO);
         // 删除购物车中已经被下单的商品
-        List<CartDTO> cartDTOList = JSONObject.parseArray(orderForm.getItems(), CartDTO.class);
+        List<CartDetail> cartDetailList = JSONObject.parseArray(orderForm.getItems(), CartDetail.class);
         StringBuffer itemIdsBf = new StringBuffer();
-        for (CartDTO cartDTO : cartDTOList) {
-            if (StringUtils.isNotEmpty(cartDTO.getItemId())) {
-                itemIdsBf.append("_" + cartDTO.getItemId());
+        for (CartDetail cartDetail : cartDetailList) {
+            if (StringUtils.isNotEmpty(cartDetail.getItemId())) {
+                itemIdsBf.append("_" + cartDetail.getItemId());
             }
         }
-        buyerCartService.deleteItems(itemIdsBf.toString().replaceFirst("_", ""), orderForm.getBuyerId());
+        buyerCartService.deleteItems(itemIdsBf.toString().replaceFirst("_", ""), buyerId);
         Map<String, String> map = new HashMap<>();
         map.put("orderId", createResult.getOrderId());
         map.put("orderAmount", createResult.getOrderAmount().toString());
@@ -94,16 +102,18 @@ public class BuyerOrderController {
      * @return
      */
     @GetMapping("/list")
-    public ResultVO<List<OrderDTO>> list(HttpServletRequest request,
-                                         @RequestParam(value = "page", defaultValue = "0") Integer page,
-                                         @RequestParam(value = "size", defaultValue = "10") Integer size) {
+    public ResultVO<Page<OrderMaster>> list(HttpServletRequest request,
+                                            OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount,
+                                            @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                            @RequestParam(value = "size", defaultValue = "10") Integer size) {
         String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
         if (StringUtils.isEmpty(buyerId)) {
             log.error("【查询订单列表】buyerId为空");
             throw new BuyException(ResultEnum.PARAM_ERROR);
         }
-        Page<OrderDTO> orderDTOPage = orderService.findList(buyerId, new PageRequest(page, size));
-        return ResultVOUtil.success(orderDTOPage.getContent());
+        s_order.setBuyerId(buyerId);
+        Page<OrderMaster> orderMasterPage = orderService.findOnCondition(s_order, minAmount, maxAmount, new PageRequest(page - 1, size));
+        return ResultVOUtil.success(orderMasterPage);
     }
 
     /**

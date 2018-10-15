@@ -1,4 +1,4 @@
-package com.xukai.netshop.dto;
+package com.xukai.netshop.dataobject;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * Modified By:
  */
 @Data
-public class CartDTO {
+public class CartDetail {
 
     /**
      * 购物车内物品ID
@@ -58,12 +58,12 @@ public class CartDTO {
      */
     private Integer productQuantity;
 
-    public CartDTO(String productId, Integer productQuantity) {
+    public CartDetail(String productId, Integer productQuantity) {
         this.productId = productId;
         this.productQuantity = productQuantity;
     }
 
-    public CartDTO(String productId, String productName, String productImgMd, String productColor, String productSize, BigDecimal productPrice) {
+    public CartDetail(String productId, String productName, String productImgMd, String productColor, String productSize, BigDecimal productPrice) {
         this.productId = productId;
         this.productName = productName;
         this.productImgMd = productImgMd;

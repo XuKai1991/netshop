@@ -1,7 +1,7 @@
 package com.xukai.netshop.service;
 
 import com.xukai.netshop.dataobject.ProductInfo;
-import com.xukai.netshop.dto.CartDTO;
+import com.xukai.netshop.dataobject.CartDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -26,9 +26,11 @@ public interface ProductService {
     Page<ProductInfo> findUpAll(Pageable pageable);
 
     /**
-     * 卖家端条件搜索商品
+     * 按条件搜索商品
      *
      * @param s_productInfo
+     * @param minPrice
+     * @param maxPrice
      * @param pageable
      * @return
      */
@@ -61,16 +63,16 @@ public interface ProductService {
     /**
      * 加库存
      *
-     * @param cartDTOList
+     * @param cartDetailList
      */
-    void increaseStock(List<CartDTO> cartDTOList);
+    void increaseStock(List<CartDetail> cartDetailList);
 
     /**
      * 减库存
      *
-     * @param cartDTOList
+     * @param cartDetailList
      */
-    void decreaseStock(List<CartDTO> cartDTOList);
+    void decreaseStock(List<CartDetail> cartDetailList);
 
     /**
      * 上架

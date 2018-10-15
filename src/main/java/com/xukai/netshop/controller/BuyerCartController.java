@@ -3,7 +3,7 @@ package com.xukai.netshop.controller;
 import com.xukai.netshop.VO.ResultVO;
 import com.xukai.netshop.config.CookieConfig;
 import com.xukai.netshop.dataobject.CartMaster;
-import com.xukai.netshop.dto.CartDTO;
+import com.xukai.netshop.dataobject.CartDetail;
 import com.xukai.netshop.service.BuyerCartService;
 import com.xukai.netshop.utils.CookieUtils;
 import com.xukai.netshop.utils.ResultVOUtil;
@@ -46,13 +46,13 @@ public class BuyerCartController {
     /**
      * 添加商品到购物车
      *
-     * @param cartDTO
+     * @param cartDetail
      * @param request
      */
     @PostMapping("/add")
-    public ResultVO addToCart(CartDTO cartDTO, HttpServletRequest request) {
+    public ResultVO addToCart(CartDetail cartDetail, HttpServletRequest request) {
         String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
-        CartMaster result = buyerCartService.addItem(cartDTO, buyerId);
+        CartMaster result = buyerCartService.addItem(cartDetail, buyerId);
         if (result == null) {
             return ResultVOUtil.error(0, "fail");
         }

@@ -1,7 +1,7 @@
 package com.xukai.netshop.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xukai.netshop.dto.CartDTO;
+import com.xukai.netshop.dataobject.CartDetail;
 import com.xukai.netshop.service.SellerService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -34,8 +34,8 @@ public class SellerServiceImplTest {
         // log.info(sellerInfo.toString());
 
         String items = "[{\"itemId\":\"1538111515379311996\",\"productColor\":\"黑色\",\"productId\":\"1538012990846466286\",\"productImgMd\":\"pic\",\"productName\":\"衣服\",\"productPrice\":200,\"productQuantity\":2,\"productSize\":\"38\"}]";
-        List<CartDTO> orderDetailList = JSONObject.parseArray(items, CartDTO.class);
-        for (CartDTO orderDetail : orderDetailList) {
+        List<CartDetail> orderDetailList = JSONObject.parseArray(items, CartDetail.class);
+        for (CartDetail orderDetail : orderDetailList) {
             log.info(orderDetail.toString());
         }
     }

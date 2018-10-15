@@ -41,12 +41,23 @@ public class SellerProductController {
     private CategoryService categoryService;
 
     @GetMapping("/list")
-    public ModelAndView list(ProductInfo s_productInfo, BigDecimal minPrice, BigDecimal maxPrice, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "7") Integer size) {
-        ModelAndView mav = new ModelAndView("sell/product/list");
-        Page<ProductInfo> productInfoPage = productService.findOnCondition(s_productInfo, minPrice, maxPrice, new PageRequest(page - 1, size));
-        List<ProductCategory> categoryList = categoryService.findAll();
-        mav.addObject("categoryList", categoryList);
-        mav.addObject("productInfoPage", productInfoPage);
+    public ModelAndView list(ProductInfo s_productInfo, BigDecimal minPrice, BigDecimal maxPrice,
+                             @RequestParam(value = "page", defaultValue = "1") Integer page,
+                             @RequestParam(value = "size", defaultValue = "7") Integer size) {
+        ModelAndView mav = new ModelAndView();
+        try {
+            Page<ProductInfo> productInfoPage = productService.findOnCondition(s_productInfo, minPrice, maxPrice, new PageRequest(page - 1, size));
+            List<ProductCategory> categoryList = categoryService.findAll();
+            mav.addObject("categoryList", categoryList);
+            mav.addObject("productInfoPage", productInfoPage);
+        } catch (SellException e) {
+            log.error("【卖家端商品下架】发生异常{}", e);
+            mav.addObject("url", "/netshop/seller/product/list");
+            mav.addObject("msg", e.getMessage());
+            mav.setViewName("sell/common/error");
+            return mav;
+        }
+        mav.setViewName("sell/product/list");
         mav.addObject("s_productInfo", s_productInfo);
         mav.addObject("minPrice", minPrice);
         mav.addObject("maxPrice", maxPrice);

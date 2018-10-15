@@ -1,7 +1,7 @@
 package com.xukai.netshop.service.impl;
 
 import com.xukai.netshop.dataobject.CartMaster;
-import com.xukai.netshop.dto.CartDTO;
+import com.xukai.netshop.dataobject.CartDetail;
 import com.xukai.netshop.service.BuyerCartService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -40,8 +40,8 @@ public class BuyerCartServiceImplTest {
     @Test
     public void addItem() {
         String buyerId = "2d4c634ddf1444fe9854eb2d31918f5b";
-        CartDTO cartDTO = new CartDTO("1538012990846466288", "帽子", "pic", "紫色", "57", new BigDecimal(50));
-        buyerCartService.addItem(cartDTO, buyerId);
+        CartDetail cartDetail = new CartDetail("1538012990846466288", "帽子", "pic", "紫色", "57", new BigDecimal(50));
+        buyerCartService.addItem(cartDetail, buyerId);
     }
 
     @Test

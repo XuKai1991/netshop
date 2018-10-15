@@ -1,6 +1,7 @@
 package com.xukai.netshop.controller;
 
 import com.xukai.netshop.VO.ResultVO;
+import com.xukai.netshop.dataobject.OrderMaster;
 import com.xukai.netshop.dto.OrderDTO;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.SellException;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.math.BigDecimal;
 
 /**
  * Author: Xukai
@@ -27,19 +30,17 @@ public class SellerOrderController {
     @Autowired
     private OrderService orderService;
 
-    /**
-     * 从第一页开始, size
-     *
-     * @param page
-     * @param size
-     * @return
-     */
     @GetMapping("/list")
-    public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        Page<OrderDTO> orderDTOPage = orderService.findList(new PageRequest(page - 1, size));
+    public ModelAndView list(OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount,
+                             @RequestParam(value = "page", defaultValue = "1") Integer page,
+                             @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        Page<OrderMaster> orderMasterPage = orderService.findOnCondition(s_order, minAmount, maxAmount, new PageRequest(page - 1, size));
         ModelAndView mav = new ModelAndView("sell/order/list");
-        mav.addObject("orderDTOPage", orderDTOPage);
+        mav.addObject("s_order", s_order);
+        mav.addObject("orderMasterPage", orderMasterPage);
         mav.addObject("currentPage", page);
+        mav.addObject("minAmount", minAmount);
+        mav.addObject("maxAmount", maxAmount);
         mav.addObject("size", size);
         return mav;
     }

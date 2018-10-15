@@ -75,12 +75,12 @@
                         <div class="form-group input-group">
                             <span class="input-group-addon" id="basic-addon1">价格区间</span>
                             <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1"
-                                   name="minPrice" id="minPrice" value="<#if minPrice??>${minPrice}</#if>"
-                                   style="width: 50px">
+                                   name="minPrice" id="minPrice" value="<#if minPrice??>${minPrice?c}</#if>"
+                                   style="width: 60px">
                             <span class="input-group-addon" id="basic-addon1">></span>
                             <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1"
-                                   name="maxPrice" id="maxPrice" value="<#if maxPrice??>${maxPrice}</#if>"
-                                   style="width: 50px">
+                                   name="maxPrice" id="maxPrice" value="<#if maxPrice??>${maxPrice?c}</#if>"
+                                   style="width: 60px">
                         </div>
                         <a type="button" class="btn btn-default btn-primary" href="javascript:resetSearchValue()">清空</a>
                         <button id="searchSubmit" type="submit" class="btn btn-default btn-primary">搜索</button>
