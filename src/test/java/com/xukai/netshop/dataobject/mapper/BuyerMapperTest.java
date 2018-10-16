@@ -1,6 +1,7 @@
 package com.xukai.netshop.dataobject.mapper;
 
 import com.xukai.netshop.dataobject.BuyerInfo;
+import com.xukai.netshop.repository.BuyerInfoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class BuyerMapperTest {
 
     @Autowired
-    private BuyerMapper buyerMapper;
+    private BuyerInfoRepository buyerInfoRepository;
 
     @Test
     public void register() {
@@ -28,7 +29,7 @@ public class BuyerMapperTest {
 
     @Test
     public void findByUsernameAndPassword() {
-        BuyerInfo buyerInfo = buyerMapper.findByUsernameAndPassword("zhangsan", "123");
+        BuyerInfo buyerInfo = buyerInfoRepository.findByUsernameAndPassword("lisi", "123456");
         log.info(buyerInfo.toString());
     }
 }

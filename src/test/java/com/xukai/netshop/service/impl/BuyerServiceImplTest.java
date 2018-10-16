@@ -25,20 +25,20 @@ public class BuyerServiceImplTest {
 
     @Test
     public void checkUsername() {
-        boolean flag = buyerService.checkUsername("zhangsan");
+        boolean flag = buyerService.checkUsername("lisi");
         log.info(flag ? "true" : "false");
     }
 
     @Test
     public void register() {
-        BuyerInfo buyerInfo = new BuyerInfo("lisi", "123", "1390000", "eee@qq.com");
-        int result = buyerService.save(buyerInfo);
+        BuyerInfo buyerInfo = new BuyerInfo("lisi2", "123", "1390000", "eee@qq.com");
+        buyerService.save(buyerInfo);
     }
 
     @Test
     public void findByUsernameAndPassword() {
-        String username = "xukai";
-        String password = "123";
+        String username = "lisi";
+        String password = "123456";
         BuyerInfo buyerInfo = buyerService.findByUsernameAndPassword(username, password);
         log.info(buyerInfo.toString());
     }

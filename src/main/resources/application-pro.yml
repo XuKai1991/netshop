@@ -32,6 +32,25 @@ spring:
     content-type: text/html
     cache: false
 
+  mail:
+    host: smtp.163.com
+    username: xukai910110@163.com
+    password: 10032460itachi
+    default-encoding: UTF-8
+    properties:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+        required: true
+        ssl:
+          enable: true
+
+# 发送邮件地址
+mail:
+  fromMail:
+    sender: xukai910110@163.com
+
 cookieConfig:
   buyerId: buyerId
   buyerName: buyerName

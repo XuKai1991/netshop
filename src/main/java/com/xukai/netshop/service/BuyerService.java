@@ -32,7 +32,7 @@ public interface BuyerService {
      *
      * @param buyerInfo
      */
-    int save(BuyerInfo buyerInfo);
+    BuyerInfo save(BuyerInfo buyerInfo);
 
     /**
      * 根据用户名和密码查找用户
@@ -42,4 +42,12 @@ public interface BuyerService {
      * @return
      */
     BuyerInfo findByUsernameAndPassword(String username, String password);
+
+    /**
+     * 找回密码
+     *
+     * @param email
+     * @return
+     */
+    void getBackPassword(String email);
 }

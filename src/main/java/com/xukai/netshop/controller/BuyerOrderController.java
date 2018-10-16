@@ -13,7 +13,7 @@ import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.form.OrderForm;
 import com.xukai.netshop.service.BuyerCartService;
 import com.xukai.netshop.service.OrderService;
-import com.xukai.netshop.utils.CookieUtils;
+import com.xukai.netshop.utils.CommonUtils;
 import com.xukai.netshop.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -60,7 +60,8 @@ public class BuyerOrderController {
      */
     @PostMapping("/create")
     public ResultVO<Map<String, String>> create(HttpServletRequest request, @Valid OrderForm orderForm, BindingResult bindingResult) {
-        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        // String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        String buyerId = CommonUtils.getBuyerId(request);
         if (StringUtils.isEmpty(buyerId)) {
             log.error("【创建订单】buyerId为空");
             throw new BuyException(ResultEnum.PARAM_ERROR);
@@ -106,7 +107,8 @@ public class BuyerOrderController {
                                             OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount,
                                             @RequestParam(value = "page", defaultValue = "1") Integer page,
                                             @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        // String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        String buyerId = CommonUtils.getBuyerId(request);
         if (StringUtils.isEmpty(buyerId)) {
             log.error("【查询订单列表】buyerId为空");
             throw new BuyException(ResultEnum.PARAM_ERROR);
@@ -141,7 +143,8 @@ public class BuyerOrderController {
      */
     @GetMapping("/cancel")
     public ResultVO cancel(HttpServletRequest request, @RequestParam("orderId") String orderId) {
-        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        // String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        String buyerId = CommonUtils.getBuyerId(request);
         if (StringUtils.isEmpty(buyerId) || StringUtils.isEmpty(orderId)) {
             log.error("【取消订单】buyerId或orderId为空");
             throw new BuyException(ResultEnum.PARAM_ERROR);
@@ -160,7 +163,8 @@ public class BuyerOrderController {
      */
     @GetMapping("/delete")
     public ResultVO delete(HttpServletRequest request, @RequestParam("orderId") String orderId) {
-        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        // String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        String buyerId = CommonUtils.getBuyerId(request);
         if (StringUtils.isEmpty(buyerId) || StringUtils.isEmpty(orderId)) {
             log.error("【删除订单】buyerId或orderId为空");
             throw new SellException(ResultEnum.PARAM_ERROR);

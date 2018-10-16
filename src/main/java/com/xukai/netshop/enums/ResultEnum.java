@@ -33,7 +33,6 @@ public enum ResultEnum {
     SELLER_NOT_EXIST(20, "卖家信息不存在"),
     LOGIN_FAIL(21, "登录失败，登录信息不正确"),
     LOGOUT_SUCCESS(22, "注销成功"),
-
     BUYER_REGISTER_SUCCESS(23, "用户注册成功"),
     BUYER_REGISTER_FAIL(24, "用户注册失败"),
     BUYER_LOGIN_FAIL(25, "用户登录失败"),
@@ -49,6 +48,8 @@ public enum ResultEnum {
     CATEGORY_NOT_EXIST(35, "商品类目不存在"),
     CATEGORY_DELETE_SUCCESS(36, "商品类目删除成功"),
     CATEGORY_DELETE_FAIL(37, "商品类目删除失败"),
+    EMAIL_NOT_EXIST(38, "邮箱不存在"),
+    GET_BACK_PSD_FAIL(39, "找回密码失败"),
 
     PARAM_ERROR(100, "参数不正确");
 

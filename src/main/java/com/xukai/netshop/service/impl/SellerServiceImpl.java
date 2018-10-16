@@ -1,7 +1,7 @@
 package com.xukai.netshop.service.impl;
 
 import com.xukai.netshop.dataobject.SellerInfo;
-import com.xukai.netshop.dataobject.mapper.SellerMapper;
+import com.xukai.netshop.repository.SellerInfoRepository;
 import com.xukai.netshop.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +16,11 @@ import org.springframework.stereotype.Service;
 public class SellerServiceImpl implements SellerService {
 
     @Autowired
-    private SellerMapper sellerMapper;
+    private SellerInfoRepository sellerInfoRepository;
 
     @Override
     public SellerInfo findByUsernameAndPassword(String username, String password) {
-        return sellerMapper.findByUsernameAndPassword(username, password);
+        SellerInfo sellerInfo = sellerInfoRepository.findByUsernameAndPassword(username, password);
+        return sellerInfo;
     }
 }

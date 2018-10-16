@@ -1,6 +1,12 @@
 package com.xukai.netshop.dataobject;
 
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @author: Xukai
@@ -8,12 +14,17 @@ import lombok.Data;
  * @createDate: 2018/9/26 14:28
  * @modified By:
  */
+@Entity
 @Data
+@DynamicUpdate
+@DynamicInsert
+@Table(name = "buyer_info")
 public class BuyerInfo {
 
     /**
      * 买家ID
      */
+    @Id
     private String buyerId;
 
     /**

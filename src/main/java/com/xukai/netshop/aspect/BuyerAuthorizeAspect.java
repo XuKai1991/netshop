@@ -4,6 +4,7 @@ import com.xukai.netshop.config.CookieConfig;
 import com.xukai.netshop.exception.BuyerAuthorizeException;
 import com.xukai.netshop.utils.CookieUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -14,6 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author: Xukai
@@ -44,7 +46,13 @@ public class BuyerAuthorizeAspect {
         // 查询cookie
         Cookie cookie = CookieUtils.get(cookieConfig.getBuyerId(), request);
         if (cookie == null) {
-            log.error("【登录校验】Cookie中查不到buyerId");
+            // 查询session
+            HttpSession session = request.getSession();
+            String buyerId = (String) session.getAttribute(cookieConfig.getBuyerId());
+            if (StringUtils.isNotEmpty(buyerId)) {
+                return;
+            }
+            log.error("【登录校验】Cookie或Session中查不到buyerId");
             throw new BuyerAuthorizeException();
         }
     }

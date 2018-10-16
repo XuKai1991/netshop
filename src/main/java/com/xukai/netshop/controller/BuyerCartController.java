@@ -2,14 +2,17 @@ package com.xukai.netshop.controller;
 
 import com.xukai.netshop.VO.ResultVO;
 import com.xukai.netshop.config.CookieConfig;
-import com.xukai.netshop.dataobject.CartMaster;
 import com.xukai.netshop.dataobject.CartDetail;
+import com.xukai.netshop.dataobject.CartMaster;
 import com.xukai.netshop.service.BuyerCartService;
-import com.xukai.netshop.utils.CookieUtils;
+import com.xukai.netshop.utils.CommonUtils;
 import com.xukai.netshop.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,7 +41,8 @@ public class BuyerCartController {
      */
     @GetMapping("/list")
     public ResultVO findByBuyerId(HttpServletRequest request) {
-        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        // String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        String buyerId = CommonUtils.getBuyerId(request);
         CartMaster cartMaster = buyerCartService.list(buyerId);
         return ResultVOUtil.success(cartMaster);
     }
@@ -51,7 +55,8 @@ public class BuyerCartController {
      */
     @PostMapping("/add")
     public ResultVO addToCart(CartDetail cartDetail, HttpServletRequest request) {
-        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        // String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        String buyerId = CommonUtils.getBuyerId(request);
         CartMaster result = buyerCartService.addItem(cartDetail, buyerId);
         if (result == null) {
             return ResultVOUtil.error(0, "fail");
@@ -67,7 +72,8 @@ public class BuyerCartController {
      */
     @GetMapping("/increase")
     public ResultVO increaseCartItemNum(String itemId, HttpServletRequest request) {
-        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        // String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        String buyerId = CommonUtils.getBuyerId(request);
         CartMaster result = buyerCartService.increaseItemNum(itemId, buyerId);
         if (result == null) {
             return ResultVOUtil.error(0, "fail");
@@ -83,7 +89,8 @@ public class BuyerCartController {
      */
     @GetMapping("/decrease")
     public ResultVO decreaseCartItemNum(String itemId, HttpServletRequest request) {
-        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        // String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        String buyerId = CommonUtils.getBuyerId(request);
         CartMaster result = buyerCartService.decreaseItemNum(itemId, buyerId);
         if (result == null) {
             return ResultVOUtil.error(0, "fail");
@@ -99,7 +106,8 @@ public class BuyerCartController {
      */
     @GetMapping("/delete")
     public ResultVO deleteCartItem(String itemId, HttpServletRequest request) {
-        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        // String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        String buyerId = CommonUtils.getBuyerId(request);
         CartMaster result = buyerCartService.deleteItem(itemId, buyerId);
         if (result == null) {
             return ResultVOUtil.error(0, "fail");
@@ -115,7 +123,8 @@ public class BuyerCartController {
      */
     @GetMapping("/batchDelete")
     public ResultVO deleteCartItems(String itemIds, HttpServletRequest request) {
-        String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        // String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
+        String buyerId = CommonUtils.getBuyerId(request);
         CartMaster result = buyerCartService.deleteItems(itemIds, buyerId);
         if (result == null) {
             return ResultVOUtil.error(0, "fail");

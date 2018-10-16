@@ -6,6 +6,7 @@ import com.xukai.netshop.dataobject.BuyerInfo;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.BuyException;
 import com.xukai.netshop.service.BuyerService;
+import com.xukai.netshop.service.MailService;
 import com.xukai.netshop.utils.CookieUtils;
 import com.xukai.netshop.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author: Xukai
@@ -34,6 +36,9 @@ public class BuyerUserController {
     @Autowired
     private CookieConfig cookieConfig;
 
+    @Autowired
+    private MailService mailService;
+
     /**
      * 跳转登录页
      *
@@ -42,7 +47,6 @@ public class BuyerUserController {
     @GetMapping("/")
     public ModelAndView index() {
         ModelAndView mav = new ModelAndView("buy/login/login");
-        // ModelAndView mav = new ModelAndView("buy/index");
         return mav;
     }
 
@@ -86,8 +90,8 @@ public class BuyerUserController {
      */
     @PostMapping("/save")
     public ResultVO save(BuyerInfo buyerInfo) {
-        int result = buyerService.save(buyerInfo);
-        if (result != 1) {
+        BuyerInfo save = buyerService.save(buyerInfo);
+        if (save == null) {
             log.error("【买家端保存用户信息】发生异常{}");
             throw new BuyException(ResultEnum.BUYER_REGISTER_FAIL);
         }
@@ -102,8 +106,14 @@ public class BuyerUserController {
      * @return
      */
     @GetMapping("/getBackPwd")
-    public ModelAndView getBackPassword(String email) {
-        ModelAndView mav = new ModelAndView();
+    public ResultVO getBackPassword(String email) {
+        buyerService.getBackPassword(email);
+        return ResultVOUtil.success();
+    }
+
+    @GetMapping("/test")
+    public ModelAndView getBackPassword() {
+        ModelAndView mav = new ModelAndView("buy/login/test");
         return mav;
     }
 
@@ -122,9 +132,12 @@ public class BuyerUserController {
         if (buyerInfo == null) {
             throw new BuyException(ResultEnum.BUYER_LOGIN_FAIL);
         }
-        // 设置token至cookie
+        // 设置cookie
         CookieUtils.set(cookieConfig.getBuyerId(), buyerInfo.getBuyerId(), cookieConfig.getExpire(), request, response);
         CookieUtils.set(cookieConfig.getBuyerName(), buyerInfo.getUsername(), cookieConfig.getExpire(), request, response);
+        // 设置session
+        HttpSession session = request.getSession();
+        session.setAttribute(cookieConfig.getBuyerId(), buyerInfo.getBuyerId());
         return ResultVOUtil.success();
     }
 
@@ -144,6 +157,9 @@ public class BuyerUserController {
             CookieUtils.set(cookieConfig.getBuyerId(), null, 0, request, response);
             CookieUtils.set(cookieConfig.getBuyerName(), null, 0, request, response);
         }
+        // 清除session
+        HttpSession session = request.getSession();
+        session.removeAttribute(cookieConfig.getBuyerId());
         return ResultVOUtil.success();
     }
 }
