@@ -55,11 +55,11 @@ public class ScheduledTasks {
     }
 
     /**
-     * 每三天执行一次
+     * 每六小时执行一次
      */
-    @Scheduled(cron = "0 0 0 */3 * ?")
+    @Scheduled(cron = "0 0 */6 * * ?")
     public void clearPicFromFastdfs() {
-        log.info("【定时任务 - 清理过期图片】每三天执行一次");
+        log.info("【定时任务 - 清理过期图片】每六小时执行一次");
         String savedPicUrlsStr = "";
         BufferedReader reader = null;
         File file = new File("PicSaveLog.txt");

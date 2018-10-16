@@ -226,7 +226,8 @@
 <script>
     var webSocket = null;
     if ('WebSocket' in window) {
-        webSocket = new WebSocket("ws://localhost:8085/netshop/webSocket");
+        // webSocket = new WebSocket("ws://localhost:8085/netshop/webSocket");
+        webSocket = new WebSocket("ws://106.14.183.207:8085/netshop/webSocket");
     } else {
         alert("该浏览器不支持websocket！");
     }

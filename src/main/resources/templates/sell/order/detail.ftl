@@ -53,12 +53,12 @@
                             <td style="vertical-align:middle">
                                 <img height="200" width="200" src="${(orderDetail.productImgMd)!''}" alt="">
                             </td>
-                            <td style="vertical-align:middle">${orderDetail.productPrice}</td>
-                            <td style="vertical-align:middle">${orderDetail.productPurchasePrice}</td>
+                            <td style="vertical-align:middle">${orderDetail.productPrice?c}</td>
+                            <td style="vertical-align:middle">${orderDetail.productPurchasePrice?c}</td>
                             <td style="vertical-align:middle">${orderDetail.productColor}</td>
                             <td style="vertical-align:middle">${orderDetail.productSize}</td>
                             <td style="vertical-align:middle">${orderDetail.productQuantity}</td>
-                            <td style="vertical-align:middle">${orderDetail.productQuantity * orderDetail.productPrice}</td>
+                            <td style="vertical-align:middle">${(orderDetail.productQuantity * orderDetail.productPrice)?c}</td>
                         </tr>
                         </#list>
                         </tbody>
