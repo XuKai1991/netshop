@@ -4,6 +4,8 @@
 <div id="wrapper" class="toggled">
 <#--边栏sidebar-->
     <#include "../common/nav.ftl">
+<#--新订单提示-->
+    <#include "../common/notice.ftl">
 
 <#--主要内容content-->
     <div id="page-content-wrapper">
@@ -101,7 +103,7 @@
                             <th style="text-align: center">地址</th>
                             <th style="text-align: center">应付</th>
                             <th style="text-align: center">实付</th>
-                            <th style="text-align: center">订单状态</th>
+                            <th style="text-align: center">状态</th>
                             <th style="text-align: center">创建时间</th>
                             <th style="text-align: center">操作</th>
                         </tr>
@@ -122,7 +124,7 @@
                                     <td style="vertical-align:middle">${orderMaster.orderActualAmount?c}</td>
                                     <td style="vertical-align:middle">${orderMaster.getOrderStatusEnum().message}</td>
                                     <td style="vertical-align:middle">${orderMaster.createTime}</td>
-                                    <td>
+                                    <td style="vertical-align:middle; width:170px">
                                         <a href="/netshop/seller/order/detail?orderId=${orderMaster.orderId}"
                                            type="button"
                                            class="btn btn-default btn-primary">详情</a>
@@ -187,32 +189,6 @@
     </div>
 </div>
 
-<#--弹窗-->
-<div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="myModalLabel">
-                    提醒
-                </h4>
-            </div>
-            <div class="modal-body">
-                您有新的订单
-            </div>
-            <div class="modal-footer">
-                <button onclick="javascript:document.getElementById('notice').pause()" type="button"
-                        class="btn btn-default" data-dismiss="modal">关闭
-                </button>
-                <button onclick="javascrtpt:window.location='/netshop/seller/order/list'"
-                        type="button"
-                        class="btn btn-primary">查看新的订单
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <#-- 操作提示 -->
 <div id="hintModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"
      aria-labelledby="mySmallModalLabel">
@@ -265,44 +241,7 @@
     </div>
 </div>
 
-<#--播放音乐-->
-<audio id="notice" loop="loop">
-    <source src="/netshop/mp3/song.mp3" type="audio/mpeg"/>
-</audio>
-
 <script>
-    var webSocket = null;
-
-    if ('WebSocket' in window) {
-        // webSocket = new WebSocket("ws://localhost:8085/netshop/webSocket");
-        webSocket = new WebSocket("ws://106.14.183.207:8085/netshop/webSocket");
-    } else {
-        alert("该浏览器不支持websocket！");
-    }
-
-    webSocket.onopen = function (event) {
-        console.log("建立连接");
-    }
-
-    webSocket.onclose = function (event) {
-        console.log("关闭连接");
-    }
-
-    webSocket.onmessage = function (event) {
-        console.log("收到消息：" + event.data)
-        // 弹窗提醒、播放音乐
-        $("#myModal").modal('show');
-        document.getElementById('notice').play();
-    }
-
-    webSocket.onerror = function () {
-        console.log("websocket通信发生错误！");
-    }
-
-    webSocket.onbeforeunload = function () {
-        webSocket.close();
-    }
-
     // 取消订单确认提示
     function preCancelOrder(id) {
         $("#hintModalTitle").text("取消订单");

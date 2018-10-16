@@ -86,7 +86,10 @@ public class BuyerOrderController {
                 itemIdsBf.append("_" + cartDetail.getItemId());
             }
         }
-        buyerCartService.deleteItems(itemIdsBf.toString().replaceFirst("_", ""), buyerId);
+        String itemIdsStr = itemIdsBf.toString().replaceFirst("_", "");
+        if (StringUtils.isNotEmpty(itemIdsStr)) {
+            buyerCartService.deleteItems(itemIdsStr, buyerId);
+        }
         Map<String, String> map = new HashMap<>();
         map.put("orderId", createResult.getOrderId());
         map.put("orderAmount", createResult.getOrderAmount().toString());
