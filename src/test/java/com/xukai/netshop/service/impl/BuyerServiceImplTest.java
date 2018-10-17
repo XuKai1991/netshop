@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -41,5 +43,19 @@ public class BuyerServiceImplTest {
         String password = "123456";
         BuyerInfo buyerInfo = buyerService.findByUsernameAndPassword(username, password);
         log.info(buyerInfo.toString());
+    }
+
+    @Test
+    public void findOnCondition() {
+        BuyerInfo s_buyer = new BuyerInfo();
+        s_buyer.setBuyerId("%%");
+        s_buyer.setUsername("%liu%");
+        s_buyer.setPhone("%%");
+        s_buyer.setEmail("%%");
+        PageRequest pageRequest = new PageRequest(0, 4);
+        Page<BuyerInfo> buyerInfos = buyerService.findOnCondition(s_buyer, pageRequest);
+        for (BuyerInfo buyerInfo : buyerInfos) {
+            log.info(buyerInfo.toString());
+        }
     }
 }

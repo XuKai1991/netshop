@@ -50,6 +50,8 @@ public enum ResultEnum {
     CATEGORY_DELETE_FAIL(37, "商品类目删除失败"),
     EMAIL_NOT_EXIST(38, "邮箱不存在"),
     GET_BACK_PSD_FAIL(39, "找回密码失败"),
+    BUYER_NOT_EXIST(40, "卖家信息不存在"),
+    BUYER_DELETE_SUCCESS(41, "买家用户删除成功"),
 
     PARAM_ERROR(100, "参数不正确");
 

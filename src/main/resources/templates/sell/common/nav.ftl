@@ -29,15 +29,15 @@
                 <#--<li><a href="#">财务</a></li>-->
             <#--</ul>-->
         <#--</li>-->
-        <#--<li class="dropdown open">-->
-            <#--<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i-->
-                    <#--class="fa fa-fw fa-plus"></i>管理<span class="caret"></span></a>-->
-            <#--<ul class="dropdown-menu" role="menu">-->
-                <#--<li class="dropdown-header">操作</li>-->
-                <#--<li><a href="#">买家用户</a></li>-->
-                <#--<li><a href="#">卖家用户</a></li>-->
-            <#--</ul>-->
-        <#--</li>-->
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i
+                    class="fa fa-fw fa-plus"></i>系统<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/netshop/seller/listBuyer/">买家管理</a></li>
+                <#--<li><a href="#">管理员账号</a></li>-->
+            </ul>
+        </li>
         <li>
             <a href="/netshop/seller/logout"><i class="fa fa-fw fa-list-alt"></i>注销</a>
         </li>

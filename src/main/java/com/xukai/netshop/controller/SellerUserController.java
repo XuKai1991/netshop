@@ -2,14 +2,18 @@ package com.xukai.netshop.controller;
 
 import com.xukai.netshop.config.BaseUrlConfig;
 import com.xukai.netshop.config.CookieConfig;
+import com.xukai.netshop.dataobject.BuyerInfo;
 import com.xukai.netshop.dataobject.SellerInfo;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.SellException;
+import com.xukai.netshop.service.BuyerService;
 import com.xukai.netshop.service.SellerService;
 import com.xukai.netshop.utils.CookieUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -30,6 +34,9 @@ public class SellerUserController {
 
     @Autowired
     private SellerService sellerService;
+
+    @Autowired
+    private BuyerService buyerService;
 
     @Autowired
     private CookieConfig cookieConfig;
@@ -79,6 +86,36 @@ public class SellerUserController {
         }
         mav.addObject("msg", ResultEnum.LOGOUT_SUCCESS.getMessage());
         mav.addObject("url", "/netshop/seller/");
+        mav.setViewName("sell/common/success");
+        return mav;
+    }
+
+    @GetMapping("/listBuyer")
+    public ModelAndView adminBuyerInfo(BuyerInfo s_buyer,
+                                       @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                       @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        ModelAndView mav = new ModelAndView("sell/buyer/list");
+        Page<BuyerInfo> buyerInfoPage = buyerService.findOnCondition(s_buyer, new PageRequest(page - 1, size));
+        mav.addObject("s_buyer", s_buyer);
+        mav.addObject("buyerInfoPage", buyerInfoPage);
+        mav.addObject("currentPage", page);
+        mav.addObject("size", size);
+        return mav;
+    }
+
+    @GetMapping("/deleteBuyer")
+    public ModelAndView deleteBuyerInfo(@RequestParam("buyerId") String buyerId) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("url", "/netshop/seller/listBuyer");
+        try {
+            buyerService.deleteByBuyerId(buyerId);
+        } catch (SellException e) {
+            log.error("【卖家端删除买家用户】发生异常{}", e);
+            mav.addObject("msg", e.getMessage());
+            mav.setViewName("sell/common/error");
+            return mav;
+        }
+        mav.addObject("msg", ResultEnum.BUYER_DELETE_SUCCESS.getMessage());
         mav.setViewName("sell/common/success");
         return mav;
     }

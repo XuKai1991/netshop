@@ -4,12 +4,16 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.xukai.netshop.dataobject.BuyerInfo;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.BuyException;
+import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.repository.BuyerInfoRepository;
 import com.xukai.netshop.service.BuyerService;
 import com.xukai.netshop.service.MailService;
 import com.xukai.netshop.utils.KeyUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -47,7 +51,9 @@ public class BuyerServiceImpl implements BuyerService {
 
     @Override
     public BuyerInfo save(BuyerInfo buyerInfo) {
-        buyerInfo.setBuyerId(KeyUtils.genUUID());
+        if (StringUtils.isEmpty(buyerInfo.getBuyerId())) {
+            buyerInfo.setBuyerId(KeyUtils.genUniqueKey());
+        }
         return buyerInfoRepository.save(buyerInfo);
     }
 
@@ -79,6 +85,35 @@ public class BuyerServiceImpl implements BuyerService {
             });
         } catch (Exception e) {
             throw new BuyException(ResultEnum.GET_BACK_PSD_FAIL);
+        }
+    }
+
+    @Override
+    public Page<BuyerInfo> findOnCondition(BuyerInfo s_buyer, Pageable pageable) {
+        return buyerInfoRepository.findByBuyerIdLikeAndUsernameLikeAndPhoneLikeAndEmailLikeOrderByCreateTimeDesc(
+                "%" + (StringUtils.isEmpty(s_buyer.getBuyerId()) ? "" : s_buyer.getBuyerId()) + "%",
+                "%" + (StringUtils.isEmpty(s_buyer.getUsername()) ? "" : s_buyer.getUsername()) + "%",
+                "%" + (StringUtils.isEmpty(s_buyer.getPhone()) ? "" : s_buyer.getPhone()) + "%",
+                "%" + (StringUtils.isEmpty(s_buyer.getEmail()) ? "" : s_buyer.getEmail()) + "%",
+                pageable
+        );
+    }
+
+    @Override
+    public void deleteByBuyerId(String buyerId) {
+        try {
+            buyerInfoRepository.delete(buyerId);
+        } catch (Exception e) {
+            throw new SellException(ResultEnum.BUYER_NOT_EXIST);
+        }
+    }
+
+    @Override
+    public BuyerInfo findByBuyerId(String buyerId) {
+        try {
+            return buyerInfoRepository.findOne(buyerId);
+        } catch (Exception e) {
+            throw new SellException(ResultEnum.BUYER_NOT_EXIST);
         }
     }
 }

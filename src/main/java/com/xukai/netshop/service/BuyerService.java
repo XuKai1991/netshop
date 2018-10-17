@@ -1,7 +1,8 @@
 package com.xukai.netshop.service;
 
-
 import com.xukai.netshop.dataobject.BuyerInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Author: Xukai
@@ -31,6 +32,7 @@ public interface BuyerService {
      * 用户注册
      *
      * @param buyerInfo
+     * @return
      */
     BuyerInfo save(BuyerInfo buyerInfo);
 
@@ -50,4 +52,28 @@ public interface BuyerService {
      * @return
      */
     void getBackPassword(String email);
+
+    /**
+     * 根据条件查找买家信息
+     *
+     * @param s_buyer
+     * @param pageable
+     * @return
+     */
+    Page<BuyerInfo> findOnCondition(BuyerInfo s_buyer, Pageable pageable);
+
+    /**
+     * 根据买家ID删除买家
+     *
+     * @param buyerId
+     */
+    void deleteByBuyerId(String buyerId);
+
+    /**
+     * 根据买家ID查找用户
+     *
+     * @param buyerId
+     * @return
+     */
+    BuyerInfo findByBuyerId(String buyerId);
 }

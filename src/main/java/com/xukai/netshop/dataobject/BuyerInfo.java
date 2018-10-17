@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @author: Xukai
@@ -46,6 +47,11 @@ public class BuyerInfo {
      * 邮箱
      */
     private String email;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
 
     public BuyerInfo(String username, String password, String phone, String email) {
         this.username = username;

@@ -12,7 +12,6 @@
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-md-12 column">
-
                     <form class="form-inline" role="form" id="searchForm" action="/netshop/seller/order/list">
                         <input id="s_page" name="page" type="hidden" class="form-control"
                                aria-describedby="basic-addon1"/>

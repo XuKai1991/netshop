@@ -13,16 +13,18 @@ public class KeyUtils {
 
     /**
      * 获取UUID
+     *
      * @return
      */
     public static synchronized String genUUID() {
         UUID uuid = UUID.randomUUID();
-        return uuid.toString().replaceAll("-", "");
+        return uuid.toString().replaceAll("-", "").substring(0, 12);
     }
 
     /**
      * 生成唯一的主键
      * 格式: 时间+随机数
+     *
      * @return
      */
     public static synchronized String genUniqueKey() {

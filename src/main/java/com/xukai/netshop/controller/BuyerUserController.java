@@ -5,6 +5,7 @@ import com.xukai.netshop.config.CookieConfig;
 import com.xukai.netshop.dataobject.BuyerInfo;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.BuyException;
+import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.service.BuyerService;
 import com.xukai.netshop.service.MailService;
 import com.xukai.netshop.utils.CookieUtils;
@@ -161,5 +162,15 @@ public class BuyerUserController {
         HttpSession session = request.getSession();
         session.removeAttribute(cookieConfig.getBuyerId());
         return ResultVOUtil.success();
+    }
+
+    @GetMapping("/findByBuyerId")
+    public ResultVO findOne(String buyerId) {
+        try {
+            BuyerInfo buyerInfo = buyerService.findByBuyerId(buyerId);
+            return ResultVOUtil.success(buyerInfo);
+        } catch (SellException e) {
+            return ResultVOUtil.error(200, e.getMessage());
+        }
     }
 }
