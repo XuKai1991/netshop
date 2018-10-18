@@ -34,12 +34,6 @@ public class BuyExceptionHandler {
      */
     @ExceptionHandler({BuyerAuthorizeException.class})
     public ResultVO handlerAuthorizeException(HttpServletRequest request) {
-        // ModelAndView mav = new ModelAndView();
-        // String buyRequestURI = request.getRequestURI();
-        // HttpSession session = request.getSession();
-        // session.setAttribute("buyRequestURI", buyRequestURI);
-        // mav.setViewName("redirect:" + baseUrlConfig.getBack_base_url() + "/netshop/buyer/");
-        // return mav;
         return ResultVOUtil.error(ResultEnum.LOGIN_STATUS_ERROR.getCode(), ResultEnum.LOGIN_STATUS_ERROR.getMessage());
     }
 

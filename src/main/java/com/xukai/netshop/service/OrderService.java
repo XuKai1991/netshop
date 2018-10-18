@@ -33,7 +33,7 @@ public interface OrderService {
      * @param pageable
      * @return
      */
-    Page<OrderMaster> findOnCondition(OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount, Pageable pageable);
+    Page<OrderDTO> findOnCondition(OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount, Pageable pageable);
 
     /**
      * 根据买家ID查询订单列表.

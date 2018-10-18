@@ -108,34 +108,34 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <#if orderMasterPage.getNumberOfElements() == 0>
+                        <#if orderDTOPage.getNumberOfElements() == 0>
                         <tr align="center">
                             <td colspan="11"><a style="color: #ff000f">抱歉，找不到符合条件的订单 !</a></td>
                         </tr>
                         <#else>
-                            <#list orderMasterPage.content as orderMaster>
+                            <#list orderDTOPage.content as orderDTO>
                                 <tr align="center">
-                                    <td style="vertical-align:middle">${orderMaster.orderId}</td>
-                                    <td style="vertical-align:middle">${orderMaster.buyerName}</td>
-                                    <td style="vertical-align:middle">${orderMaster.buyerPhone}</td>
-                                    <td style="vertical-align:middle">${orderMaster.buyerAddress}</td>
-                                    <td style="vertical-align:middle">${orderMaster.orderAmount?c}</td>
-                                    <td style="vertical-align:middle">${orderMaster.orderActualAmount?c}</td>
-                                    <td style="vertical-align:middle">${orderMaster.getOrderStatusEnum().message}</td>
-                                    <td style="vertical-align:middle">${orderMaster.createTime}</td>
+                                    <td style="vertical-align:middle">${orderDTO.orderId}</td>
+                                    <td style="vertical-align:middle">${orderDTO.buyerName}</td>
+                                    <td style="vertical-align:middle">${orderDTO.buyerPhone}</td>
+                                    <td style="vertical-align:middle">${orderDTO.buyerAddress}</td>
+                                    <td style="vertical-align:middle">${orderDTO.orderAmount?c}</td>
+                                    <td style="vertical-align:middle">${orderDTO.orderActualAmount?c}</td>
+                                    <td style="vertical-align:middle">${orderDTO.getOrderStatusEnum().message}</td>
+                                    <td style="vertical-align:middle">${orderDTO.createTime}</td>
                                     <td style="vertical-align:middle; width:170px">
-                                        <a href="/netshop/seller/order/detail?orderId=${orderMaster.orderId}"
+                                        <a href="/netshop/seller/order/detail?orderId=${orderDTO.orderId}"
                                            type="button"
                                            class="btn btn-default btn-primary">详情</a>
-                                        <#if orderMaster.getOrderStatusEnum().message == "新订单">
-                                        <a href="javascript:preCancelOrder(${orderMaster.orderId})" type="button"
+                                        <#if orderDTO.getOrderStatusEnum().message == "新订单">
+                                        <a href="javascript:preCancelOrder(${orderDTO.orderId})" type="button"
                                            class="btn btn-default btn-danger">取消</a>
-                                        <a href="javascript:preEditOrder(${orderMaster.orderId}, ${orderMaster.orderAmount?c}, ${orderMaster.orderActualAmount?c})"
+                                        <a href="javascript:preEditOrder(${orderDTO.orderId}, ${orderDTO.orderAmount?c}, ${orderDTO.orderActualAmount?c})"
                                            type="button"
                                            class="btn btn-default btn-danger">修改</a>
                                         </#if>
-                                        <#if orderMaster.getOrderStatusEnum().message == "买家删除" || orderMaster.getOrderStatusEnum().message == "已取消" || orderMaster.getOrderStatusEnum().message == "完结">
-                                        <a href="javascript:preDeleteOrder(${orderMaster.orderId})" type="button"
+                                        <#if orderDTO.getOrderStatusEnum().message == "买家删除" || orderDTO.getOrderStatusEnum().message == "已取消" || orderDTO.getOrderStatusEnum().message == "完结">
+                                        <a href="javascript:preDeleteOrder(${orderDTO.orderId})" type="button"
                                            class="btn btn-default btn-danger">删除</a>
                                         </#if>
                                     </td>
@@ -146,7 +146,7 @@
                     </table>
                 </div>
 
-                <#if orderMasterPage.getNumberOfElements() != 0>
+                <#if orderDTOPage.getNumberOfElements() != 0>
                 <#--分页-->
                     <div class="col-md-12 column">
                         <ul class="pagination pull-right">
@@ -160,7 +160,7 @@
                             <li><a href="javascript:search(${currentPage - 1}, ${size})">上一页</a></li>
                         </#if>
 
-                        <#list 1..orderMasterPage.getTotalPages() as index>
+                        <#list 1..orderDTOPage.getTotalPages() as index>
                             <#if currentPage == index>
                                 <li class="disabled"><a href="#">${index}</a></li>
                             <#elseif index lte (currentPage + 3) && index gte (currentPage - 3)>
@@ -169,7 +169,7 @@
                             </#if>
                         </#list>
 
-                        <#if currentPage gte orderMasterPage.getTotalPages()>
+                        <#if currentPage gte orderDTOPage.getTotalPages()>
                             <li class="disabled"><a href="#">下一页</a></li>
                             <li class="disabled"><a href="#">尾页</a></li>
                         <#else>
@@ -178,7 +178,7 @@
                         <#--<a href="/netshop/seller/order/list?page=${orderMasterPage.getTotalPages()}&size=${size}">尾页</a>-->
                         <#--</li>-->
                             <li><a href="javascript:search(${currentPage + 1}, ${size})">下一页</a></li>
-                            <li><a href="javascript:search(${orderMasterPage.getTotalPages()}, ${size})">尾页</a>
+                            <li><a href="javascript:search(${orderDTOPage.getTotalPages()}, ${size})">尾页</a>
                         </#if>
                         </ul>
                     </div>

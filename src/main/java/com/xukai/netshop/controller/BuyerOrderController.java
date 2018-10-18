@@ -106,7 +106,7 @@ public class BuyerOrderController {
      * @return
      */
     @GetMapping("/list")
-    public ResultVO<Page<OrderMaster>> list(HttpServletRequest request,
+    public ResultVO<Page<OrderDTO>> list(HttpServletRequest request,
                                             OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount,
                                             @RequestParam(value = "page", defaultValue = "1") Integer page,
                                             @RequestParam(value = "size", defaultValue = "10") Integer size) {
@@ -117,8 +117,8 @@ public class BuyerOrderController {
             throw new BuyException(ResultEnum.PARAM_ERROR);
         }
         s_order.setBuyerId(buyerId);
-        Page<OrderMaster> orderMasterPage = orderService.findOnCondition(s_order, minAmount, maxAmount, new PageRequest(page - 1, size));
-        return ResultVOUtil.success(orderMasterPage);
+        Page<OrderDTO> orderDTOPage = orderService.findOnCondition(s_order, minAmount, maxAmount, new PageRequest(page - 1, size));
+        return ResultVOUtil.success(orderDTOPage);
     }
 
     /**

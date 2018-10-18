@@ -34,10 +34,10 @@ public class SellerOrderController {
     public ModelAndView list(OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount,
                              @RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        Page<OrderMaster> orderMasterPage = orderService.findOnCondition(s_order, minAmount, maxAmount, new PageRequest(page - 1, size));
+        Page<OrderDTO> orderDTOPage = orderService.findOnCondition(s_order, minAmount, maxAmount, new PageRequest(page - 1, size));
         ModelAndView mav = new ModelAndView("sell/order/list");
         mav.addObject("s_order", s_order);
-        mav.addObject("orderMasterPage", orderMasterPage);
+        mav.addObject("orderDTOPage", orderDTOPage);
         mav.addObject("currentPage", page);
         mav.addObject("minAmount", minAmount);
         mav.addObject("maxAmount", maxAmount);

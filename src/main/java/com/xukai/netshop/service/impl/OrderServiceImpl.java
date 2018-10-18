@@ -118,6 +118,10 @@ public class OrderServiceImpl implements OrderService {
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
         List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(orderId);
+        if (CollectionUtils.isEmpty(orderDetailList)) {
+            log.error("【查询订单详情】订单详情不存在, orderId={}", orderId);
+            throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);
+        }
         // 更新订单详情中商品名称和图片，但如果商品已经被删除，就不做处理保持原状
         ProductInfo productInfo;
         for (OrderDetail orderDetail : orderDetailList) {
@@ -127,10 +131,6 @@ public class OrderServiceImpl implements OrderService {
                 orderDetail.setProductImgMd(productInfo.getProductImgMd());
             }
         }
-        if (CollectionUtils.isEmpty(orderDetailList)) {
-            log.error("【查询订单详情】订单详情不存在, orderId={}", orderId);
-            throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);
-        }
         OrderDTO orderDTO = new OrderDTO();
         BeanUtils.copyProperties(orderMaster, orderDTO);
         orderDTO.setOrderDetailList(orderDetailList);
@@ -138,11 +138,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderMaster> findOnCondition(OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount, Pageable pageable) {
+    public Page<OrderDTO> findOnCondition(OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount, Pageable pageable) {
         if (minAmount != null && maxAmount != null && minAmount.compareTo(maxAmount) == 1) {
             throw new SellException(ResultEnum.PARAM_ERROR);
         }
-        return orderMasterRepository.findByOrderStatusLikeAndOrderIdLikeAndBuyerIdLikeAndBuyerNameLikeAndBuyerAddressLikeAndBuyerPhoneLikeAndOrderAmountBetweenOrderByCreateTimeDesc(
+        Page<OrderMaster> orderMasterPage = orderMasterRepository.findByOrderStatusLikeAndOrderIdLikeAndBuyerIdLikeAndBuyerNameLikeAndBuyerAddressLikeAndBuyerPhoneLikeAndOrderAmountBetweenOrderByCreateTimeDesc(
                 "%" + (StringUtils.isEmpty(s_order.getOrderStatus()) ? "" : s_order.getOrderStatus()) + "%",
                 "%" + (StringUtils.isEmpty(s_order.getOrderId()) ? "" : s_order.getOrderId()) + "%",
                 "%" + (StringUtils.isEmpty(s_order.getBuyerId()) ? "" : s_order.getBuyerId()) + "%",
@@ -153,6 +153,27 @@ public class OrderServiceImpl implements OrderService {
                 maxAmount == null ? new BigDecimal("99999") : maxAmount,
                 pageable
         );
+        // 返回订单列表可携带订单详情数据
+        // 更新订单详情中商品名称和图片，但如果商品已经被删除，就不做处理保持原状
+        List<OrderDTO> orderDTOList = orderMasterPage.getContent().stream().map(e -> {
+            List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(e.getOrderId());
+            ProductInfo productInfo;
+            if (!CollectionUtils.isEmpty(orderDetailList)) {
+                for (OrderDetail orderDetail : orderDetailList) {
+                    productInfo = productInfoRepository.findOne(orderDetail.getProductId());
+                    if (productInfo != null) {
+                        orderDetail.setProductName(productInfo.getProductName());
+                        orderDetail.setProductImgMd(productInfo.getProductImgMd());
+                    }
+                }
+            }
+            log.error("【查询订单】订单详情不存在, orderId={}", e.getOrderId());
+            OrderDTO orderDTO = new OrderDTO();
+            BeanUtils.copyProperties(e, orderDTO);
+            orderDTO.setOrderDetailList(orderDetailList);
+            return orderDTO;
+        }).collect(Collectors.toList());
+        return new PageImpl<>(orderDTOList, pageable, orderMasterPage.getTotalElements());
     }
 
     @Override
