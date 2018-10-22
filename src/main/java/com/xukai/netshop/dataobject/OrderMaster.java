@@ -1,10 +1,8 @@
 package com.xukai.netshop.dataobject;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.xukai.netshop.enums.OrderStatusEnum;
 import com.xukai.netshop.utils.EnumUtils;
-import com.xukai.netshop.utils.serializer.Date2LongSerializer;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -76,13 +74,11 @@ public class OrderMaster {
     /**
      * 创建时间.
      */
-    @JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
 
     /**
      * 更新时间.
      */
-    @JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
 
     @JsonIgnore

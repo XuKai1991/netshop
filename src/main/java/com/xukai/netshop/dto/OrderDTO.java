@@ -1,11 +1,9 @@
 package com.xukai.netshop.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.xukai.netshop.dataobject.OrderDetail;
 import com.xukai.netshop.enums.OrderStatusEnum;
 import com.xukai.netshop.utils.EnumUtils;
-import com.xukai.netshop.utils.serializer.Date2LongSerializer;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -62,13 +60,11 @@ public class OrderDTO {
     /**
      * 创建时间.
      */
-    @JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
 
     /**
      * 更新时间.
      */
-    @JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
 
     private List<OrderDetail> orderDetailList;
