@@ -35,7 +35,8 @@ public class BuyerAuthorizeAspect {
      * 定义切点，此处定义为controller层的任意类的任意方法
      */
     @Pointcut("execution(public * com.xukai.netshop.controller.BuyerCart*.*(..))" +
-            "|| execution(public * com.xukai.netshop.controller.BuyerOrder*.*(..))")
+            "|| execution(public * com.xukai.netshop.controller.BuyerOrder*.*(..))" +
+            "|| execution(public * com.xukai.netshop.controller.BuyerAddress*.*(..))")
     public void verify() {
     }
 

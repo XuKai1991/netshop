@@ -8,7 +8,7 @@ import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.service.BuyerService;
 import com.xukai.netshop.service.SellerService;
-import com.xukai.netshop.utils.CookieUtils;
+import com.xukai.netshop.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +17,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 /**
  * @author: Xukai
@@ -65,7 +65,9 @@ public class SellerUserController {
             return mav;
         }
         // 设置token至cookie
-        CookieUtils.set(cookieConfig.getSellerId(), sellerInfo.getId(), cookieConfig.getExpire(), request, response);
+        HashMap<String, String> fieldsMap = new HashMap<>(2);
+        fieldsMap.put(cookieConfig.getSellerId(), sellerInfo.getId());
+        TokenUtils.addLoginTrace(fieldsMap, cookieConfig, request, response);
         String sellRequestURI = (String) request.getSession().getAttribute("sellRequestURI");
         if (StringUtils.isNotEmpty(sellRequestURI)) {
             mav.setViewName("redirect:" + baseUrlConfig.getBack_base_url() + sellRequestURI);
@@ -78,12 +80,9 @@ public class SellerUserController {
     @GetMapping("/logout")
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView();
-        // 从cookie里查询
-        Cookie cookie = CookieUtils.get(cookieConfig.getSellerId(), request);
-        if (cookie != null) {
-            // 清除cookie
-            CookieUtils.set(cookieConfig.getSellerId(), null, 0, request, response);
-        }
+        // 清除cookie和session
+        String[] fields = {cookieConfig.getSellerId()};
+        TokenUtils.cleanLoginTrace(fields, request, response);
         mav.addObject("msg", ResultEnum.LOGOUT_SUCCESS.getMessage());
         mav.addObject("url", "/netshop/seller/");
         mav.setViewName("sell/common/success");

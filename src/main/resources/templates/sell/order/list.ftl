@@ -50,34 +50,19 @@
                             <select name="orderStatus" id="s_orderStatus" class="form-control" style="width: 110px">
                                 <option value=""
                                     <#if (s_order.orderStatus)?? && s_order.orderStatus == "">
-                                        selected
+                                    selected
                                     </#if>
                                 >全部
                                 </option>
-                                <option value="0"
-                                    <#if (s_order.orderStatus)?? && s_order.orderStatus == "0">
-                                        selected
-                                    </#if>
-                                >新订单
-                                </option>
-                                <option value="1"
-                                    <#if (s_order.orderStatus)?? && s_order.orderStatus == "1">
-                                        selected
-                                    </#if>
-                                >已完结
-                                </option>
-                                <option value="2"
-                                    <#if (s_order.orderStatus)?? && s_order.orderStatus == "2">
-                                        selected
-                                    </#if>
-                                >已取消
-                                </option>
-                                <option value="3"
-                                    <#if (s_order.orderStatus)?? && s_order.orderStatus == "3">
-                                        selected
-                                    </#if>
-                                >卖家删除
-                                </option>
+                                <#if orderStatusMap??>
+                                    <#list orderStatusMap?keys as key>
+                                        <option value="${key!}"
+                                        <#if (s_order.orderStatus)?? && s_order.orderStatus == key>
+                                            selected
+                                        </#if>>${orderStatusMap[key]!}
+                                        </option>
+                                    </#list>
+                                </#if>
                             </select>
                         </div>
                         <div class="form-group input-group">
@@ -116,25 +101,37 @@
                             <#list orderDTOPage.content as orderDTO>
                                 <tr align="center">
                                     <td style="vertical-align:middle">${orderDTO.orderId}</td>
-                                    <td style="vertical-align:middle">${orderDTO.buyerName}</td>
+                                    <td style="vertical-align:middle;width: 70px">${orderDTO.buyerName}</td>
                                     <td style="vertical-align:middle">${orderDTO.buyerPhone}</td>
-                                    <td style="vertical-align:middle">${orderDTO.buyerAddress}</td>
+                                    <td style="vertical-align:middle;width: 290px">${orderDTO.buyerAddress}</td>
                                     <td style="vertical-align:middle">${orderDTO.orderAmount?c}</td>
                                     <td style="vertical-align:middle">${orderDTO.orderActualAmount?c}</td>
-                                    <td style="vertical-align:middle">${orderDTO.getOrderStatusEnum().message}</td>
+                                    <td style="vertical-align:middle; width:64px">${orderDTO.getOrderStatusEnum().message}</td>
                                     <td style="vertical-align:middle">${orderDTO.createTime}</td>
-                                    <td style="vertical-align:middle; width:170px">
+                                    <#--<td style="vertical-align:middle; width:170px">-->
+                                    <td style="vertical-align:middle; width:240px">
                                         <a href="/netshop/seller/order/detail?orderId=${orderDTO.orderId}"
                                            type="button"
                                            class="btn btn-default btn-primary">详情</a>
-                                        <#if orderDTO.getOrderStatusEnum().message == "新订单">
-                                        <a href="javascript:preCancelOrder(${orderDTO.orderId})" type="button"
-                                           class="btn btn-default btn-danger">取消</a>
+                                        <#if orderDTO.getOrderStatusEnum().message == "未支付">
                                         <a href="javascript:preEditOrder(${orderDTO.orderId}, ${orderDTO.orderAmount?c}, ${orderDTO.orderActualAmount?c})"
                                            type="button"
-                                           class="btn btn-default btn-danger">修改</a>
+                                           class="btn btn-default btn-primary">改价</a>
+                                        <a href="javascript:editOrderPayed(${orderDTO.orderId})"
+                                           type="button"
+                                           class="btn btn-default btn-primary">已付</a>
                                         </#if>
-                                        <#if orderDTO.getOrderStatusEnum().message == "买家删除" || orderDTO.getOrderStatusEnum().message == "已取消" || orderDTO.getOrderStatusEnum().message == "完结">
+                                        <#if orderDTO.getOrderStatusEnum().message == "已支付">
+                                        <#--发货业务-->
+                                        <a href="/netshop/seller/order/send?orderId=${orderDTO.orderId}"
+                                           type="button"
+                                           class="btn btn-default btn-primary">发货</a>
+                                        </#if>
+                                        <#if orderDTO.getOrderStatusEnum().message == "未支付" || orderDTO.getOrderStatusEnum().message == "已支付">
+                                        <a href="javascript:preCancelOrder(${orderDTO.orderId})" type="button"
+                                           class="btn btn-default btn-danger">取消</a>
+                                        </#if>
+                                        <#if orderDTO.getOrderStatusEnum().message == "买家删除" || orderDTO.getOrderStatusEnum().message == "已取消" || orderDTO.getOrderStatusEnum().message == "已收货">
                                         <a href="javascript:preDeleteOrder(${orderDTO.orderId})" type="button"
                                            class="btn btn-default btn-danger">删除</a>
                                         </#if>
@@ -154,8 +151,6 @@
                             <li class="disabled"><a href="#">首页</a></li>
                             <li class="disabled"><a href="#">上一页</a></li>
                         <#else>
-                        <#--<li><a href="/netshop/seller/order/list?page=1&size=${size}">首页</a></li>-->
-                        <#--<li><a href="/netshop/seller/order/list?page=${currentPage - 1}&size=${size}">上一页</a></li>-->
                             <li><a href="javascript:search(1, ${size})">首页</a></li>
                             <li><a href="javascript:search(${currentPage - 1}, ${size})">上一页</a></li>
                         </#if>
@@ -164,7 +159,6 @@
                             <#if currentPage == index>
                                 <li class="disabled"><a href="#">${index}</a></li>
                             <#elseif index lte (currentPage + 3) && index gte (currentPage - 3)>
-                            <#--<li><a href="/netshop/seller/order/list?page=${index}&size=${size}">${index}</a></li>-->
                                 <li><a href="javascript:search(${index}, ${size})">${index}</a></li>
                             </#if>
                         </#list>
@@ -173,10 +167,6 @@
                             <li class="disabled"><a href="#">下一页</a></li>
                             <li class="disabled"><a href="#">尾页</a></li>
                         <#else>
-                        <#--<li><a href="/netshop/seller/order/list?page=${currentPage + 1}&size=${size}">下一页</a></li>-->
-                        <#--<li>-->
-                        <#--<a href="/netshop/seller/order/list?page=${orderMasterPage.getTotalPages()}&size=${size}">尾页</a>-->
-                        <#--</li>-->
                             <li><a href="javascript:search(${currentPage + 1}, ${size})">下一页</a></li>
                             <li><a href="javascript:search(${orderDTOPage.getTotalPages()}, ${size})">尾页</a>
                         </#if>
@@ -263,6 +253,26 @@
         $("#amountForEdit").val(amount);
         $("#actualAmountForEdit").val(actualAmount);
         $('#editModal').modal();
+    }
+
+    // 将订单改为已支付
+    // TODO
+    // 手动确认支付是目前因为未接入线上支付的临时方法
+    // 后期需要删除
+    function editOrderPayed(orderId){
+        $.post("/netshop/seller/order/pay", {
+            orderId: orderId,
+        }, function (result) {
+            $("#hintModalTitle").text("支付订单");
+            if (result.msg == "success") {
+                $("#hintModalBody").text("订单成功支付！");
+            } else {
+                $("#hintModalBody").text("订单支付失败，请重试！");
+            }
+            $("#hintModalCancel").hide();
+            $("#hintModalConfirm").attr("href", "javascript:location.reload()");
+            $("#hintModal").modal();
+        });
     }
 
     // 修改订单

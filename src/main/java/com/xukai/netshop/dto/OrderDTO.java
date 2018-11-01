@@ -53,7 +53,14 @@ public class OrderDTO {
     private BigDecimal orderActualAmount;
 
     /**
-     * 订单状态
+     * 订单状态, 默认为0
+     * 0:未支付
+     * 1:已取消
+     * 2:已支付
+     * 3:退款中
+     * 4:已发货
+     * 5:已收货
+     * 6:买家删除
      */
     private String orderStatus;
 

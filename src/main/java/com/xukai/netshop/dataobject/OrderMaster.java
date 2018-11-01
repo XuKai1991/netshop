@@ -38,7 +38,7 @@ public class OrderMaster {
     private String buyerId;
 
     /**
-     * 买家名字
+     * 买家姓名
      */
     private String buyerName;
 
@@ -64,10 +64,13 @@ public class OrderMaster {
 
     /**
      * 订单状态, 默认为0
-     * 0:新下单
-     * 1:完成
-     * 2:取消
-     * 3:买家删除
+     * 0:未支付
+     * 1:已取消
+     * 2:已支付
+     * 3:退款中
+     * 4:已发货
+     * 5:已收货
+     * 6:买家删除
      */
     private String orderStatus;
 

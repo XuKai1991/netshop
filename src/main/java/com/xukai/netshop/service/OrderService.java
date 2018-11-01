@@ -51,9 +51,14 @@ public interface OrderService {
     void cancel(String orderId);
 
     /**
-     * 完结订单.
+     * 订单发货.
      */
-    void finish(String orderId);
+    void send(String orderId);
+
+    /**
+     * 订单收货.
+     */
+    void receive(String orderId);
 
     /**
      * 买家删除订单

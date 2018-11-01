@@ -13,6 +13,7 @@
         <input type="password" name="password" id="password" placeholder="密码"/>
     </div>
     <button type="submit" style="margin-top:15px;">登 录</button>
+    <button type="button" style="margin-top:15px;" onclick="location.href='/netshop/buyer/logout'">注 销</button>
 </form>
 <a>==================================================================================================</a>
 <form name="myForm2" class="form-signin" action="/netshop/buyer/cart/add" method="post">
@@ -48,6 +49,19 @@
         <input type="text" name="items" id="items" placeholder="订单内容"/>
     </div>
     <button type="submit" style="margin-top:15px;">下单</button>
+</form>
+<a>==================================================================================================</a>
+<form name="myForm4" class="form-signin" action="/netshop/buyer/address/save" method="post">
+    <div>
+        <input type="text" name="buyerName" placeholder="姓名"/>
+    </div>
+    <div>
+        <input type="text" name="buyerPhone" placeholder="电话"/>
+    </div>
+    <div>
+        <input type="text" name="buyerAddress" placeholder="地址"/>
+    </div>
+    <button type="submit" style="margin-top:15px;">添加常用地址</button>
 </form>
 </body>
 </html>

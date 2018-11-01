@@ -9,7 +9,7 @@
 <#--主要内容content-->
     <div id="page-content-wrapper">
         <div class="container-fluid">
-            <div class="row clearfix">
+            <div class="row clearfix" style="margin-bottom:15px">
                 <div class="col-md-4 column">
                     <table class="table table-bordered table-condensed table-striped">
                         <thead>
@@ -51,7 +51,7 @@
                             <td style="vertical-align:middle">${orderDetail.productId}</td>
                             <td style="vertical-align:middle">${orderDetail.productName}</td>
                             <td style="vertical-align:middle">
-                                <img height="200" width="200" src="${(orderDetail.productImgMd)!''}" alt="">
+                                <img height="150" width="150" src="${(orderDetail.productImgMd)!''}" alt="">
                             </td>
                             <td style="vertical-align:middle">${orderDetail.productPrice?c}</td>
                             <td style="vertical-align:middle">${orderDetail.productPurchasePrice?c}</td>
@@ -67,14 +67,26 @@
 
             <#--操作-->
                 <div class="col-md-12 column">
-                <#if orderDTO.getOrderStatusEnum().message == "新订单">
-                    <a href="javascript:preFinishOrder(${orderDTO.orderId})" type="button"
-                       class="btn btn-default btn-primary">完结订单</a>
-                    <a href="javascript:preCancelOrder(${orderDTO.orderId})" type="button"
-                       class="btn btn-default btn-danger">取消订单</a>
+                <#if orderDTO.getOrderStatusEnum().message == "未支付">
                     <a href="javascript:preEditOrder(${orderDTO.orderId}, ${orderDTO.orderAmount?c}, ${orderDTO.orderActualAmount?c})"
                        type="button"
-                       class="btn btn-default btn-danger">修改订单</a>
+                       class="btn btn-default btn-primary">改价</a>
+                    <a href="javascript:editOrderPayed(${orderDTO.orderId})"
+                       type="button"
+                       class="btn btn-default btn-primary">已付</a>
+                </#if>
+                <#if orderDTO.getOrderStatusEnum().message == "已支付">
+                    <a href="/netshop/seller/order/send?orderId=${orderDTO.orderId}"
+                       type="button"
+                       class="btn btn-default btn-primary">发货</a>
+                </#if>
+                <#if orderDTO.getOrderStatusEnum().message == "未支付" || orderDTO.getOrderStatusEnum().message == "已支付">
+                    <a href="javascript:preCancelOrder(${orderDTO.orderId})" type="button"
+                       class="btn btn-default btn-danger">取消</a>
+                </#if>
+                <#if orderDTO.getOrderStatusEnum().message == "买家删除" || orderDTO.getOrderStatusEnum().message == "已取消" || orderDTO.getOrderStatusEnum().message == "已收货">
+                    <a href="javascript:preDeleteOrder(${orderDTO.orderId})" type="button"
+                       class="btn btn-default btn-danger">删除</a>
                 </#if>
                 </div>
             </div>

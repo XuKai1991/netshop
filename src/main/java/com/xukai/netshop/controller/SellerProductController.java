@@ -78,7 +78,7 @@ public class SellerProductController {
             mav.setViewName("sell/common/error");
             return mav;
         }
-        mav.addObject("msg", ResultEnum.PRODUCT_OFFSALE_SUCCESS.getMessage());
+        mav.addObject("msg", ResultEnum.PRODUCT_OFF_SALE_SUCCESS.getMessage());
         mav.setViewName("sell/common/success");
         return mav;
     }
@@ -95,7 +95,7 @@ public class SellerProductController {
             mav.setViewName("sell/common/error");
             return mav;
         }
-        mav.addObject("msg", ResultEnum.PRODUCT_ONSALE_SUCCESS.getMessage());
+        mav.addObject("msg", ResultEnum.PRODUCT_ON_SALE_SUCCESS.getMessage());
         mav.setViewName("sell/common/success");
         return mav;
     }

@@ -7,13 +7,16 @@ import com.xukai.netshop.converter.OrderForm2OrderDTOConverter;
 import com.xukai.netshop.dataobject.CartDetail;
 import com.xukai.netshop.dataobject.OrderMaster;
 import com.xukai.netshop.dto.OrderDTO;
+import com.xukai.netshop.enums.OrderStatusEnum;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.BuyException;
 import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.form.OrderForm;
 import com.xukai.netshop.service.BuyerCartService;
 import com.xukai.netshop.service.OrderService;
-import com.xukai.netshop.utils.CommonUtils;
+import com.xukai.netshop.service.PayService;
+import com.xukai.netshop.utils.TokenUtils;
+import com.xukai.netshop.utils.EnumUtils;
 import com.xukai.netshop.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +49,9 @@ public class BuyerOrderController {
     private OrderService orderService;
 
     @Autowired
+    private PayService payService;
+
+    @Autowired
     private BuyerCartService buyerCartService;
 
     @Autowired
@@ -60,8 +66,7 @@ public class BuyerOrderController {
      */
     @PostMapping("/create")
     public ResultVO<Map<String, String>> create(HttpServletRequest request, @Valid OrderForm orderForm, BindingResult bindingResult) {
-        // String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
-        String buyerId = CommonUtils.getBuyerId(request);
+        String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
         if (StringUtils.isEmpty(buyerId)) {
             log.error("【创建订单】buyerId为空");
             throw new BuyException(ResultEnum.PARAM_ERROR);
@@ -107,11 +112,10 @@ public class BuyerOrderController {
      */
     @GetMapping("/list")
     public ResultVO<Page<OrderDTO>> list(HttpServletRequest request,
-                                            OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount,
-                                            @RequestParam(value = "page", defaultValue = "1") Integer page,
-                                            @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        // String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
-        String buyerId = CommonUtils.getBuyerId(request);
+                                         OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount,
+                                         @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                         @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
         if (StringUtils.isEmpty(buyerId)) {
             log.error("【查询订单列表】buyerId为空");
             throw new BuyException(ResultEnum.PARAM_ERROR);
@@ -138,6 +142,42 @@ public class BuyerOrderController {
     }
 
     /**
+     * 订单付款
+     *
+     * @param orderId
+     * @return
+     */
+    @GetMapping("/pay")
+    public ResultVO pay(HttpServletRequest request, @RequestParam("orderId") String orderId) {
+        String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
+        if (StringUtils.isEmpty(buyerId) || StringUtils.isEmpty(orderId)) {
+            log.error("【订单付款】buyerId或orderId为空");
+            throw new BuyException(ResultEnum.PARAM_ERROR);
+        }
+        orderService.findAndCheckOrderOne(orderId, buyerId);
+        payService.pay(orderId);
+        return ResultVOUtil.success();
+    }
+
+    /**
+     * 订单确认收货
+     *
+     * @param orderId
+     * @return
+     */
+    @GetMapping("/receive")
+    public ResultVO finish(HttpServletRequest request, @RequestParam("orderId") String orderId) {
+        String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
+        if (StringUtils.isEmpty(buyerId) || StringUtils.isEmpty(orderId)) {
+            log.error("【订单收货】buyerId或orderId为空");
+            throw new BuyException(ResultEnum.PARAM_ERROR);
+        }
+        orderService.findAndCheckOrderOne(orderId, buyerId);
+        orderService.receive(orderId);
+        return ResultVOUtil.success();
+    }
+
+    /**
      * 取消订单
      *
      * @param request
@@ -146,8 +186,7 @@ public class BuyerOrderController {
      */
     @GetMapping("/cancel")
     public ResultVO cancel(HttpServletRequest request, @RequestParam("orderId") String orderId) {
-        // String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
-        String buyerId = CommonUtils.getBuyerId(request);
+        String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
         if (StringUtils.isEmpty(buyerId) || StringUtils.isEmpty(orderId)) {
             log.error("【取消订单】buyerId或orderId为空");
             throw new BuyException(ResultEnum.PARAM_ERROR);
@@ -166,8 +205,7 @@ public class BuyerOrderController {
      */
     @GetMapping("/delete")
     public ResultVO delete(HttpServletRequest request, @RequestParam("orderId") String orderId) {
-        // String buyerId = CookieUtils.get(cookieConfig.getBuyerId(), request).getValue();
-        String buyerId = CommonUtils.getBuyerId(request);
+        String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
         if (StringUtils.isEmpty(buyerId) || StringUtils.isEmpty(orderId)) {
             log.error("【删除订单】buyerId或orderId为空");
             throw new SellException(ResultEnum.PARAM_ERROR);
@@ -175,5 +213,16 @@ public class BuyerOrderController {
         orderService.findAndCheckOrderOne(orderId, buyerId);
         orderService.buyerDelete(orderId);
         return ResultVOUtil.success();
+    }
+
+    /**
+     * 获取订单状态枚举列表
+     *
+     * @return
+     */
+    @GetMapping("/listStatus")
+    public ResultVO listStatus() {
+        Map<String, String> OrderStatusEnumMap = EnumUtils.listEnum(OrderStatusEnum.class);
+        return ResultVOUtil.success(OrderStatusEnumMap);
     }
 }

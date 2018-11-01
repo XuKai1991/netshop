@@ -7,18 +7,17 @@ import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.BuyException;
 import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.service.BuyerService;
-import com.xukai.netshop.service.MailService;
-import com.xukai.netshop.utils.CookieUtils;
+import com.xukai.netshop.utils.TokenUtils;
 import com.xukai.netshop.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 
 /**
  * @author: Xukai
@@ -36,9 +35,6 @@ public class BuyerUserController {
 
     @Autowired
     private CookieConfig cookieConfig;
-
-    @Autowired
-    private MailService mailService;
 
     /**
      * 跳转登录页
@@ -107,7 +103,7 @@ public class BuyerUserController {
      * @return
      */
     @GetMapping("/getBackPwd")
-    public ResultVO getBackPassword(String email) {
+    public ResultVO getBackPassword(@RequestParam("email") String email) {
         buyerService.getBackPassword(email);
         return ResultVOUtil.success();
     }
@@ -127,18 +123,52 @@ public class BuyerUserController {
      * @return
      */
     @PostMapping("/login")
-    public ResultVO login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) {
-        // ModelAndView mav = new ModelAndView();
+    public ResultVO login(@RequestParam("username") String username,
+                          @RequestParam("password") String password,
+                          HttpServletRequest request, HttpServletResponse response) {
         BuyerInfo buyerInfo = buyerService.findByUsernameAndPassword(username, password);
         if (buyerInfo == null) {
             throw new BuyException(ResultEnum.BUYER_LOGIN_FAIL);
         }
-        // 设置cookie
-        CookieUtils.set(cookieConfig.getBuyerId(), buyerInfo.getBuyerId(), cookieConfig.getExpire(), request, response);
-        CookieUtils.set(cookieConfig.getBuyerName(), buyerInfo.getUsername(), cookieConfig.getExpire(), request, response);
-        // 设置session
-        HttpSession session = request.getSession();
-        session.setAttribute(cookieConfig.getBuyerId(), buyerInfo.getBuyerId());
+        // 设置token至cookie和session
+        HashMap<String, String> fieldsMap = new HashMap<>(2);
+        fieldsMap.put(cookieConfig.getBuyerId(), buyerInfo.getBuyerId());
+        fieldsMap.put(cookieConfig.getBuyerName(), buyerInfo.getUsername());
+        TokenUtils.addLoginTrace(fieldsMap, cookieConfig, request, response);
+        return ResultVOUtil.success();
+    }
+
+    /**
+     * 修改买家信息
+     *
+     * @param newPassword
+     * @param request
+     * @param response
+     * @return
+     */
+    @PostMapping("/editPwd")
+    public ResultVO edit(@RequestParam("newPassword") String newPassword,
+                         HttpServletRequest request, HttpServletResponse response) {
+        String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
+        if (StringUtils.isEmpty(buyerId)) {
+            log.error("【买家端修改用户密码】{}", ResultEnum.BUYER_NOT_LOGIN);
+            throw new BuyException(ResultEnum.PARAM_ERROR);
+        }
+        BuyerInfo existBuyerInfo = buyerService.findByBuyerId(buyerId);
+        if (existBuyerInfo == null) {
+            log.error("【买家端修改用户密码】发生异常{}", ResultEnum.BUYER_NOT_EXIST.getMessage());
+            throw new BuyException(ResultEnum.BUYER_NOT_EXIST);
+        }
+        existBuyerInfo.setPassword(newPassword);
+        BuyerInfo save = buyerService.save(existBuyerInfo);
+        if (save == null) {
+            log.error("【买家端修改用户密码】发生异常{}", ResultEnum.BUYER_EDIT_FAIL.getMessage());
+            throw new BuyException(ResultEnum.BUYER_EDIT_FAIL);
+        }
+        log.info("【买家端修改用户密码】{}", ResultEnum.BUYER_EDIT_SUCCESS);
+        // 清除cookie和session
+        String[] fields = {cookieConfig.getBuyerId(), cookieConfig.getBuyerName()};
+        TokenUtils.cleanLoginTrace(fields, request, response);
         return ResultVOUtil.success();
     }
 
@@ -151,16 +181,9 @@ public class BuyerUserController {
      */
     @GetMapping("/logout")
     public ResultVO logout(HttpServletRequest request, HttpServletResponse response) {
-        // 从cookie里查询
-        Cookie cookie = CookieUtils.get(cookieConfig.getBuyerId(), request);
-        if (cookie != null) {
-            // 清除cookie
-            CookieUtils.set(cookieConfig.getBuyerId(), null, 0, request, response);
-            CookieUtils.set(cookieConfig.getBuyerName(), null, 0, request, response);
-        }
-        // 清除session
-        HttpSession session = request.getSession();
-        session.removeAttribute(cookieConfig.getBuyerId());
+        // 清除cookie和session
+        String[] fields = {cookieConfig.getBuyerId(), cookieConfig.getBuyerName()};
+        TokenUtils.cleanLoginTrace(fields, request, response);
         return ResultVOUtil.success();
     }
 
