@@ -274,8 +274,8 @@ public class ExpressTask {
                     }
                 }
                 try {
-                    // 休眠1分钟，避免被西刺封IP
-                    Thread.sleep(1000 * 60 * 1);
+                    // 休眠3分钟，避免被西刺封IP
+                    Thread.sleep(1000 * 60 * 3);
                 } catch (InterruptedException e) {
                     log.error("线程休眠报错", e);
                 }
