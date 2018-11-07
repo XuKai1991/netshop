@@ -70,9 +70,9 @@ public class SellerUserController {
         TokenUtils.addLoginTrace(fieldsMap, cookieConfig, request, response);
         String sellRequestURI = (String) request.getSession().getAttribute("sellRequestURI");
         if (StringUtils.isNotEmpty(sellRequestURI)) {
-            mav.setViewName("redirect:" + baseUrlConfig.getBack_base_url() + sellRequestURI);
+            mav.setViewName("redirect:" + baseUrlConfig.getBackBaseUrl() + sellRequestURI);
         } else {
-            mav.setViewName("redirect:" + baseUrlConfig.getBack_base_url() + "/netshop/seller/order/list");
+            mav.setViewName("redirect:" + baseUrlConfig.getBackBaseUrl() + "/netshop/seller/order/list");
         }
         return mav;
     }

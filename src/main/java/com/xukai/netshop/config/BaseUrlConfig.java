@@ -18,15 +18,15 @@ public class BaseUrlConfig {
     /**
      * 前端基础URL
      */
-    public String front_base_url;
+    public String frontBaseUrl;
 
     /**
      * 后端基础URL
      */
-    public String back_base_url;
+    public String backBaseUrl;
 
     /**
      * 图片服务器URL
      */
-    public String image_server_url;
+    public String imageServerUrl;
 }

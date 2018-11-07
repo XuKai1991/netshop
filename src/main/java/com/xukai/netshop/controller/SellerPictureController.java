@@ -44,7 +44,7 @@ public class SellerPictureController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return ResultVOUtil.success(baseUrlConfig.image_server_url + picUrl);
+        return ResultVOUtil.success(baseUrlConfig.imageServerUrl + picUrl);
     }
 
 }

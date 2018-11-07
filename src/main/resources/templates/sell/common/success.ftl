@@ -14,7 +14,7 @@
                 <h4>
                     成功!
                 </h4> <strong>${msg!""}</strong>
-                <a href="${url}" class="alert-link">&nbsp;&nbsp;<a id="remainTime" style="font-weight: bold;">3</a>s后自动跳转</a>
+                <a href="${url}" class="alert-link">&nbsp;&nbsp;<a id="remainTime" style="font-weight: bold;">2</a>s后自动跳转</a>
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
 </body>
 
 <script type="text/javascript">
-    var remainTime = 3;
+    var remainTime = 2;
 
     //每秒执行一次
     window.setInterval("setRemainTime()", 1000);

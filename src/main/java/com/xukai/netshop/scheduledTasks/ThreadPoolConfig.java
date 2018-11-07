@@ -25,7 +25,7 @@ public class ThreadPoolConfig {
     public TaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
         // 线程池大小
-        taskScheduler.setPoolSize(10);
+        taskScheduler.setPoolSize(20);
         // 线程池名称前缀
         taskScheduler.setThreadNamePrefix("netshop-task");
         return taskScheduler;

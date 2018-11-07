@@ -38,6 +38,11 @@ public enum ResultEnum {
     CART_NOT_EXIST(401, "购物车不存在"),
     CART_EMPTY(402, "购物车为空"),
 
+    // 物流快递类 5**
+    EXPRESS_INFO_SAVE_FAIL(501, "物流信息保存失败"),
+    EXPRESS_INFO_DELETE_FAIL(502, "物流信息保存失败"),
+    EXPRESS_INFO_NOT_EXIST(502, "物流信息不存在"),
+
     SELLER_NOT_EXIST(20, "卖家信息不存在"),
     LOGIN_FAIL(21, "登录失败，登录信息不正确"),
     LOGOUT_SUCCESS(22, "注销成功"),

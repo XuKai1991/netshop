@@ -1,12 +1,16 @@
 package com.xukai.netshop.controller;
 
 import com.xukai.netshop.VO.ResultVO;
+import com.xukai.netshop.dataobject.ExpressInfo;
 import com.xukai.netshop.dataobject.OrderMaster;
 import com.xukai.netshop.dto.OrderDTO;
+import com.xukai.netshop.enums.ExpressShipperEnum;
+import com.xukai.netshop.enums.ExpressStatusEnum;
 import com.xukai.netshop.enums.OrderStatusEnum;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.BuyException;
 import com.xukai.netshop.exception.SellException;
+import com.xukai.netshop.service.ExpressService;
 import com.xukai.netshop.service.OrderService;
 import com.xukai.netshop.service.PayService;
 import com.xukai.netshop.utils.EnumUtils;
@@ -35,6 +39,9 @@ public class SellerOrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private ExpressService expressService;
+
     @GetMapping("/list")
     public ModelAndView list(OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount,
                              @RequestParam(value = "page", defaultValue = "1") Integer page,
@@ -42,9 +49,11 @@ public class SellerOrderController {
         Page<OrderDTO> orderDTOPage = orderService.findOnCondition(s_order, minAmount, maxAmount, new PageRequest(page - 1, size));
         ModelAndView mav = new ModelAndView("sell/order/list");
         Map<String, String> OrderStatusEnumMap = EnumUtils.listEnum(OrderStatusEnum.class);
+        Map<String, String> expressEnumMap = EnumUtils.listEnum(ExpressShipperEnum.class);
         mav.addObject("s_order", s_order);
         mav.addObject("orderDTOPage", orderDTOPage);
         mav.addObject("orderStatusMap", OrderStatusEnumMap);
+        mav.addObject("expressMap", expressEnumMap);
         mav.addObject("currentPage", page);
         mav.addObject("minAmount", minAmount);
         mav.addObject("maxAmount", maxAmount);
@@ -102,24 +111,20 @@ public class SellerOrderController {
     /**
      * 订单发货
      *
-     * @param orderId
+     * @param expressInfo
      * @return
      */
-    @GetMapping("/send")
-    public ModelAndView finish(@RequestParam("orderId") String orderId) {
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("url", "/netshop/seller/order/list");
+    @PostMapping("/send")
+    public ResultVO send(ExpressInfo expressInfo) {
         try {
-            orderService.send(orderId);
+            expressInfo.setExpressStatus(ExpressStatusEnum.IN_TRANSIT.getCode());
+            orderService.send(expressInfo.getOrderId());
+            expressService.save(expressInfo);
         } catch (SellException e) {
             log.error("【卖家端订单发货】发生异常{}", e);
-            mav.addObject("msg", e.getMessage());
-            mav.setViewName("sell/common/error");
-            return mav;
+            return ResultVOUtil.error(e.getCode(), e.getMessage());
         }
-        mav.addObject("msg", ResultEnum.ORDER_SEND_SUCCESS.getMessage());
-        mav.setViewName("sell/common/success");
-        return mav;
+        return ResultVOUtil.success();
     }
 
     /**
@@ -133,6 +138,7 @@ public class SellerOrderController {
         ModelAndView mav = new ModelAndView();
         mav.addObject("url", "/netshop/seller/order/list");
         try {
+            // 删除订单信息
             orderService.sellerDelete(orderId);
         } catch (SellException e) {
             log.error("【卖家端删除订单】发生异常{}", e);
@@ -182,5 +188,16 @@ public class SellerOrderController {
             throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
         }
         return ResultVOUtil.success();
+    }
+
+    /**
+     * 获取快递枚举列表
+     *
+     * @return
+     */
+    @GetMapping("/listExpress")
+    public ResultVO listStatus() {
+        Map<String, String> expressEnumMap = EnumUtils.listEnum(ExpressShipperEnum.class);
+        return ResultVOUtil.success(expressEnumMap);
     }
 }

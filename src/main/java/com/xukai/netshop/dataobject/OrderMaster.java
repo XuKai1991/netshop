@@ -75,6 +75,11 @@ public class OrderMaster {
     private String orderStatus;
 
     /**
+     * 订单备注
+     */
+    private String orderRemark;
+
+    /**
      * 创建时间.
      */
     private Date createTime;

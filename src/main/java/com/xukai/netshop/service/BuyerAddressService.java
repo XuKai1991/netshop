@@ -16,9 +16,8 @@ public interface BuyerAddressService {
      * 保存地址
      *
      * @param buyerAddress
-     * @return
      */
-    BuyerAddress save(BuyerAddress buyerAddress);
+    void save(BuyerAddress buyerAddress);
 
     /**
      * 根据主键查找

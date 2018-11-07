@@ -59,11 +59,7 @@ public class BuyerAddressController {
             }
             buyerAddress.setBuyerId(buyerId);
         }
-        BuyerAddress save = buyerAddressService.save(buyerAddress);
-        if (save == null) {
-            log.error("【买家端保存常用地址】发生异常{}");
-            throw new BuyException(ResultEnum.BUYER_ADDRESS_SAVE_FAIL);
-        }
+        buyerAddressService.save(buyerAddress);
         log.info("【买家端保存常用地址】保存成功");
         return ResultVOUtil.success();
     }
@@ -81,10 +77,6 @@ public class BuyerAddressController {
             throw new BuyException(ResultEnum.PARAM_ERROR);
         }
         BuyerAddress buyerAddress = buyerAddressService.findOne(buyerAddressId);
-        if (buyerAddress == null) {
-            log.error("【买家端查看常用地址】常用地址不存在");
-            throw new BuyException(ResultEnum.BUYER_ADDRESS_NOT_EXIST);
-        }
         return ResultVOUtil.success(buyerAddress);
     }
 

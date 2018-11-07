@@ -68,6 +68,14 @@ fdfs:
     jmx-enabled: false
 
 baseUrl:
-  front_base_url: http://106.14.183.207:8081
-  back_base_url: http://106.14.183.207:8085
-  image_server_url: http://106.14.183.207/
+  frontBaseUrl: http://106.14.183.207:8081
+  backBaseUrl: http://106.14.183.207:8085
+  imageServerUrl: http://106.14.183.207/
+
+crawler:
+  proxySources: http://www.xicidaili.com/nn/
+  proxySourcesMaxPage: 5
+  proxyAddressQueueLowThreshold: 100
+  proxyAddressQueueHighThreshold: 400
+  activeProxyListThreshold: 50
+  expressCrawlerBaseUrl: http://www.kuaidi100.com/query?type=|&postid=

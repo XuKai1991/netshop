@@ -108,7 +108,7 @@
                                     <td style="vertical-align:middle">${orderDTO.orderActualAmount?c}</td>
                                     <td style="vertical-align:middle; width:64px">${orderDTO.getOrderStatusEnum().message}</td>
                                     <td style="vertical-align:middle">${orderDTO.createTime}</td>
-                                    <#--<td style="vertical-align:middle; width:170px">-->
+                                <#--<td style="vertical-align:middle; width:170px">-->
                                     <td style="vertical-align:middle; width:240px">
                                         <a href="/netshop/seller/order/detail?orderId=${orderDTO.orderId}"
                                            type="button"
@@ -123,7 +123,7 @@
                                         </#if>
                                         <#if orderDTO.getOrderStatusEnum().message == "已支付">
                                         <#--发货业务-->
-                                        <a href="/netshop/seller/order/send?orderId=${orderDTO.orderId}"
+                                        <a href="javascript:preSendGoods(${orderDTO.orderId})"
                                            type="button"
                                            class="btn btn-default btn-primary">发货</a>
                                         </#if>
@@ -230,6 +230,42 @@
     </div>
 </div>
 
+<#-- 订单发货 -->
+<div id="sendGoodsModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">订单发货</h4>
+            </div>
+            <div class="modal-body">
+                <input id="orderIdForExpress" type="hidden" class="form-control" aria-describedby="basic-addon1"/>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">快递</span>
+                    <select name="expressShipper" id="expressShipper" class="form-control">
+                        <#if expressMap??>
+                            <#list expressMap?keys as key>
+                                <option value="${key!}">${expressMap[key]!}</option>
+                            </#list>
+                        </#if>
+                    </select>
+                </div>
+                </br>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">单号</span>
+                    <input id="expressNumber" type="text" class="form-control" aria-describedby="basic-addon1">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <a type="button" class="btn btn-primary" href="javascript:sendGoods()">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     // 取消订单确认提示
     function preCancelOrder(id) {
@@ -255,11 +291,17 @@
         $('#editModal').modal();
     }
 
+    // 订单发货确认提示
+    function preSendGoods(orderId) {
+        $("#orderIdForExpress").val(orderId);
+        $('#sendGoodsModal').modal();
+    }
+
     // 将订单改为已支付
     // TODO
     // 手动确认支付是目前因为未接入线上支付的临时方法
     // 后期需要删除
-    function editOrderPayed(orderId){
+    function editOrderPayed(orderId) {
         $.post("/netshop/seller/order/pay", {
             orderId: orderId,
         }, function (result) {
@@ -292,6 +334,31 @@
             } else {
                 $("#hintModalBody").text("订单修改失败，请重试！");
             }
+            $("#hintModalCancel").hide();
+            $("#hintModalConfirm").attr("href", "javascript:location.reload()");
+            $("#hintModal").modal();
+        });
+    }
+
+    // 订单发货
+    function sendGoods() {
+        var orderId = $("#orderIdForExpress").val();
+        var expressShipper = $("#expressShipper").val();
+        var expressNumber = $("#expressNumber").val();
+        $.post("/netshop/seller/order/send", {
+            orderId: orderId,
+            expressShipper: expressShipper,
+            expressNumber: expressNumber
+        }, function (result) {
+            $('#sendGoodsModal').modal("hide");
+            $("#hintModalTitle").text("订单发货");
+            if (result.msg == "success") {
+                $("#hintModalBody").text("订单发货成功！");
+            } else {
+                $("#hintModalBody").text("订单发货失败，请重试！");
+            }
+            $("#expressShipper").val("");
+            $("#expressNumber").val("");
             $("#hintModalCancel").hide();
             $("#hintModalConfirm").attr("href", "javascript:location.reload()");
             $("#hintModal").modal();

@@ -14,6 +14,7 @@ import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.repository.OrderDetailRepository;
 import com.xukai.netshop.repository.OrderMasterRepository;
 import com.xukai.netshop.repository.ProductInfoRepository;
+import com.xukai.netshop.service.ExpressService;
 import com.xukai.netshop.service.OrderService;
 import com.xukai.netshop.service.ProductService;
 import com.xukai.netshop.service.WebSocket;
@@ -59,6 +60,9 @@ public class OrderServiceImpl implements OrderService {
     private ProductInfoRepository productInfoRepository;
 
     @Autowired
+    private ExpressService expressService;
+
+    @Autowired
     private WebSocket webSocket;
 
     @Override
@@ -71,9 +75,6 @@ public class OrderServiceImpl implements OrderService {
         List<OrderDetail> toDelete = new ArrayList<>();
         for (OrderDetail orderDetail : orderDetailList) {
             ProductInfo productInfo = productService.findOne(orderDetail.getProductId());
-            if (productInfo == null) {
-                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
-            }
             // 检查商品是否在售
             if (!productInfo.getProductStatus().equals(ProductStatusEnum.UP.getCode())) {
                 toDelete.add(orderDetail);
@@ -124,14 +125,6 @@ public class OrderServiceImpl implements OrderService {
         }
         // 更新订单详情中商品名称和图片，但如果商品已经被删除，就不做处理保持原状
         refreshOrderDetailList(orderDetailList);
-        // ProductInfo productInfo;
-        // for (OrderDetail orderDetail : orderDetailList) {
-        //     productInfo = productInfoRepository.findOne(orderDetail.getProductId());
-        //     if (productInfo != null) {
-        //         orderDetail.setProductName(productInfo.getProductName());
-        //         orderDetail.setProductImgMd(productInfo.getProductImgMd());
-        //     }
-        // }
         OrderDTO orderDTO = new OrderDTO();
         BeanUtils.copyProperties(orderMaster, orderDTO);
         orderDTO.setOrderDetailList(orderDetailList);
@@ -160,14 +153,6 @@ public class OrderServiceImpl implements OrderService {
             List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(e.getOrderId());
             if (!CollectionUtils.isEmpty(orderDetailList)) {
                 refreshOrderDetailList(orderDetailList);
-                // ProductInfo productInfo;
-                // for (OrderDetail orderDetail : orderDetailList) {
-                //     productInfo = productInfoRepository.findOne(orderDetail.getProductId());
-                //     if (productInfo != null) {
-                //         orderDetail.setProductName(productInfo.getProductName());
-                //         orderDetail.setProductImgMd(productInfo.getProductImgMd());
-                //     }
-                // }
             }
             OrderDTO orderDTO = new OrderDTO();
             BeanUtils.copyProperties(e, orderDTO);
@@ -220,6 +205,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(rollbackFor = SellException.class)
     public void send(String orderId) {
         OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
         // 判断订单状态
@@ -251,6 +237,8 @@ public class OrderServiceImpl implements OrderService {
             log.error("【订单收货】更新失败, orderId={}", orderMaster.getOrderId());
             throw new BuyException(ResultEnum.ORDER_UPDATE_FAIL);
         }
+        // 修改物流状态
+        expressService.receive(orderId);
     }
 
     @Override
@@ -288,24 +276,26 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional(rollbackFor = BuyException.class)
+    @Transactional(rollbackFor = SellException.class)
     public void sellerDelete(String orderId) {
         OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
         // 判断订单状态
         if (!orderMaster.getOrderStatus().equals(OrderStatusEnum.CANCEL.getCode()) && !orderMaster.getOrderStatus().equals(OrderStatusEnum.HAS_RECEIVE.getCode()) && !orderMaster.getOrderStatus().equals(OrderStatusEnum.BUYER_DEL.getCode())) {
             log.error("【卖家删除订单】订单状态不正确, orderId={}, orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
-            throw new BuyException(ResultEnum.ORDER_STATUS_ERROR);
+            throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
         }
         // 先删除订单详情
         int delOrderDetailResult = orderDetailRepository.deleteByOrderId(orderId);
         if (delOrderDetailResult == 0) {
-            throw new BuyException(ResultEnum.ORDERDETAIL_NOT_EXIST);
+            throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);
         }
         // 再删除订单
         int delOrderResult = orderMasterRepository.deleteByOrderId(orderId);
         if (delOrderResult == 0) {
-            throw new BuyException(ResultEnum.ORDER_NOT_EXIST);
+            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
+        // 再删除订单物流信息（不一定有）
+        expressService.deleteByOrderId(orderId);
     }
 
     @Override

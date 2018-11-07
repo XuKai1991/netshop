@@ -1,6 +1,8 @@
 package com.xukai.netshop.service.impl;
 
 import com.xukai.netshop.dataobject.BuyerAddress;
+import com.xukai.netshop.enums.ResultEnum;
+import com.xukai.netshop.exception.BuyException;
 import com.xukai.netshop.repository.BuyerAddressRepository;
 import com.xukai.netshop.service.BuyerAddressService;
 import com.xukai.netshop.utils.KeyUtils;
@@ -25,16 +27,24 @@ public class BuyerAddressServiceImpl implements BuyerAddressService {
     private BuyerAddressRepository buyerAddressRepository;
 
     @Override
-    public BuyerAddress save(BuyerAddress buyerAddress) {
+    public void save(BuyerAddress buyerAddress) {
         if (StringUtils.isEmpty(buyerAddress.getBuyerAddressId())) {
             buyerAddress.setBuyerAddressId(KeyUtils.genUniqueKey());
         }
-        return buyerAddressRepository.save(buyerAddress);
+        BuyerAddress save = buyerAddressRepository.save(buyerAddress);
+        if (save == null) {
+            log.error("【保存常用地址】发生异常{}", ResultEnum.BUYER_ADDRESS_SAVE_FAIL.getMessage());
+            throw new BuyException(ResultEnum.BUYER_ADDRESS_SAVE_FAIL);
+        }
     }
 
     @Override
     public BuyerAddress findOne(String buyerAddressId) {
         BuyerAddress buyerAddress = buyerAddressRepository.findOne(buyerAddressId);
+        if (buyerAddress == null) {
+            log.error("【查看常用地址】发生异常{}", ResultEnum.BUYER_ADDRESS_NOT_EXIST.getMessage());
+            throw new BuyException(ResultEnum.BUYER_ADDRESS_NOT_EXIST);
+        }
         return buyerAddress;
     }
 

@@ -7,6 +7,7 @@ import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.form.OrderForm;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -24,6 +25,9 @@ public class OrderForm2OrderDTOConverter {
         orderDTO.setBuyerAddress(orderForm.getBuyerAddress());
         orderDTO.setBuyerName(orderForm.getBuyerName());
         orderDTO.setBuyerPhone(orderForm.getBuyerPhone());
+        if (StringUtils.isNotEmpty(orderForm.getOrderRemark())) {
+            orderDTO.setOrderRemark(orderForm.getOrderRemark());
+        }
         List<OrderDetail> orderDetailList;
         try {
             orderDetailList = JSONObject.parseArray(orderForm.getItems(), OrderDetail.class);

@@ -66,10 +66,10 @@ public class FastdfsPicTask {
         ArrayList<String> existPicUrls = new ArrayList<>();
         Page<ProductInfo> productInfos = productService.findAll(null);
         for (ProductInfo productInfo : productInfos) {
-            existPicUrls.add(productInfo.getProductImgMd().replace(baseUrlConfig.image_server_url, ""));
+            existPicUrls.add(productInfo.getProductImgMd().replace(baseUrlConfig.imageServerUrl, ""));
             List<String> detailImgUrls = Arrays.asList(productInfo.getProductDetailImg().split("\\|"));
             for (String detailImgUrl : detailImgUrls) {
-                existPicUrls.add(detailImgUrl.replace(baseUrlConfig.image_server_url, ""));
+                existPicUrls.add(detailImgUrl.replace(baseUrlConfig.imageServerUrl, ""));
             }
         }
         savedPicUrls.removeAll(existPicUrls);
