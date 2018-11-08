@@ -11,7 +11,7 @@
             <ul class="dropdown-menu" role="menu">
                 <li class="dropdown-header">操作</li>
                 <li><a href="/netshop/seller/order/list">列表</a></li>
-                <li><a href="/netshop/express/refreshLogistics">刷新物流</a></li>
+                <#--<li><a href="/netshop/express/refreshLogistics">刷新物流</a></li>-->
             </ul>
         </li>
         <li class="dropdown open">
