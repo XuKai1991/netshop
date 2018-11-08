@@ -24,7 +24,7 @@ import java.util.Map;
  * @modified By:
  */
 @RestController
-@RequestMapping("/buyer/express")
+@RequestMapping("/express")
 @Slf4j
 public class ExpressController {
 

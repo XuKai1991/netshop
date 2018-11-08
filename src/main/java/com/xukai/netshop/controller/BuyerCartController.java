@@ -5,8 +5,8 @@ import com.xukai.netshop.config.CookieConfig;
 import com.xukai.netshop.dataobject.CartDetail;
 import com.xukai.netshop.dataobject.CartMaster;
 import com.xukai.netshop.service.BuyerCartService;
-import com.xukai.netshop.utils.TokenUtils;
 import com.xukai.netshop.utils.ResultVOUtil;
+import com.xukai.netshop.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -88,6 +88,24 @@ public class BuyerCartController {
     public ResultVO decreaseCartItemNum(String itemId, HttpServletRequest request) {
         String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
         CartMaster result = buyerCartService.decreaseItemNum(itemId, buyerId);
+        if (result == null) {
+            return ResultVOUtil.error(0, "fail");
+        }
+        return ResultVOUtil.success();
+    }
+
+    /**
+     * 用户直接修改购物车内商品数量
+     *
+     * @param itemId
+     * @param quantity
+     * @param request
+     * @return
+     */
+    @GetMapping("/editQuantity")
+    public ResultVO editItemNum(String itemId, Integer quantity, HttpServletRequest request) {
+        String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
+        CartMaster result = buyerCartService.editItemNum(itemId, quantity, buyerId);
         if (result == null) {
             return ResultVOUtil.error(0, "fail");
         }

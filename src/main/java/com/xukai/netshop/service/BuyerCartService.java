@@ -1,7 +1,7 @@
 package com.xukai.netshop.service;
 
-import com.xukai.netshop.dataobject.CartMaster;
 import com.xukai.netshop.dataobject.CartDetail;
+import com.xukai.netshop.dataobject.CartMaster;
 
 /**
  * @author: Xukai
@@ -70,4 +70,14 @@ public interface BuyerCartService {
      * @return
      */
     CartMaster decreaseItemNum(String itemId, String buyerId);
+
+    /**
+     * 直接修改购物车内商品数量
+     *
+     * @param itemId
+     * @param quantity
+     * @param buyerId
+     * @return
+     */
+    CartMaster editItemNum(String itemId, Integer quantity, String buyerId);
 }

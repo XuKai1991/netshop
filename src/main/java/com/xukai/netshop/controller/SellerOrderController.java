@@ -49,11 +49,11 @@ public class SellerOrderController {
         Page<OrderDTO> orderDTOPage = orderService.findOnCondition(s_order, minAmount, maxAmount, new PageRequest(page - 1, size));
         ModelAndView mav = new ModelAndView("sell/order/list");
         Map<String, String> OrderStatusEnumMap = EnumUtils.listEnum(OrderStatusEnum.class);
-        Map<String, String> expressEnumMap = EnumUtils.listEnum(ExpressShipperEnum.class);
+        Map<String, String> expressShipperEnumMap = EnumUtils.listEnum(ExpressShipperEnum.class);
         mav.addObject("s_order", s_order);
         mav.addObject("orderDTOPage", orderDTOPage);
         mav.addObject("orderStatusMap", OrderStatusEnumMap);
-        mav.addObject("expressMap", expressEnumMap);
+        mav.addObject("expressShipperEnumMap", expressShipperEnumMap);
         mav.addObject("currentPage", page);
         mav.addObject("minAmount", minAmount);
         mav.addObject("maxAmount", maxAmount);
@@ -94,8 +94,10 @@ public class SellerOrderController {
     public ModelAndView detail(@RequestParam("orderId") String orderId) {
         ModelAndView mav = new ModelAndView();
         OrderDTO orderDTO;
+        Map<String, String> expressShipperEnumMap;
         try {
             orderDTO = orderService.findOne(orderId);
+            expressShipperEnumMap = EnumUtils.listEnum(ExpressShipperEnum.class);
         } catch (SellException e) {
             log.error("【卖家端查询订单详情】发生异常{}", e);
             mav.addObject("msg", e.getMessage());
@@ -104,6 +106,7 @@ public class SellerOrderController {
             return mav;
         }
         mav.addObject("orderDTO", orderDTO);
+        mav.addObject("expressShipperEnumMap", expressShipperEnumMap);
         mav.setViewName("sell/order/detail");
         return mav;
     }

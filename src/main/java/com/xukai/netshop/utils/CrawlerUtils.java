@@ -39,7 +39,7 @@ public class CrawlerUtils {
                 }
                 if (Pattern.matches("[1-9]\\d*", e.text())) {
                     port = e.text();
-                    CrawlerUtils.addToProxyQueue(ip + ":" + port, "解析西刺代理页面");
+                    CrawlerUtils.addToProxyQueue(ip + ":" + port);
                 }
             }
         }
@@ -49,37 +49,32 @@ public class CrawlerUtils {
      * 将抓取的ip和port添加至proxy队列，假如队列中存在则不添加
      *
      * @param proxy
-     * @param info
      */
-    public static void addToProxyQueue(String proxy, String info) {
+    public static void addToProxyQueue(String proxy) {
         if (StringUtils.isEmpty(proxy)) {
             return;
-        }
-        if (info == null) {
-            info = "";
         }
         if (!PROXY_ADDRESS_QUEUE.contains(proxy)) {
             PROXY_ADDRESS_QUEUE.add(proxy);
         }
-        log.info("[" + info + "]" + "代理总队列添加代理");
     }
 
     /**
      * 将url添加至代理来源页等待队列，假如队列中存在则不添加
      *
-     * @param proxy
+     * @param source
      * @param info
      */
-    public static void addToProxySourceQueue(String proxy, String info) {
-        if (StringUtils.isEmpty(proxy)) {
+    public static void addToProxySourceQueue(String source, String info) {
+        if (StringUtils.isEmpty(source)) {
             return;
         }
         if (info == null) {
             info = "";
         }
-        if (!PROXY_SOURCES_QUEUE.contains(proxy)) {
-            PROXY_SOURCES_QUEUE.add(proxy);
-            log.info("[" + info + "]" + "代理来源页队列添加url：" + proxy);
+        if (!PROXY_SOURCES_QUEUE.contains(source)) {
+            PROXY_SOURCES_QUEUE.add(source);
+            log.info("【抓取代理】" + info + "代理来源页队列添加url：" + source);
         }
     }
 

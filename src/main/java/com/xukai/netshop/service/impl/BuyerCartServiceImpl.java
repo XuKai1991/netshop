@@ -184,4 +184,19 @@ public class BuyerCartServiceImpl implements BuyerCartService {
         cartMaster.setCartItems(JSONObject.toJSONString(itemList));
         return cartMasterRepository.save(cartMaster);
     }
+
+    @Override
+    public CartMaster editItemNum(String itemId, Integer quantity, String buyerId) {
+        CartMaster cartMaster = list(buyerId);
+        String cartItems = cartMaster.getCartItems();
+        List<CartDetail> itemList = JSONObject.parseArray(cartItems, CartDetail.class);
+        for (CartDetail item : itemList) {
+            if (item.getItemId().equals(itemId)) {
+                item.setProductQuantity(quantity);
+                break;
+            }
+        }
+        cartMaster.setCartItems(JSONObject.toJSONString(itemList));
+        return cartMasterRepository.save(cartMaster);
+    }
 }

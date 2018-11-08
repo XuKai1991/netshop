@@ -21,7 +21,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -103,8 +102,6 @@ public class ExpressTask {
                                 // 将物流信息保存到数据库
                                 expressInfo.setLogisticsDetail(webContent);
                                 expressService.save(expressInfo);
-                                // 将代理重新放回队列，供下次使用
-                                returnToActiveProxyList(proxyStr);
                             } else {
                                 throw new Exception();
                             }
@@ -112,7 +109,7 @@ public class ExpressTask {
                             throw new Exception();
                         }
                     } catch (Exception e) {
-                        log.error("Exception" + e);
+                        log.error("【抓取代理】订单{}：更新请求失败或超时", expressInfo.getOrderId());
                         // 删除无效代理
                         deleteFromActiveProxyList(proxyStr);
                         expressInTransitList.add(expressInfo);
@@ -123,7 +120,7 @@ public class ExpressTask {
                             }
                             httpClient.close();
                         } catch (Exception e) {
-                            log.error("IOException" + e);
+                            log.error("【抓取代理】订单{}：更新关闭连接", expressInfo.getOrderId());
                         }
                     }
                 });
@@ -131,7 +128,7 @@ public class ExpressTask {
                     // 休眠5秒，避免被快递100封IP
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
-                    log.error("快递物流信息更新任务线程休眠报错", e);
+                    log.error("【物流信息更新】线程休眠错误");
                 }
             } else {
                 if (PROXY_ADDRESS_QUEUE.size() < crawlerConfig.getProxyAddressQueueLowThreshold()) {
@@ -143,7 +140,7 @@ public class ExpressTask {
                     // 结束所有线程
                     executorService.shutdown();
                     exeExpressFlag = false;
-                    log.info("快递物流信息更新任务完成");
+                    log.info("【物流信息更新】任务成功");
                 }
             }
         }
@@ -160,22 +157,9 @@ public class ExpressTask {
                 ACTIVE_PROXY_ADDRESS_LIST.add(PROXY_ADDRESS_QUEUE.poll());
             }
         }
-        Random random = new Random();
-        int index = random.nextInt(ACTIVE_PROXY_ADDRESS_LIST.size());
+        int index = RANDOM.nextInt(ACTIVE_PROXY_ADDRESS_LIST.size());
         // log.info("获取代理：" + ACTIVE_PROXY_ADDRESS_LIST.get(index));
         return ACTIVE_PROXY_ADDRESS_LIST.get(index);
-    }
-
-    /**
-     * 将代理还给可用代理列表
-     *
-     * @param proxy
-     */
-    public void returnToActiveProxyList(String proxy) {
-        if (!ACTIVE_PROXY_ADDRESS_LIST.contains(proxy)) {
-            ACTIVE_PROXY_ADDRESS_LIST.add(proxy);
-            // log.info("重新添加代理：" + proxy);
-        }
     }
 
     /**
@@ -228,7 +212,6 @@ public class ExpressTask {
                         if (url == null || "".equals(url)) {
                             return;
                         }
-                        log.info("解析代理页面:" + url);
                         CloseableHttpClient httpClient = HttpClients.createDefault();
                         HttpGet httpGet = new HttpGet(url);
                         RequestConfig config = RequestConfig.custom()
@@ -240,44 +223,41 @@ public class ExpressTask {
                         CloseableHttpResponse response = null;
                         try {
                             response = httpClient.execute(httpGet);
-                        } catch (Exception e) {
-                            log.error("Exception" + e);
-                            addToProxySourceQueue(url, "由于异常");
-                        }
-                        if (response != null) {
-                            HttpEntity entity = response.getEntity();
-                            String webContent;
-                            try {
+                            if (response != null) {
+                                HttpEntity entity = response.getEntity();
+                                String webContent;
                                 webContent = EntityUtils.toString(entity, "utf-8");
                                 CrawlerUtils.getHostAndPort(webContent);
-                                response.close();
-                            } catch (Exception e) {
-                                log.error("Exception" + e);
-                                addToProxySourceQueue(url, "由于异常");
+                            } else {
+                                throw new Exception();
                             }
-                        } else {
-                            log.info("连接超时");
+                        } catch (Exception e) {
+                            log.error("【抓取代理】请求{}失败或超时", url);
                             addToProxySourceQueue(url, "由于异常");
-                        }
-                        try {
-                            httpClient.close();
-                        } catch (IOException e) {
-                            log.error("IOException" + e);
+                        } finally {
+                            try {
+                                if (response != null) {
+                                    response.close();
+                                }
+                                httpClient.close();
+                            } catch (IOException e) {
+                                log.error("【抓取代理】关闭请求{}连接", url);
+                            }
                         }
                     });
+                    try {
+                        // 休眠5分钟，避免被西刺封IP
+                        Thread.sleep(1000 * 60 * 5);
+                    } catch (InterruptedException e) {
+                        log.error("【抓取代理】线程休眠错误");
+                    }
                 } else {
                     //判断线程池中是否还有正在工作的线程
                     if (executorService.getActiveCount() == 0) {
                         executorService.shutdown();
                         exeProxyFlag = false;
-                        log.info("代理来源页爬虫任务完成");
+                        log.info("【抓取代理】任务成功");
                     }
-                }
-                try {
-                    // 休眠3分钟，避免被西刺封IP
-                    Thread.sleep(1000 * 60 * 3);
-                } catch (InterruptedException e) {
-                    log.error("线程休眠报错", e);
                 }
             }
         }

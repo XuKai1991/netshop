@@ -1,9 +1,6 @@
 package com.xukai.netshop.constant;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * @author: Xukai
@@ -27,5 +24,10 @@ public class CrawlerCons {
      * 代理IP来源页队列
      */
     public final static Queue<String> PROXY_SOURCES_QUEUE = new LinkedList<>();
+
+    /**
+     * 随机数
+     */
+    public final static Random RANDOM = new Random();
 
 }
