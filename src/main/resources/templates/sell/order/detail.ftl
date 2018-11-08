@@ -33,7 +33,7 @@
                             <td style="vertical-align:middle">${orderDTO.orderAmount?c}</td>
                             <td style="vertical-align:middle">${orderDTO.orderActualAmount?c}</td>
                             <td style="vertical-align:middle">${orderDTO.buyerAddress}</td>
-                            <td style="vertical-align:middle">${orderDTO.orderRemark}</td>
+                            <td style="vertical-align:middle"><#if orderDTO.orderRemark??>${orderDTO.orderRemark}</#if></td>
                             <td style="vertical-align:middle">${orderDTO.createTime}</td>
                             <td style="vertical-align:middle">${orderDTO.updateTime}</td>
                         </tr>
