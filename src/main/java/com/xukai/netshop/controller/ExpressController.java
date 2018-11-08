@@ -5,6 +5,7 @@ import com.xukai.netshop.dataobject.ExpressInfo;
 import com.xukai.netshop.enums.ExpressShipperEnum;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.BuyException;
+import com.xukai.netshop.scheduledTasks.ExpressTask;
 import com.xukai.netshop.service.ExpressService;
 import com.xukai.netshop.utils.EnumUtils;
 import com.xukai.netshop.utils.ResultVOUtil;
@@ -31,6 +32,15 @@ public class ExpressController {
     @Autowired
     private ExpressService expressService;
 
+    @Autowired
+    private ExpressTask expressTask;
+
+    /**
+     * 根据订单号查询物流
+     *
+     * @param orderId
+     * @return
+     */
     @GetMapping("/findOne")
     public ResultVO findOne(String orderId) {
         if (StringUtils.isEmpty(orderId)) {
@@ -39,6 +49,26 @@ public class ExpressController {
         }
         ExpressInfo expressInfo = expressService.findByOrderId(orderId);
         return ResultVOUtil.success(expressInfo);
+    }
+
+    /**
+     * 手动刷新物流信息
+     *
+     * @return
+     */
+    @GetMapping("/refreshLogistics")
+    public ResultVO refreshLogistics() {
+        // ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("refreshLogisticsDetail-manualTask-" + DateUtils.getNowTime()).build();
+        // ThreadPoolExecutor executorService = new ThreadPoolExecutor(
+        //         10,
+        //         10,
+        //         0L, TimeUnit.MILLISECONDS,
+        //         new LinkedBlockingQueue<>(),
+        //         namedThreadFactory,
+        //         new ThreadPoolExecutor.AbortPolicy());
+        // executorService.execute(() -> expressTask.refreshLogisticsDetail());
+        expressTask.refreshLogisticsDetail();
+        return ResultVOUtil.success();
     }
 
     /**

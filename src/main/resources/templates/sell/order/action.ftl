@@ -214,16 +214,16 @@
         }, function (result) {
             if (result.msg == "success") {
                 var info;
+                info = "<h3>" + result.data.expressShipper + "</h3><h4>单号：" + result.data.expressNumber + "</h4>";
                 var logisticsDetail = result.data.logisticsDetail;
-                if (logisticsDetail != "") {
+                if (logisticsDetail != null && logisticsDetail != "") {
                     var logisticsDetailJsonObject = $.parseJSON(logisticsDetail);
                     var detailList = logisticsDetailJsonObject.data;
-                    info = "<h2>" + result.data.expressShipper + "</h2>";
                     for (var i = 0; i < detailList.length; i++) {
-                        info = info + "<br>" + detailList[i].time + "&nbsp;&nbsp;&nbsp;&nbsp;" + detailList[i].context;
+                        info = info + detailList[i].time + "&nbsp;&nbsp;&nbsp;&nbsp;" + detailList[i].context + "<br>";
                     }
                 } else {
-                    info = "<h3>抱歉，暂无物流信息！</h3>";
+                    info = info + "<a style=\"color: red\">抱歉，暂无物流信息！</a>";
                 }
                 $("#viewLogisticsModalBody").html(info);
             } else {

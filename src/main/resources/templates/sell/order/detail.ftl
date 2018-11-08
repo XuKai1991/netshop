@@ -10,15 +10,19 @@
     <div id="page-content-wrapper">
         <div class="container-fluid">
             <div class="row clearfix" style="margin-bottom:15px">
-                <div class="col-md-8 column">
+                <div class="col-md-12 column">
                     <table class="table table-bordered table-condensed table-striped">
                         <thead>
                         <tr>
                             <th style="text-align: center">订单编号</th>
                             <th style="text-align: center">姓名</th>
                             <th style="text-align: center">手机</th>
-                            <th style="text-align: center">应付金额</th>
-                            <th style="text-align: center">实付金额</th>
+                            <th style="text-align: center">应付</th>
+                            <th style="text-align: center">实付</th>
+                            <th style="text-align: center">地址</th>
+                            <th style="text-align: center">备注</th>
+                            <th style="text-align: center">创建时间</th>
+                            <th style="text-align: center">更新时间</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -28,6 +32,10 @@
                             <td style="vertical-align:middle">${orderDTO.buyerPhone}</td>
                             <td style="vertical-align:middle">${orderDTO.orderAmount?c}</td>
                             <td style="vertical-align:middle">${orderDTO.orderActualAmount?c}</td>
+                            <td style="vertical-align:middle">${orderDTO.buyerAddress}</td>
+                            <td style="vertical-align:middle">${orderDTO.orderRemark}</td>
+                            <td style="vertical-align:middle">${orderDTO.createTime}</td>
+                            <td style="vertical-align:middle">${orderDTO.updateTime}</td>
                         </tr>
                         </tbody>
                     </table>

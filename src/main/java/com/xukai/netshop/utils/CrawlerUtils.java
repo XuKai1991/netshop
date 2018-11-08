@@ -56,6 +56,7 @@ public class CrawlerUtils {
         }
         if (!PROXY_ADDRESS_QUEUE.contains(proxy)) {
             PROXY_ADDRESS_QUEUE.add(proxy);
+            log.info("代理总队列添加url：" + proxy);
         }
     }
 

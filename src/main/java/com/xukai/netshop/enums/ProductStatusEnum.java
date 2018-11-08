@@ -11,6 +11,7 @@ import lombok.Getter;
 @Getter
 public enum ProductStatusEnum implements CodeEnum<Integer, String> {
 
+    // 商品状态
     UP(0, "在售"),
     Down(1, "停售");
 

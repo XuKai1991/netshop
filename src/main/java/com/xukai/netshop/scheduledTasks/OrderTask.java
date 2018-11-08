@@ -21,18 +21,18 @@ public class OrderTask {
 
     /**
      * 买家十天不收货，卖家自动收货
-     * 每十分钟执行一次
+     * 每15分钟执行一次
      */
-    @Scheduled(cron = "0 */10 * * * ?")
+    @Scheduled(cron = "0 */15 * * * ?")
     public void confirmReceive() {
 
     }
 
     /**
      * 买家2小时不支付自动取消订单
-     * 每分钟执行一次
+     * 每5分钟执行一次
      */
-    @Scheduled(cron = "0 */1 * * * ?")
+    @Scheduled(cron = "0 */5 * * * ?")
     public void cancelNotPayOrder() {
 
     }
