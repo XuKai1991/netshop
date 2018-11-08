@@ -213,12 +213,17 @@
             orderId: orderId
         }, function (result) {
             if (result.msg == "success") {
+                var info;
                 var logisticsDetail = result.data.logisticsDetail;
-                var logisticsDetailJsonObject = $.parseJSON(logisticsDetail);
-                var detailList = logisticsDetailJsonObject.data;
-                var info = "<h2>" + result.data.expressShipper + "</h2>";
-                for (var i = 0; i < detailList.length; i++) {
-                    info = info + "<br>" + detailList[i].time + "&nbsp;&nbsp;&nbsp;&nbsp;" + detailList[i].context;
+                if (logisticsDetail != "") {
+                    var logisticsDetailJsonObject = $.parseJSON(logisticsDetail);
+                    var detailList = logisticsDetailJsonObject.data;
+                    info = "<h2>" + result.data.expressShipper + "</h2>";
+                    for (var i = 0; i < detailList.length; i++) {
+                        info = info + "<br>" + detailList[i].time + "&nbsp;&nbsp;&nbsp;&nbsp;" + detailList[i].context;
+                    }
+                } else {
+                    info = "<h3>抱歉，暂无物流信息！</h3>";
                 }
                 $("#viewLogisticsModalBody").html(info);
             } else {
