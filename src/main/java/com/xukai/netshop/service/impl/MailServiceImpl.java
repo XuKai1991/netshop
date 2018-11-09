@@ -70,29 +70,29 @@ public class MailServiceImpl implements MailService {
                 "            </p>\n" +
                 "        </td>\n" +
                 "    </tr>\n" +
-                "\n" +
-                "    <tr height=\"50\">\n" +
-                "        <td valign=\"top\" align=\"center\">\n" +
-                "            <table id=\"email-button\"\n" +
-                "                   style=\"-webkit-text-size-adjust: 100%; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #0a84ff; border-radius: 4px; height: 50px; width: 310px !important;\"\n" +
-                "                   width=\"100%\" height=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\n" +
-                "                <tbody>\n" +
-                "                <tr style=\"page-break-before: always\">\n" +
-                "                    <td id=\"button-content\"\n" +
-                "                        style=\"font-family: sans-serif; font-weight: normal; text-align: center; margin: 0; color: #ffffff; font-size: 20px; line-height: 100%;\"\n" +
-                "                        valign=\"middle\" align=\"center\">\n" +
-                "\n" +
-                "                        <a href=\"#\"\n" +
-                "                           id=\"button-link\"\n" +
-                "                           style=\"font-family:sans-serif; color: #fff; display: block; padding: 15px; text-decoration: none; width: 280px; font-size: 18px; line-height: 26px;\"\n" +
-                "                           rel=\"noopener\" target=\"_blank\">重新登录</a>\n" +
-                "                    </td>\n" +
-                "                </tr>\n" +
-                "                </tbody>\n" +
-                "            </table>\n" +
-                "        </td>\n" +
-                "    </tr>\n" +
-                "\n" +
+                // "\n" +
+                // "    <tr height=\"50\">\n" +
+                // "        <td valign=\"top\" align=\"center\">\n" +
+                // "            <table id=\"email-button\"\n" +
+                // "                   style=\"-webkit-text-size-adjust: 100%; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #0a84ff; border-radius: 4px; height: 50px; width: 310px !important;\"\n" +
+                // "                   width=\"100%\" height=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\n" +
+                // "                <tbody>\n" +
+                // "                <tr style=\"page-break-before: always\">\n" +
+                // "                    <td id=\"button-content\"\n" +
+                // "                        style=\"font-family: sans-serif; font-weight: normal; text-align: center; margin: 0; color: #ffffff; font-size: 20px; line-height: 100%;\"\n" +
+                // "                        valign=\"middle\" align=\"center\">\n" +
+                // "\n" +
+                // "                        <a href=\"#\"\n" +
+                // "                           id=\"button-link\"\n" +
+                // "                           style=\"font-family:sans-serif; color: #fff; display: block; padding: 15px; text-decoration: none; width: 280px; font-size: 18px; line-height: 26px;\"\n" +
+                // "                           rel=\"noopener\" target=\"_blank\">重新登录</a>\n" +
+                // "                    </td>\n" +
+                // "                </tr>\n" +
+                // "                </tbody>\n" +
+                // "            </table>\n" +
+                // "        </td>\n" +
+                // "    </tr>\n" +
+                // "\n" +
                 "    <tr style=\"page-break-before: always\">\n" +
                 "        <td border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" height=\"100%\">\n" +
                 "            </br>\n" +
