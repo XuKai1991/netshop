@@ -1,9 +1,15 @@
 package com.xukai.netshop.scheduledTasks;
 
+import com.xukai.netshop.config.AutoAdminConfig;
+import com.xukai.netshop.dataobject.OrderMaster;
+import com.xukai.netshop.dto.OrderDTO;
+import com.xukai.netshop.enums.OrderStatusEnum;
 import com.xukai.netshop.service.OrderService;
+import com.xukai.netshop.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
 import org.springframework.scheduling.annotation.Scheduled;
 
 /**
@@ -19,13 +25,23 @@ public class OrderTask {
     @Autowired
     private OrderService orderService;
 
-    /**
-     * 买家十天不收货，卖家自动收货
-     * 每15分钟执行一次
-     */
-    @Scheduled(cron = "0 */15 * * * ?")
-    public void confirmReceive() {
+    @Autowired
+    private AutoAdminConfig autoAdminConfig;
 
+    /**
+     * 买家n天不收货，系统自动收货
+     * 每1小时执行一次（30分钟时）
+     */
+    @Scheduled(cron = "0 30 */1 * * ?")
+    public void confirmReceive() {
+        OrderMaster sOrder = new OrderMaster();
+        sOrder.setOrderStatus(OrderStatusEnum.HAS_SEND.getCode());
+        Page<OrderDTO> orderDTOList = orderService.findOnCondition(sOrder, null, null, null);
+        for (OrderDTO orderDTO : orderDTOList) {
+            if (DateUtils.before(DateUtils.formatTime(orderDTO.getUpdateTime()), DateUtils.getNDaysAgoTime(autoAdminConfig.getAutoConfirmReceiveGoodsWaitTime()))) {
+                orderService.receive(orderDTO.getOrderId());
+            }
+        }
     }
 
     /**
@@ -34,6 +50,13 @@ public class OrderTask {
      */
     @Scheduled(cron = "0 */5 * * * ?")
     public void cancelNotPayOrder() {
-
+        OrderMaster sOrder = new OrderMaster();
+        sOrder.setOrderStatus(OrderStatusEnum.NOT_PAY.getCode());
+        Page<OrderDTO> orderDTOList = orderService.findOnCondition(sOrder, null, null, null);
+        for (OrderDTO orderDTO : orderDTOList) {
+            if (DateUtils.minus(DateUtils.getNowTime(), DateUtils.formatTime(orderDTO.getUpdateTime())) > autoAdminConfig.getAutoCancelNotPayedOrderWaitTime()) {
+                orderService.cancel(orderDTO.getOrderId());
+            }
+        }
     }
 }

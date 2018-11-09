@@ -1,11 +1,11 @@
 package com.xukai.netshop.service.impl;
 
+import com.xukai.netshop.config.MailConfig;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.BuyException;
 import com.xukai.netshop.service.MailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -24,8 +24,11 @@ import javax.mail.internet.MimeMessage;
 @Slf4j
 public class MailServiceImpl implements MailService {
 
-    @Value("${mail.fromMail.sender}")
-    private String sender;
+    // @Value("${mail.fromMail.sender}")
+    // private String sender;
+
+    @Autowired
+    private MailConfig mailConfig;
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -33,14 +36,14 @@ public class MailServiceImpl implements MailService {
     @Override
     public boolean sendSimpleMail(String receiver, String subject, String content) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(sender);
+        message.setFrom(mailConfig.getSender());
         message.setTo(receiver);
         message.setSubject(subject);
         message.setText(content);
         try {
             javaMailSender.send(message);
         } catch (Exception e) {
-            log.error("【发送html邮件】发生异常{}", e);
+            log.error("【发送普通邮件】发生异常{}", e);
         }
         return true;
     }
@@ -109,7 +112,7 @@ public class MailServiceImpl implements MailService {
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom(sender);
+            helper.setFrom(mailConfig.getSender());
             helper.setTo(receiver);
             helper.setSubject(subject);
             helper.setText(html, true);

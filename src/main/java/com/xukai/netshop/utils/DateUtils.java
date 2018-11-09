@@ -17,6 +17,16 @@ public class DateUtils {
     }
 
     /**
+     * 格式化时间（yyyy-MM-dd HH:mm:ss）
+     *
+     * @param date Date对象
+     * @return 格式化后的时间
+     */
+    public static String formatTime(Date date) {
+        return getTimeFormat().format(date);
+    }
+
+    /**
      * 判断一个时间是否在另一个时间之前
      *
      * @param time1

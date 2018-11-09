@@ -41,10 +41,10 @@ public class ExpressTask {
     private ExpressService expressService;
 
     /**
-     * 每1小时执行一次(15分钟时)
+     * 每2小时执行一次(15分钟时)
      */
-    @Scheduled(cron = "0 15 */1 * * ?")
     // @Scheduled(cron = "15 */1 * * * ?")
+    @Scheduled(cron = "0 15 */2 * * ?")
     public void refreshLogisticsDetail() {
         List<ExpressInfo> expressInTransitList = expressService.listInTransit();
         // 执行标志
@@ -161,11 +161,12 @@ public class ExpressTask {
         // log.info("删除无效代理：" + proxy);
     }
 
+
     /**
      * 每3小时执行一次(45分钟时)
      */
-    @Scheduled(cron = "0 45 */3 * * ?")
     // @Scheduled(cron = "0 */2 * * * ?")
+    @Scheduled(cron = "0 45 */3 * * ?")
     public void crawlProxy() {
         // log.info("目前来源页队列有：");
         // if (!PROXY_SOURCES_QUEUE.isEmpty()) {
@@ -231,5 +232,4 @@ public class ExpressTask {
             }
         }
     }
-
 }

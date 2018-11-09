@@ -50,8 +50,7 @@ spring:
 
 # 发送邮件地址
 mail:
-  fromMail:
-    sender: xukai910110@163.com
+  sender: xukai910110@163.com
 
 cookieConfig:
   buyerId: buyerId
@@ -84,3 +83,7 @@ crawler:
   activeProxyListMaxThreshold: 50
   expressCrawlerBaseUrl: http://www.kuaidi100.com/query?type=|&postid=
   expressCrawlerWaitTime: 5000
+
+autoAdmin:
+  autoConfirmReceiveGoodsWaitTime: 10   #10天
+  autoCancelNotPayedOrderWaitTime: 7200   #单位s，2小时

@@ -19,8 +19,8 @@
                             <th style="text-align: center">手机</th>
                             <th style="text-align: center">应付</th>
                             <th style="text-align: center">实付</th>
-                            <th style="text-align: center">地址</th>
-                            <th style="text-align: center">备注</th>
+                            <th style="text-align: center;width: 350px">地址</th>
+                            <th style="text-align: center;width: 200px">备注</th>
                             <th style="text-align: center">创建时间</th>
                             <th style="text-align: center">更新时间</th>
                         </tr>

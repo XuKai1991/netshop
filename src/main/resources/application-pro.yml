@@ -48,8 +48,7 @@ spring:
 
 # 发送邮件地址
 mail:
-  fromMail:
-    sender: xukai910110@163.com
+  sender: xukai910110@163.com
 
 cookieConfig:
   buyerId: buyerId
