@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+import static com.xukai.netshop.constant.CrawlerCons.EXPRESS_REFRESH_TRIGGER_EXECUTOR;
+
 /**
  * @author: Xukai
  * @description:
@@ -58,16 +60,7 @@ public class ExpressController {
      */
     @GetMapping("/refreshLogistics")
     public ResultVO refreshLogistics() {
-        // ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("refreshLogisticsDetail-manualTask-" + DateUtils.getNowTime()).build();
-        // ThreadPoolExecutor executorService = new ThreadPoolExecutor(
-        //         10,
-        //         10,
-        //         0L, TimeUnit.MILLISECONDS,
-        //         new LinkedBlockingQueue<>(),
-        //         namedThreadFactory,
-        //         new ThreadPoolExecutor.AbortPolicy());
-        // executorService.execute(() -> expressTask.refreshLogisticsDetail());
-        expressTask.refreshLogisticsDetail();
+        EXPRESS_REFRESH_TRIGGER_EXECUTOR.execute(() -> expressTask.refreshLogisticsDetail());
         return ResultVOUtil.success();
     }
 

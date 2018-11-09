@@ -20,18 +20,6 @@
                         </div>
 
                         <br><br><br>
-                    <#--<div class="input-group">-->
-                    <#--<span class="input-group-addon">单价</span>-->
-                    <#--<input type="text" name="productPrice" style="width: 10%" class="form-control"-->
-                    <#--placeholder="" value="${(productInfo.productPrice?c)!''}">-->
-                    <#--</div>-->
-                    <#--<br>-->
-                    <#--<div class="input-group">-->
-                    <#--<span class="input-group-addon">进价</span>-->
-                    <#--<input type="text" name="productPurchasePrice" style="width: 10%" class="form-control"-->
-                    <#--placeholder="" value="${(productInfo.productPurchasePrice?c)!''}">-->
-                    <#--</div>-->
-                    <#--<br>-->
                         <div class="input-group" style="float: left;width: 50%">
                             <span class="input-group-addon">颜色</span>
                             <input type="text" name="productColor" style="width: 90%" class="form-control"
@@ -43,11 +31,6 @@
                                    placeholder="使用'_'分隔" value="${(productInfo.productSize)!''}">
                         </div>
                         <br><br><br>
-                        <#--<div class="input-group">-->
-                            <#--<span class="input-group-addon">尺码</span>-->
-                            <#--<input type="text" name="productSize" style="width: 30%" class="form-control"-->
-                                   <#--placeholder="使用'_'分隔" value="${(productInfo.productSize)!''}">-->
-                        <#--</div>-->
                         <div class="input-group" style="float: left;width: 20%">
                             <span class="input-group-addon">单价</span>
                             <input type="text" name="productPrice" style="width: 70%" class="form-control"
@@ -85,7 +68,8 @@
                         <br><br><br>
                         <div class="input-group">
                             <span class="input-group-addon">主图</span>
-                            <img id="productImgMd" height="150" width="150" src="${(productInfo.productImgMd)!'/netshop/img/add.png'}"
+                            <img id="productImgMd" height="150" width="150"
+                                 src="${(productInfo.productImgMd)!'/netshop/img/add.png'}"
                                  alt="">
                             <input id="imgMd" name="file" accept="image/*" type="file" style="display: none"/>
                             <input id="imgMdInput" name="productImgMd" type="text" class="form-control"

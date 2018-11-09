@@ -33,15 +33,25 @@ public class CrawlerConfig {
     /**
      * 代理地址储存队列低阈值
      */
-    public Integer proxyAddressQueueLowThreshold;
+    public Integer proxyAddressQueueThreshold;
 
     /**
-     * 代理地址储存队列高阈值
+     * 可用代理列表最基础容量
      */
-    public Integer proxyAddressQueueHighThreshold;
+    public Integer activeProxyListBaseThreshold;
 
     /**
      * 可用代理列表最大容量
      */
-    public Integer activeProxyListThreshold;
+    public Integer activeProxyListMaxThreshold;
+
+    /**
+     * 代理爬虫等待时间
+     */
+    public Integer proxyCrawlerWaitTime;
+
+    /**
+     * 快递爬虫等待时间
+     */
+    public Integer expressCrawlerWaitTime;
 }
