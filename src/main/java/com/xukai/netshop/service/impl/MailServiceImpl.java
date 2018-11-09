@@ -24,9 +24,6 @@ import javax.mail.internet.MimeMessage;
 @Slf4j
 public class MailServiceImpl implements MailService {
 
-    // @Value("${mail.fromMail.sender}")
-    // private String sender;
-
     @Autowired
     private MailConfig mailConfig;
 
