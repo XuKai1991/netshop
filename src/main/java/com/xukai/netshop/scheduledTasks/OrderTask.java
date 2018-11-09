@@ -32,8 +32,7 @@ public class OrderTask {
      * 买家n天不收货，系统自动收货
      * 每1小时执行一次（30分钟时）
      */
-    // @Scheduled(cron = "0 30 */1 * * ?")
-    @Scheduled(cron = "0 */1 * * * ?")
+    @Scheduled(cron = "0 30 */1 * * ?")
     public void confirmReceive() {
         OrderMaster sOrder = new OrderMaster();
         sOrder.setOrderStatus(OrderStatusEnum.HAS_SEND.getCode());
@@ -49,8 +48,7 @@ public class OrderTask {
      * 买家2小时不支付自动取消订单
      * 每5分钟执行一次
      */
-    // @Scheduled(cron = "0 */5 * * * ?")
-    @Scheduled(cron = "0 */1 * * * ?")
+    @Scheduled(cron = "0 */5 * * * ?")
     public void cancelNotPayOrder() {
         OrderMaster sOrder = new OrderMaster();
         sOrder.setOrderStatus(OrderStatusEnum.NOT_PAY.getCode());

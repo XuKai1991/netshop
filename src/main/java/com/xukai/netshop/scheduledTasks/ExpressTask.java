@@ -82,12 +82,18 @@ public class ExpressTask {
                         // 实际情况中执行http get请求在某些情况下，如果连接超时会在内部方法进行try/catch
                         // 此时返回的response为null，因此如果在此处判断response是否null，null也代表连接超时
                         // 如果请求出现异常，将ExpressInfo对象重新添加回列表
-                        response = httpClient.execute(httpGet);
+                        try {
+                            response = httpClient.execute(httpGet);
+                        } catch (Exception e) {
+                            // 删除无效代理
+                            deleteFromActiveProxyList(proxyStr);
+                            throw new Exception();
+                        }
                         if (response != null) {
                             HttpEntity entity = response.getEntity();
                             //根据指定编码获取网页内容，一般网站的编码都是utf-8，也有是gb2312
                             String webContent = EntityUtils.toString(entity, "utf-8");
-                            if (webContent.startsWith("{\"message\"")) {
+                            if (webContent.startsWith("{\"message\":\"ok")) {
                                 // 将物流信息保存到数据库
                                 expressInfo.setLogisticsDetail(webContent);
                                 expressService.save(expressInfo);
@@ -96,13 +102,13 @@ public class ExpressTask {
                                 throw new Exception();
                             }
                         } else {
+                            expressInTransitList.add(expressInfo);
+                            // 删除无效代理
+                            deleteFromActiveProxyList(proxyStr);
                             throw new Exception();
                         }
                     } catch (Exception e) {
                         log.error("【物流信息更新】订单{}：更新请求失败或超时", expressInfo.getOrderId());
-                        // 删除无效代理
-                        deleteFromActiveProxyList(proxyStr);
-                        expressInTransitList.add(expressInfo);
                     } finally {
                         try {
                             if (response != null) {
