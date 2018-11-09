@@ -32,12 +32,13 @@ public class OrderTask {
      * 买家n天不收货，系统自动收货
      * 每1小时执行一次（30分钟时）
      */
-    @Scheduled(cron = "0 30 */1 * * ?")
+    // @Scheduled(cron = "0 30 */1 * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     public void confirmReceive() {
         OrderMaster sOrder = new OrderMaster();
         sOrder.setOrderStatus(OrderStatusEnum.HAS_SEND.getCode());
-        Page<OrderDTO> orderDTOList = orderService.findOnCondition(sOrder, null, null, null);
-        for (OrderDTO orderDTO : orderDTOList) {
+        Page<OrderDTO> orderDTOPage = orderService.findOnCondition(sOrder, null, null, null);
+        for (OrderDTO orderDTO : orderDTOPage) {
             if (DateUtils.before(DateUtils.formatTime(orderDTO.getUpdateTime()), DateUtils.getNDaysAgoTime(autoAdminConfig.getAutoConfirmReceiveGoodsWaitTime()))) {
                 orderService.receive(orderDTO.getOrderId());
             }
@@ -48,12 +49,13 @@ public class OrderTask {
      * 买家2小时不支付自动取消订单
      * 每5分钟执行一次
      */
-    @Scheduled(cron = "0 */5 * * * ?")
+    // @Scheduled(cron = "0 */5 * * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     public void cancelNotPayOrder() {
         OrderMaster sOrder = new OrderMaster();
         sOrder.setOrderStatus(OrderStatusEnum.NOT_PAY.getCode());
-        Page<OrderDTO> orderDTOList = orderService.findOnCondition(sOrder, null, null, null);
-        for (OrderDTO orderDTO : orderDTOList) {
+        Page<OrderDTO> orderDTOPage = orderService.findOnCondition(sOrder, null, null, null);
+        for (OrderDTO orderDTO : orderDTOPage) {
             if (DateUtils.minus(DateUtils.getNowTime(), DateUtils.formatTime(orderDTO.getUpdateTime())) > autoAdminConfig.getAutoCancelNotPayedOrderWaitTime()) {
                 orderService.cancel(orderDTO.getOrderId());
             }

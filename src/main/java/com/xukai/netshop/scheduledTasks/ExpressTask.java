@@ -43,8 +43,8 @@ public class ExpressTask {
     /**
      * 每2小时执行一次(15分钟时)
      */
-    // @Scheduled(cron = "15 */1 * * * ?")
-    @Scheduled(cron = "0 15 */2 * * ?")
+    @Scheduled(cron = "15 */2 * * * ?")
+    // @Scheduled(cron = "0 15 */2 * * ?")
     public void refreshLogisticsDetail() {
         List<ExpressInfo> expressInTransitList = expressService.listInTransit();
         // 执行标志

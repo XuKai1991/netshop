@@ -34,7 +34,7 @@ public class OrderServiceImplTest {
     @Test
     public void findOnCondition() {
         OrderMaster s_order = new OrderMaster();
-        s_order.setOrderStatus(OrderStatusEnum.HAS_SEND.getCode());
+        s_order.setOrderStatus(OrderStatusEnum.NOT_PAY.getCode());
         Page<OrderDTO> orderDTOPage = orderService.findOnCondition(s_order, null, null, null);
         for (OrderDTO orderDTO : orderDTOPage) {
             log.info(orderDTO.toString());

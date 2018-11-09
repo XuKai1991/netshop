@@ -86,4 +86,5 @@ crawler:
 
 autoAdmin:
   autoConfirmReceiveGoodsWaitTime: 10   #10天
-  autoCancelNotPayedOrderWaitTime: 7200   #单位s，2小时
+#  autoCancelNotPayedOrderWaitTime: 7200   #单位s，2小时
+  autoCancelNotPayedOrderWaitTime: 60   #单位s，2小时
