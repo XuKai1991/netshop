@@ -40,18 +40,18 @@ spring:
     password: 10032460itachi
     default-encoding: UTF-8
     properties:
-      smtp:
-        auth: true
-        port: 465
-        starttls:
-          enable: true
-        required: true
-        ssl:
-          enable: true
-        socketFactory:
-          class: javax.net.ssl.SSLSocketFactory
-          fallback: false
-          port: 465
+      mail:
+        smtp:
+          auth: true
+          timeout: 25000
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            enable: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+            port: 465
 
 # 发送邮件地址
 mail:
