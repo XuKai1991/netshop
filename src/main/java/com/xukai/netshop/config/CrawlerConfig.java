@@ -51,7 +51,12 @@ public class CrawlerConfig {
     public Integer proxyCrawlerWaitTime;
 
     /**
-     * 快递爬虫等待时间
+     * 快递爬虫中间暂停时间
      */
-    public Integer expressCrawlerWaitTime;
+    public Integer expressCrawlerPauseWaitTime;
+
+    /**
+     * 快递爬虫强行停止时间
+     */
+    public Integer expressCrawlerForceStopWaitTime;
 }

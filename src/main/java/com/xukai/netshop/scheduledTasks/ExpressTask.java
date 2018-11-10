@@ -46,6 +46,7 @@ public class ExpressTask {
     // @Scheduled(cron = "15 */2 * * * ?")
     @Scheduled(cron = "0 15 */2 * * ?")
     public void refreshLogisticsDetail() {
+        long startTime = System.currentTimeMillis();
         List<ExpressInfo> expressInTransitList = expressService.listInTransit();
         // 执行标志
         Boolean exeExpressFlag = true;
@@ -85,6 +86,7 @@ public class ExpressTask {
                         try {
                             response = httpClient.execute(httpGet);
                         } catch (Exception e) {
+                            expressInTransitList.add(expressInfo);
                             // 删除无效代理
                             deleteFromActiveProxyList(proxyStr);
                             throw new Exception();
@@ -97,7 +99,7 @@ public class ExpressTask {
                                 // 将物流信息保存到数据库
                                 expressInfo.setLogisticsDetail(webContent);
                                 expressService.save(expressInfo);
-                                log.info("【物流信息更新】任务成功");
+                                log.info("【物流信息更新】订单{}物流更新成功", expressInfo.getOrderId());
                             } else {
                                 throw new Exception();
                             }
@@ -126,15 +128,20 @@ public class ExpressTask {
                     EXPRESS_CRAWLER_THREAD_EXECUTOR.execute(() -> crawlProxy());
                     log.info("【物流信息更新】重新抓取代理");
                 }
-                // 判断线程池中是否还有正在工作的线程
-                if (EXPRESS_CRAWLER_THREAD_EXECUTOR.getActiveCount() == 0) {
+                // 判断待更新物流列表是否为空 且 线程池中是否还有正在工作的线程
+                if (expressInTransitList.isEmpty() && EXPRESS_CRAWLER_THREAD_EXECUTOR.getActiveCount() == 0) {
                     exeExpressFlag = false;
                     log.info("【物流信息更新】任务结束");
                 }
             }
+            // 如果更新任务已经超时，强行停止
+            if (System.currentTimeMillis() - startTime > crawlerConfig.getExpressCrawlerForceStopWaitTime()) {
+                exeExpressFlag = false;
+                log.info("【物流信息更新】任务强行结束");
+            }
             try {
                 // 休眠，避免被快递100封IP
-                Thread.sleep(crawlerConfig.getExpressCrawlerWaitTime());
+                Thread.sleep(crawlerConfig.getExpressCrawlerPauseWaitTime());
             } catch (InterruptedException e) {
                 log.error("【物流信息更新】线程休眠错误");
             }

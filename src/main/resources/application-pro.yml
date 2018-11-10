@@ -40,16 +40,11 @@ spring:
     properties:
       smtp:
         auth: true
-        port: 465
-        starttls:
-          enable: true
-        required: true
-        ssl:
-          enable: true
+        timeout: 25000
+        port: 994
         socketFactory:
           class: javax.net.ssl.SSLSocketFactory
-          fallback: false
-          port: 465
+
 
 # 发送邮件地址
 mail:
@@ -84,7 +79,8 @@ crawler:
   activeProxyListBaseThreshold: 20
   activeProxyListMaxThreshold: 50
   expressCrawlerBaseUrl: http://www.kuaidi100.com/query?type=|&postid=
-  expressCrawlerWaitTime: 5000
+  expressCrawlerPauseWaitTime: 5000
+  expressCrawlerForceStopWaitTime: 600000   #10分钟
 
 autoAdmin:
   autoConfirmReceiveGoodsWaitTime: 10   #10天
