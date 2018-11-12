@@ -121,7 +121,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(orderId);
         if (CollectionUtils.isEmpty(orderDetailList)) {
             log.error("【查询订单详情】订单详情不存在, orderId={}", orderId);
-            throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);
+            throw new SellException(ResultEnum.ORDER_DETAIL_NOT_EXIST);
         }
         // 更新订单详情中商品名称和图片，但如果商品已经被删除，就不做处理保持原状
         refreshOrderDetailList(orderDetailList);
@@ -287,7 +287,7 @@ public class OrderServiceImpl implements OrderService {
         // 先删除订单详情
         int delOrderDetailResult = orderDetailRepository.deleteByOrderId(orderId);
         if (delOrderDetailResult == 0) {
-            throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);
+            throw new SellException(ResultEnum.ORDER_DETAIL_NOT_EXIST);
         }
         // 再删除订单
         int delOrderResult = orderMasterRepository.deleteByOrderId(orderId);

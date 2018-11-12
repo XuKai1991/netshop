@@ -51,6 +51,9 @@ spring:
             class: javax.net.ssl.SSLSocketFactory
             port: 465
 
+logging:
+  config: classpath:logback-pro.xml
+
 # 发送邮件地址
 mail:
   sender: xukai910110@163.com
@@ -71,6 +74,9 @@ fdfs:
   pool:
     jmx-enabled: false
 
+fastdfs:
+  psicSaveLogUrl: /netshop/logs/picSaveLog
+
 baseUrl:
   frontBaseUrl: http://106.14.183.207:8081
   backBaseUrl: http://106.14.183.207:8085
@@ -78,13 +84,13 @@ baseUrl:
 
 crawler:
   proxySources: http://www.xicidaili.com/nn/
-  proxySourcesMaxPage: 5
+  proxySourcesMaxPage: 2
   proxyAddressQueueThreshold: 100
   proxyCrawlerWaitTime: 180000
   activeProxyListBaseThreshold: 20
   activeProxyListMaxThreshold: 50
   expressCrawlerBaseUrl: http://www.kuaidi100.com/query?type=|&postid=
-  expressCrawlerPauseWaitTime: 5000
+  expressCrawlerPauseWaitTime: 3000
   expressCrawlerForceStopWaitTime: 600000   #10分钟
 
 autoAdmin:

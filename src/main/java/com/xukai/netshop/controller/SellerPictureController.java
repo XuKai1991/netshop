@@ -2,6 +2,7 @@ package com.xukai.netshop.controller;
 
 import com.xukai.netshop.VO.ResultVO;
 import com.xukai.netshop.config.BaseUrlConfig;
+import com.xukai.netshop.config.FastDfsConfig;
 import com.xukai.netshop.service.PictureService;
 import com.xukai.netshop.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -33,12 +34,15 @@ public class SellerPictureController {
     @Autowired
     private BaseUrlConfig baseUrlConfig;
 
+    @Autowired
+    private FastDfsConfig fastDfsConfig;
+
     @PostMapping("/upload")
     public ResultVO uploadPic(MultipartFile file, HttpServletRequest request) {
         String picUrl = pictureService.uploadFile(file);
         // 记录所有保存过的图片Url
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("PicSaveLog.txt", true));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fastDfsConfig.getPsicSaveLogUrl(), true));
             writer.write(picUrl + "\r\n");
             writer.close();
         } catch (IOException e) {

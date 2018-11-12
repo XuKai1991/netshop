@@ -1,6 +1,7 @@
 package com.xukai.netshop.scheduledTasks;
 
 import com.xukai.netshop.config.BaseUrlConfig;
+import com.xukai.netshop.config.FastDfsConfig;
 import com.xukai.netshop.dataobject.ProductInfo;
 import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.service.PictureService;
@@ -35,6 +36,9 @@ public class FastdfsPicTask {
     @Autowired
     private BaseUrlConfig baseUrlConfig;
 
+    @Autowired
+    private FastDfsConfig fastDfsConfig;
+
     /**
      * 每六小时执行一次旧图片清理
      */
@@ -43,10 +47,10 @@ public class FastdfsPicTask {
         log.info("【定时任务 - 清理过期图片】每六小时执行一次");
         String savedPicUrlsStr = "";
         BufferedReader reader = null;
-        File file = new File("PicSaveLog.txt");
+        File file = new File(fastDfsConfig.getPsicSaveLogUrl());
         try {
             int fileLength = (int) file.length();
-            reader = new BufferedReader(new FileReader("PicSaveLog.txt"));
+            reader = new BufferedReader(new FileReader(file.getPath()));
             char[] c = new char[fileLength];
             reader.read(c);
             savedPicUrlsStr = new String(c);
@@ -83,9 +87,9 @@ public class FastdfsPicTask {
         // 将现存的PicUrl存入文本
         BufferedWriter writer = null;
         try {
-            writer = new BufferedWriter(new FileWriter("PicSaveLog.txt", false));
+            writer = new BufferedWriter(new FileWriter(file.getPath(), false));
             writer.write("");
-            writer = new BufferedWriter(new FileWriter("PicSaveLog.txt", true));
+            writer = new BufferedWriter(new FileWriter(file.getPath(), true));
             for (String existPicUrl : existPicUrls) {
                 writer.write(existPicUrl + "\r\n");
             }

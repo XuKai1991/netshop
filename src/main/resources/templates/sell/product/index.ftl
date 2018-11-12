@@ -20,14 +20,14 @@
                         </div>
 
                         <br><br><br>
-                        <div class="input-group" style="float: left;width: 50%">
+                        <div class="input-group" style="float: left;width: 40%">
                             <span class="input-group-addon">颜色</span>
-                            <input type="text" name="productColor" style="width: 90%" class="form-control"
+                            <input type="text" name="productColor" style="width: 86.5%" class="form-control"
                                    placeholder="使用'_'分隔" value="${(productInfo.productColor)!''}">
                         </div>
-                        <div class="input-group" style="float: left;width: 50%">
+                        <div class="input-group" style="float: left;width: 40%">
                             <span class="input-group-addon">尺码</span>
-                            <input type="text" name="productSize" style="width: 68%" class="form-control"
+                            <input type="text" name="productSize" style="width: 86.5%" class="form-control"
                                    placeholder="使用'_'分隔" value="${(productInfo.productSize)!''}">
                         </div>
                         <br><br><br>
@@ -85,8 +85,8 @@
                         </div>
                         <br>
                         <div class="input-group">
-                            <span class="input-group-addon">详情图URL</span>
-                            <input type="text" id="detailImgInput" name="productDetailImg" style="width: 93%"
+                            <span class="input-group-addon">详情图地址</span>
+                            <input type="text" id="detailImgInput" name="productDetailImg" style="width: 95%"
                                    class="form-control"
                                    placeholder="" value="${(productInfo.productDetailImg)!''}">
                         </div>

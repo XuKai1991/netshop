@@ -55,7 +55,7 @@ public class ExpressTask {
             if (!expressInTransitList.isEmpty() && !PROXY_ADDRESS_QUEUE.isEmpty()) {
                 // log.info("活动线程数量为：" + String.valueOf(EXPRESS_CRAWLER_THREAD_EXECUTOR.getActiveCount()));
                 EXPRESS_CRAWLER_THREAD_EXECUTOR.execute(() -> {
-                    // log.info("目前可用代理数量为：{}", ACTIVE_PROXY_ADDRESS_LIST.size());
+                    log.info("目前可用代理数量为：{}", ACTIVE_PROXY_ADDRESS_LIST.size());
                     ExpressInfo expressInfo;
                     synchronized (expressInTransitList) {
                         expressInfo = expressInTransitList.get(0);
@@ -180,15 +180,15 @@ public class ExpressTask {
      */
     @Scheduled(cron = "0 45 */3 * * ?")
     public void crawlProxy() {
-        // log.info("目前来源页队列有：");
-        // if (!PROXY_SOURCES_QUEUE.isEmpty()) {
-        //     for (String source : PROXY_SOURCES_QUEUE) {
-        //         log.info(source);
-        //     }
-        // } else {
-        //     log.info("0");
-        // }
-        // log.info("目前代理总队列数量为：{}", PROXY_ADDRESS_QUEUE.size());
+        log.info("目前来源页队列有：");
+        if (!PROXY_SOURCES_QUEUE.isEmpty()) {
+            for (String source : PROXY_SOURCES_QUEUE) {
+                log.info(source);
+            }
+        } else {
+            log.info("0");
+        }
+        log.info("目前代理总队列数量为：{}", PROXY_ADDRESS_QUEUE.size());
         while (PROXY_ADDRESS_QUEUE.size() < crawlerConfig.getProxyAddressQueueThreshold()) {
             // 如果代理来源页队列为空，添加来源页
             if (PROXY_SOURCES_QUEUE.isEmpty()) {

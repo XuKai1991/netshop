@@ -5,6 +5,8 @@ import com.xukai.netshop.dataobject.CartDetail;
 import com.xukai.netshop.dataobject.CartMaster;
 import com.xukai.netshop.dataobject.ProductInfo;
 import com.xukai.netshop.enums.ProductStatusEnum;
+import com.xukai.netshop.enums.ResultEnum;
+import com.xukai.netshop.exception.BuyException;
 import com.xukai.netshop.repository.CartMasterRepository;
 import com.xukai.netshop.repository.ProductInfoRepository;
 import com.xukai.netshop.service.BuyerCartService;
@@ -93,6 +95,8 @@ public class BuyerCartServiceImpl implements BuyerCartService {
                 if (cartDetail.getProductId().equals(item.getProductId()) && cartDetail.getProductColor().equals(item.getProductColor()) && cartDetail.getProductSize().equals(item.getProductSize())) {
                     // 如果货号、颜色、尺码都相同，就在原来基础上增加商品数量
                     int quantity = item.getProductQuantity() + cartDetail.getProductQuantity();
+                    // 判断购物车数量是否超过库存
+                    judgeProductStock(quantity, item.getProductId());
                     item.setProductQuantity(quantity);
                     existFlag = true;
                     break;
@@ -100,13 +104,17 @@ public class BuyerCartServiceImpl implements BuyerCartService {
             }
             if (!existFlag) {
                 cartDetail.setItemId(KeyUtils.genUniqueKey());
-                cartDetail.setProductStatus(0);
+                cartDetail.setProductStatus(ProductStatusEnum.UP.getCode());
+                // 判断购物车数量是否超过库存
+                judgeProductStock(cartDetail.getProductQuantity(), cartDetail.getProductId());
                 itemList.add(cartDetail);
             }
         } else {
             itemList = new ArrayList<>();
             cartDetail.setItemId(KeyUtils.genUniqueKey());
-            cartDetail.setProductStatus(0);
+            cartDetail.setProductStatus(ProductStatusEnum.UP.getCode());
+            // 判断购物车数量是否超过库存
+            judgeProductStock(cartDetail.getProductQuantity(), cartDetail.getProductId());
             itemList.add(cartDetail);
         }
         cartMaster.setCartItems(JSONObject.toJSONString(itemList));
@@ -156,6 +164,8 @@ public class BuyerCartServiceImpl implements BuyerCartService {
         for (CartDetail item : itemList) {
             if (item.getItemId().equals(itemId)) {
                 Integer quantity = item.getProductQuantity();
+                // 判断购物车数量是否超过库存
+                judgeProductStock(quantity + 1, item.getProductId());
                 item.setProductQuantity(quantity + 1);
                 break;
             }
@@ -198,5 +208,18 @@ public class BuyerCartServiceImpl implements BuyerCartService {
         }
         cartMaster.setCartItems(JSONObject.toJSONString(itemList));
         return cartMasterRepository.save(cartMaster);
+    }
+
+    /**
+     * 判断购物车数量是否超过库存
+     *
+     * @param currentQuantity
+     * @param productId
+     */
+    public void judgeProductStock(int currentQuantity, String productId) {
+        ProductInfo productInfo = productInfoRepository.findOne(productId);
+        if (currentQuantity > productInfo.getProductStock()) {
+            throw new BuyException(ResultEnum.PRODUCT_NOT_ENOUGH);
+        }
     }
 }
