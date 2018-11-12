@@ -82,8 +82,11 @@ public enum ResultEnum {
     PICTURE_EMPTY(901, "上传图片为空"),
     PICTURE_UPLOAD_FAIL(902, "图片上传失败"),
     PICTURE_DELETE_FAIL(903, "图片删除失败"),
-    CONTENT_EMPTY(904, "内容为空"),
-    PARAM_ERROR(905, "参数不正确");
+    PICTURE_SAVED_LOG_CREATE_FAIL(904, "图片上传日志文件创建失败"),
+    PICTURE_SAVED_LOG_LOAD_FAIL(905, "图片上传日志文件加载失败"),
+    PICTURE_SAVED_LOG_REFRESH_FAIL(906, "图片上传日志文件更新失败"),
+    CONTENT_EMPTY(907, "内容为空"),
+    PARAM_ERROR(908, "参数不正确");
 
     private Integer code;
 
