@@ -34,7 +34,7 @@ public interface BuyerCartService {
      * @param buyerId
      * @return
      */
-    CartMaster addItem(CartDetail cartDetail, String buyerId);
+    void addItem(CartDetail cartDetail, String buyerId);
 
     /**
      * 根据单条itemId删除购物车中的内容
@@ -43,7 +43,7 @@ public interface BuyerCartService {
      * @param buyerId
      * @return
      */
-    CartMaster deleteItem(String itemId, String buyerId);
+    void deleteItem(String itemId, String buyerId);
 
     /**
      * 根据itemIds批量删除购物车中的内容
@@ -51,7 +51,7 @@ public interface BuyerCartService {
      * @param itemIds
      * @param buyerId
      */
-    CartMaster deleteItems(String itemIds, String buyerId);
+    void deleteItems(String itemIds, String buyerId);
 
     /**
      * 增加购物车中某条商品的数量
@@ -60,7 +60,7 @@ public interface BuyerCartService {
      * @param buyerId
      * @return
      */
-    CartMaster increaseItemNum(String itemId, String buyerId);
+    void increaseItemNum(String itemId, String buyerId);
 
     /**
      * 减少购物车中某条商品的数量
@@ -69,7 +69,7 @@ public interface BuyerCartService {
      * @param buyerId
      * @return
      */
-    CartMaster decreaseItemNum(String itemId, String buyerId);
+    void decreaseItemNum(String itemId, String buyerId);
 
     /**
      * 直接修改购物车内商品数量
@@ -79,5 +79,5 @@ public interface BuyerCartService {
      * @param buyerId
      * @return
      */
-    CartMaster editItemNum(String itemId, Integer quantity, String buyerId);
+    void editItemNum(String itemId, Integer quantity, String buyerId);
 }

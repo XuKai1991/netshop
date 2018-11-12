@@ -55,10 +55,7 @@ public class BuyerCartController {
     @PostMapping("/add")
     public ResultVO addToCart(CartDetail cartDetail, HttpServletRequest request) {
         String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
-        CartMaster result = buyerCartService.addItem(cartDetail, buyerId);
-        if (result == null) {
-            return ResultVOUtil.error(0, "fail");
-        }
+        buyerCartService.addItem(cartDetail, buyerId);
         return ResultVOUtil.success();
     }
 
@@ -71,10 +68,7 @@ public class BuyerCartController {
     @GetMapping("/increase")
     public ResultVO increaseCartItemNum(String itemId, HttpServletRequest request) {
         String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
-        CartMaster result = buyerCartService.increaseItemNum(itemId, buyerId);
-        if (result == null) {
-            return ResultVOUtil.error(0, "fail");
-        }
+        buyerCartService.increaseItemNum(itemId, buyerId);
         return ResultVOUtil.success();
     }
 
@@ -87,10 +81,7 @@ public class BuyerCartController {
     @GetMapping("/decrease")
     public ResultVO decreaseCartItemNum(String itemId, HttpServletRequest request) {
         String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
-        CartMaster result = buyerCartService.decreaseItemNum(itemId, buyerId);
-        if (result == null) {
-            return ResultVOUtil.error(0, "fail");
-        }
+        buyerCartService.decreaseItemNum(itemId, buyerId);
         return ResultVOUtil.success();
     }
 
@@ -105,10 +96,7 @@ public class BuyerCartController {
     @GetMapping("/editQuantity")
     public ResultVO editItemNum(String itemId, Integer quantity, HttpServletRequest request) {
         String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
-        CartMaster result = buyerCartService.editItemNum(itemId, quantity, buyerId);
-        if (result == null) {
-            return ResultVOUtil.error(0, "fail");
-        }
+        buyerCartService.editItemNum(itemId, quantity, buyerId);
         return ResultVOUtil.success();
     }
 
@@ -121,10 +109,7 @@ public class BuyerCartController {
     @GetMapping("/delete")
     public ResultVO deleteCartItem(String itemId, HttpServletRequest request) {
         String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
-        CartMaster result = buyerCartService.deleteItem(itemId, buyerId);
-        if (result == null) {
-            return ResultVOUtil.error(0, "fail");
-        }
+        buyerCartService.deleteItem(itemId, buyerId);
         return ResultVOUtil.success();
     }
 
@@ -137,10 +122,7 @@ public class BuyerCartController {
     @GetMapping("/batchDelete")
     public ResultVO deleteCartItems(String itemIds, HttpServletRequest request) {
         String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
-        CartMaster result = buyerCartService.deleteItems(itemIds, buyerId);
-        if (result == null) {
-            return ResultVOUtil.error(0, "fail");
-        }
+        buyerCartService.deleteItems(itemIds, buyerId);
         return ResultVOUtil.success();
     }
 }

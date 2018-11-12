@@ -50,6 +50,11 @@ public enum ResultEnum {
     // 购物车类 5**
     CART_NOT_EXIST(501, "购物车不存在"),
     CART_EMPTY(502, "购物车为空"),
+    CART_ADD_ITEM_FAIL(503, "购物车加入商品失败"),
+    CART_DELETE_ITEM_FAIL(504, "购物车删除商品失败"),
+    CART_EDIT_ITEM_FAIL(505, "购物车修改商品失败"),
+    CART_INCREASE_ITEM_FAIL(506, "购物车增加商品失败"),
+    CART_DECREASE_ITEM_FAIL(507, "购物车减少商品失败"),
 
     // 物流快递类 6**
     EXPRESS_INFO_SAVE_FAIL(601, "物流信息保存失败"),

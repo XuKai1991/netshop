@@ -16,9 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author: Xukai
@@ -47,8 +45,9 @@ public class BuyerCartServiceImpl implements BuyerCartService {
             if (StringUtils.isNotEmpty(cartItems)) {
                 List<CartDetail> itemList = JSONObject.parseArray(cartItems, CartDetail.class);
                 ArrayList<CartDetail> toDelete = new ArrayList<>();
+                ProductInfo productInfo;
                 for (CartDetail item : itemList) {
-                    ProductInfo productInfo = productInfoRepository.findOne(item.getProductId());
+                    productInfo = productInfoRepository.findOne(item.getProductId());
                     // 如果找不到商品，从购物车删除
                     if (productInfo == null) {
                         toDelete.add(item);
@@ -69,6 +68,28 @@ public class BuyerCartServiceImpl implements BuyerCartService {
                     }
                 }
                 itemList.removeAll(toDelete);
+                // 如果物品数量超过库存，超库存的物品数量全部设置为1
+                HashMap<String, Integer> quantityByProductIdMap = new HashMap<>();
+                for (CartDetail detail : itemList) {
+                    if (quantityByProductIdMap.containsKey(detail.getProductId())) {
+                        Integer quantity = quantityByProductIdMap.get(detail.getProductId()) + detail.getProductQuantity();
+                        quantityByProductIdMap.put(detail.getProductId(), quantity);
+                    } else {
+                        quantityByProductIdMap.put(detail.getProductId(), detail.getProductQuantity());
+                    }
+                }
+                ArrayList<String> overStockProductIdList = new ArrayList<>();
+                for (Map.Entry<String, Integer> entry : quantityByProductIdMap.entrySet()) {
+                    productInfo = productInfoRepository.findOne(entry.getKey());
+                    if (entry.getValue() > productInfo.getProductStock()) {
+                        overStockProductIdList.add(entry.getKey());
+                    }
+                }
+                for (CartDetail cartDetail : itemList) {
+                    if (overStockProductIdList.contains(cartDetail.getProductId())) {
+                        cartDetail.setProductQuantity(1);
+                    }
+                }
                 cartMaster.setCartItems(JSONObject.toJSONString(itemList));
                 cartMasterRepository.save(cartMaster);
             }
@@ -84,7 +105,7 @@ public class BuyerCartServiceImpl implements BuyerCartService {
     }
 
     @Override
-    public CartMaster addItem(CartDetail cartDetail, String buyerId) {
+    public void addItem(CartDetail cartDetail, String buyerId) {
         CartMaster cartMaster = list(buyerId);
         String cartItems = cartMaster.getCartItems();
         List<CartDetail> itemList;
@@ -98,34 +119,32 @@ public class BuyerCartServiceImpl implements BuyerCartService {
                 if (cartDetail.getProductId().equals(item.getProductId()) && cartDetail.getProductColor().equals(item.getProductColor()) && cartDetail.getProductSize().equals(item.getProductSize())) {
                     // 如果货号、颜色、尺码都相同，就在原来基础上增加商品数量
                     int quantity = item.getProductQuantity() + cartDetail.getProductQuantity();
-                    // 判断购物车数量是否超过库存
-                    judgeProductStock(quantity, item.getProductId());
                     item.setProductQuantity(quantity);
-                    existFlag = true;
                     break;
                 }
             }
             if (!existFlag) {
                 cartDetail.setItemId(KeyUtils.genUniqueKey());
                 cartDetail.setProductStatus(ProductStatusEnum.UP.getCode());
-                // 判断购物车数量是否超过库存
-                judgeProductStock(cartDetail.getProductQuantity(), cartDetail.getProductId());
                 itemList.add(cartDetail);
             }
         } else {
             itemList = new ArrayList<>();
             cartDetail.setItemId(KeyUtils.genUniqueKey());
             cartDetail.setProductStatus(ProductStatusEnum.UP.getCode());
-            // 判断购物车数量是否超过库存
-            judgeProductStock(cartDetail.getProductQuantity(), cartDetail.getProductId());
             itemList.add(cartDetail);
         }
+        // 判断购物车内物品数量是否超过库存
+        judgeProductStock(itemList);
         cartMaster.setCartItems(JSONObject.toJSONString(itemList));
-        return cartMasterRepository.save(cartMaster);
+        CartMaster save = cartMasterRepository.save(cartMaster);
+        if (save == null) {
+            throw new BuyException(ResultEnum.CART_ADD_ITEM_FAIL);
+        }
     }
 
     @Override
-    public CartMaster deleteItem(String itemId, String buyerId) {
+    public void deleteItem(String itemId, String buyerId) {
         CartMaster cartMaster = list(buyerId);
         String cartItems = cartMaster.getCartItems();
         List<CartDetail> itemList = JSONObject.parseArray(cartItems, CartDetail.class);
@@ -136,11 +155,14 @@ public class BuyerCartServiceImpl implements BuyerCartService {
             }
         }
         cartMaster.setCartItems(JSONObject.toJSONString(itemList));
-        return cartMasterRepository.save(cartMaster);
+        CartMaster save = cartMasterRepository.save(cartMaster);
+        if (save == null) {
+            throw new BuyException(ResultEnum.CART_DELETE_ITEM_FAIL);
+        }
     }
 
     @Override
-    public CartMaster deleteItems(String itemIds, String buyerId) {
+    public void deleteItems(String itemIds, String buyerId) {
         List<String> itemIdList = Arrays.asList(itemIds.split("_"));
         CartMaster cartMaster = list(buyerId);
         String cartItems = cartMaster.getCartItems();
@@ -156,29 +178,34 @@ public class BuyerCartServiceImpl implements BuyerCartService {
         }
         itemList.removeAll(toDel);
         cartMaster.setCartItems(JSONObject.toJSONString(itemList));
-        return cartMasterRepository.save(cartMaster);
+        CartMaster save = cartMasterRepository.save(cartMaster);
+        if (save == null) {
+            throw new BuyException(ResultEnum.CART_DELETE_ITEM_FAIL);
+        }
     }
 
     @Override
-    public CartMaster increaseItemNum(String itemId, String buyerId) {
+    public void increaseItemNum(String itemId, String buyerId) {
         CartMaster cartMaster = list(buyerId);
         String cartItems = cartMaster.getCartItems();
         List<CartDetail> itemList = JSONObject.parseArray(cartItems, CartDetail.class);
         for (CartDetail item : itemList) {
             if (item.getItemId().equals(itemId)) {
                 Integer quantity = item.getProductQuantity();
-                // 判断购物车数量是否超过库存
-                judgeProductStock(quantity + 1, item.getProductId());
                 item.setProductQuantity(quantity + 1);
                 break;
             }
         }
+        judgeProductStock(itemList);
         cartMaster.setCartItems(JSONObject.toJSONString(itemList));
-        return cartMasterRepository.save(cartMaster);
+        CartMaster save = cartMasterRepository.save(cartMaster);
+        if (save == null) {
+            throw new BuyException(ResultEnum.CART_INCREASE_ITEM_FAIL);
+        }
     }
 
     @Override
-    public CartMaster decreaseItemNum(String itemId, String buyerId) {
+    public void decreaseItemNum(String itemId, String buyerId) {
         CartMaster cartMaster = list(buyerId);
         String cartItems = cartMaster.getCartItems();
         List<CartDetail> itemList = JSONObject.parseArray(cartItems, CartDetail.class);
@@ -195,11 +222,14 @@ public class BuyerCartServiceImpl implements BuyerCartService {
             }
         }
         cartMaster.setCartItems(JSONObject.toJSONString(itemList));
-        return cartMasterRepository.save(cartMaster);
+        CartMaster save = cartMasterRepository.save(cartMaster);
+        if (save == null) {
+            throw new BuyException(ResultEnum.CART_DECREASE_ITEM_FAIL);
+        }
     }
 
     @Override
-    public CartMaster editItemNum(String itemId, Integer quantity, String buyerId) {
+    public void editItemNum(String itemId, Integer quantity, String buyerId) {
         CartMaster cartMaster = list(buyerId);
         String cartItems = cartMaster.getCartItems();
         List<CartDetail> itemList = JSONObject.parseArray(cartItems, CartDetail.class);
@@ -209,20 +239,36 @@ public class BuyerCartServiceImpl implements BuyerCartService {
                 break;
             }
         }
+        judgeProductStock(itemList);
         cartMaster.setCartItems(JSONObject.toJSONString(itemList));
-        return cartMasterRepository.save(cartMaster);
+        CartMaster save = cartMasterRepository.save(cartMaster);
+        if (save == null) {
+            throw new BuyException(ResultEnum.CART_EDIT_ITEM_FAIL);
+        }
     }
 
     /**
-     * 判断购物车数量是否超过库存
+     * 判断购物车内商品是否超过库存
+     * 此时以productId为判断基础，相同即为同一商品
      *
-     * @param currentQuantity
-     * @param productId
+     * @param itemList
      */
-    public void judgeProductStock(int currentQuantity, String productId) {
-        ProductInfo productInfo = productInfoRepository.findOne(productId);
-        if (currentQuantity > productInfo.getProductStock()) {
-            throw new BuyException(ResultEnum.PRODUCT_NOT_ENOUGH);
+    public void judgeProductStock(List<CartDetail> itemList) {
+        HashMap<String, Integer> quantityByProductIdMap = new HashMap<>();
+        for (CartDetail detail : itemList) {
+            if (quantityByProductIdMap.containsKey(detail.getProductId())) {
+                Integer quantity = quantityByProductIdMap.get(detail.getProductId()) + detail.getProductQuantity();
+                quantityByProductIdMap.put(detail.getProductId(), quantity);
+            } else {
+                quantityByProductIdMap.put(detail.getProductId(), detail.getProductQuantity());
+            }
+        }
+        ProductInfo productInfo;
+        for (Map.Entry<String, Integer> entry : quantityByProductIdMap.entrySet()) {
+            productInfo = productInfoRepository.findOne(entry.getKey());
+            if (entry.getValue() > productInfo.getProductStock()) {
+                throw new BuyException(ResultEnum.PRODUCT_NOT_ENOUGH);
+            }
         }
     }
 }
