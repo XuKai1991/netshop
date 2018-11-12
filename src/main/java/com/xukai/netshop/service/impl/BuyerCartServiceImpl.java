@@ -57,11 +57,14 @@ public class BuyerCartServiceImpl implements BuyerCartService {
                         if (!productInfo.getProductStatus().equals(ProductStatusEnum.UP.getCode())) {
                             toDelete.add(item);
                         } else {
-                            item.setProductStatus(productInfo.getProductStatus());
                             item.setProductPrice(productInfo.getProductPrice());
                             item.setProductImgMd(productInfo.getProductImgMd());
                             item.setProductName(productInfo.getProductName());
                             item.setProductImgMd(productInfo.getProductImgMd());
+                            // 购物车商品数量超过商品库存，则设置为库存量
+                            if (item.getProductQuantity() > productInfo.getProductStock()) {
+                                item.setProductQuantity(productInfo.getProductStock());
+                            }
                         }
                     }
                 }

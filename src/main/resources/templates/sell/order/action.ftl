@@ -1,24 +1,3 @@
-<#-- 操作提示 -->
-<#--<div id="hintModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"-->
-     <#--aria-labelledby="mySmallModalLabel">-->
-    <#--<div class="modal-dialog modal-sm" role="document">-->
-        <#--<div class="modal-content">-->
-            <#--<div class="modal-header">-->
-                <#--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>-->
-                <#--</button>-->
-                <#--<h4 id="hintModalTitle" class="modal-title"></h4>-->
-            <#--</div>-->
-            <#--<div class="modal-body">-->
-                <#--<p id="hintModalBody"></p>-->
-            <#--</div>-->
-            <#--<div class="modal-footer">-->
-                <#--<button id="hintModalCancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button>-->
-                <#--<a id="hintModalConfirm" type="button" class="btn btn-primary" href="#">确定</a>-->
-            <#--</div>-->
-        <#--</div>-->
-    <#--</div>-->
-<#--</div>-->
-
 <#-- 修改提示 -->
 <div id="editModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"
      aria-labelledby="mySmallModalLabel">

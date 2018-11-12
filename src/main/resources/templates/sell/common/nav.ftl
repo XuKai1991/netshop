@@ -11,7 +11,7 @@
             <ul class="dropdown-menu" role="menu">
                 <li class="dropdown-header">操作</li>
                 <li><a href="/netshop/seller/order/list">列表</a></li>
-                <li><a href="javascript:refreshLogistics()">刷新物流</a></li>
+                <li><a href="javascript:preRefreshLogistics()">刷新物流</a></li>
             </ul>
         </li>
         <li class="dropdown open">
@@ -72,10 +72,16 @@
 </div>
 
 <script>
+    function preRefreshLogistics() {
+        $("#hintModalTitle").text("刷新物流");
+        $("#hintModalBody").text("您确定要刷新物流吗？");
+        $("#hintModalConfirm").attr("href", "javascript:refreshLogistics()");
+        $("#hintModal").modal();
+    }
+
     function refreshLogistics() {
         $.get("/netshop/express/refreshLogistics", function (result) {
             if (result.msg == "success") {
-                $("#hintModalTitle").text("刷新物流");
                 if (result.msg == "success") {
                     $("#hintModalBody").text("刷新物流成功！");
                 }
