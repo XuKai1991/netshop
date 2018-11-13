@@ -98,13 +98,13 @@
                             <th style="text-align: center">进价</th>
                             <th style="text-align: center;width: 150px">颜色</th>
                             <th style="text-align: center;width: 150px">尺码</th>
-                            <th style="text-align: center">库存</th>
+                            <th style="text-align: center;width: 50px"">库存</th>
                         <#--<th>描述</th>-->
                             <th style="text-align: center;width: 70px">类目</th>
                             <th style="text-align: center;width: 50px">状态</th>
                         <#--<th style="text-align: center">创建时间</th>-->
                         <#--<th style="text-align: center">修改时间</th>-->
-                            <th style="text-align: center;width: 126px">操作</th>
+                            <th style="text-align: center;width: 130px">操作</th>
                         </tr>
                         </thead>
                         <tbody>
