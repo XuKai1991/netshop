@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="/netshop/css/bootstrap.min.css">
     <link rel="stylesheet" href="/netshop/css/style.css">
     <link rel="stylesheet" href="/netshop/css/bootstrapValidator.min.css">
+    <link rel="stylesheet" href="/netshop/icomoon/style.css">
     <script src="/netshop/js/jquery-3.3.1.min.js"></script>
     <script src="/netshop/js/ajaxfileupload.js"></script>
     <script src="/netshop/js/bootstrap.min.js"></script>

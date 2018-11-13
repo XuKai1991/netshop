@@ -13,12 +13,11 @@
             <div class="row clearfix">
                 <div class="col-md-12 column">
                     <form role="form" method="post" action="/netshop/seller/product/save">
-                        <div class="input-group" style="float: left;width: 50%">
+                        <div class="input-group" style="float: left;width: 100%">
                             <span class="input-group-addon">名称</span>
-                            <input type="text" name="productName" style="width: 90%" class="form-control"
+                            <input type="text" name="productName" style="width: 74.2%" class="form-control"
                                    placeholder="" value="${(productInfo.productName)!''}">
                         </div>
-
                         <br><br><br>
                         <div class="input-group" style="float: left;width: 40%">
                             <span class="input-group-addon">颜色</span>
@@ -62,10 +61,13 @@
                         <br><br><br>
                         <div class="input-group" style="float: left;width: 100%">
                             <span class="input-group-addon">描述</span>
-                            <input type="text" name="productDescription" style="width: 74.2%" class="form-control"
-                                   placeholder="" value="${(productInfo.productDescription)!''}">
+                        <#--<input type="text" name="productDescription" style="width: 74.2%" class="form-control"-->
+                        <#--placeholder="" value="${(productInfo.productDescription)!''}">-->
+                            <textarea type="text" name="productDescription" style="width: 74.2%" class="form-control"
+                                      placeholder=""
+                                      value="${(productInfo.productDescription)!''}">${(productInfo.productDescription)!''}</textarea>
                         </div>
-                        <br><br><br>
+                        <br><br><br><br><br>
                         <div class="input-group">
                             <span class="input-group-addon">主图</span>
                             <img id="productImgMd" height="150" width="150"
@@ -74,32 +76,44 @@
                             <input id="imgMd" name="file" accept="image/*" type="file" style="display: none"/>
                             <input id="imgMdInput" name="productImgMd" type="text" class="form-control"
                                    value="${(productInfo.productImgMd)!''}" style="display: none"/>
-                            <button id="submit_imgMd" type="button">确定修改图片</button>
+                            <button id="submit_imgMd" type="button" class="btn btn-default btn-sm">确定修改图片</button>
                         </div>
                         <br>
                         <div class="input-group">
                             <span class="input-group-addon">详情图</span>
+                            &nbsp;
                             <img id="productDetailImg" height="150" width="150" src="/netshop/img/add.png" alt="">
                             <input id="detailImg" name="file" accept="image/*" type="file" style="display: none"/>
-                            <button id="submit_detailImgMd" type="button">确定添加图片</button>
+                            <button id="submit_detailImgMd" type="button" class="btn btn-default btn-sm">确定添加图片
+                            </button>
+                        <#--<button id="submit_detailImgMd_test" type="button" class="btn btn-default btn-sm">添加图片测试-->
+                        <#--</button>-->
+                        <#--<button id="delete_detailImgMd_test" type="button" class="btn btn-default btn-sm">删除图片测试-->
+                        <#--</button>-->
+                            <div id="detailImgShow" style="float: left">
+                                <#if productInfo?? && productInfo.productDetailImg?? && productInfo.productDetailImg != "">
+                                    <#list productInfo.productDetailImg?split("|") as detailImgUrl>
+                                             <img id="${detailImgUrl[(detailImgUrl?index_of("M00")+10)..(detailImgUrl?length-5)]}"
+                                                  height="150" width="150"
+                                                  src="${detailImgUrl}"
+                                                  onclick="preDeleteDetailImg('${detailImgUrl[(detailImgUrl?index_of("M00")+10)..(detailImgUrl?length-5)]}')"
+                                                  alt="">
+                                    </#list>
+                                </#if>
+                            </div>
                         </div>
                         <br>
-                        <div class="input-group">
-                            <span class="input-group-addon">详情图地址</span>
-                            <input type="text" id="detailImgInput" name="productDetailImg" style="width: 95%"
-                                   class="form-control"
-                                   placeholder="" value="${(productInfo.productDetailImg)!''}">
-                        </div>
-                        <br>
-                        <input hidden type="text" name="productId" value="${(productInfo.productId)!''}">
-                        <button type="submit" class="btn btn-default">确认</button>
+                        <input type="text" hidden="hidden" id="detailImgInput" name="productDetailImg"
+                               style="width: 95%"
+                               placeholder="" value="${(productInfo.productDetailImg)!''}">
+                        <input hidden="hidden" type="text" name="productId" value="${(productInfo.productId)!''}">
+                        <button type="submit" class="btn btn-default btn-primary">确认</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 </body>
 
 <script>
@@ -126,7 +140,11 @@
                     if (data.code == 200) {
                         $("#productImgMd").attr("src", data.data);
                         $("#imgMdInput").attr("value", data.data);
-                        alert("修改成功");
+                        $("#hintModalTitle").text("修改图片");
+                        $("#hintModalBody").text("修改图片成功！");
+                        $("#hintModalCancel").hide();
+                        $("#hintModalConfirm").attr("data-dismiss", "modal");
+                        $("#hintModal").modal();
                     }
                 }
             });
@@ -152,18 +170,58 @@
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success: function (data) {
                     if (data.code == 200) {
-                        $("#productDetailImg").attr("src", data.data);
+                        // $("#productDetailImg").attr("src", data.data);
+                        var imgUrl = data.data;
                         var imgMdInput = $("#detailImgInput").val();
                         if (imgMdInput == "") {
-                            $("#detailImgInput").attr("value", data.data);
+                            $("#detailImgInput").attr("value", imgUrl);
                         } else {
-                            $("#detailImgInput").attr("value", imgMdInput + "|" + data.data);
+                            $("#detailImgInput").attr("value", imgMdInput + "|" + imgUrl);
                         }
-                        alert("添加成功");
+                        var id = imgUrl.substr(imgUrl.indexOf("M00") + 10, imgUrl.length - imgUrl.indexOf("M00") - 14);
+                        $('#detailImgShow').append("<img id=\"" + id + "\" height=\"150\" width=\"150\" src=\"" + imgUrl + "\" onclick=\"preDeleteDetailImg('" + id + "')\" alt=\"\">");
+                        // 将添加图片的符号恢复
+                        $("#productDetailImg").attr("src", "/netshop/img/add.png");
+                        $("#hintModalTitle").text("修改图片");
+                        $("#hintModalBody").text("修改图片成功！");
+                        $("#hintModalCancel").hide();
+                        $("#hintModalConfirm").attr("data-dismiss", "modal");
+                        $("#hintModal").modal();
                     }
                 }
             });
         });
+
+        // // 测试添加节点
+        // $("#submit_detailImgMd_test").click(function () {
+        //     alert("测试添加节点");
+        //     var ImgUrl = "http://192.168.64.11/group1/M00/00/00/wKhAC1u9tb-AVrf-AABUY6JR46c266.jpg";
+        //     // alert(ImgUrl.indexOf("jpg") + "  -  " + ImgUrl.indexOf("M00"));
+        //     // var idLength = ImgUrl.indexOf("jpg") - ImgUrl.indexOf("M00");
+        //     // alert(idLength);
+        //     var id = ImgUrl.substr(ImgUrl.indexOf("M00") + 10, ImgUrl.indexOf("jpg") - ImgUrl.indexOf("M00") - 11);
+        //     alert(id);
+        //     $('#detailImgShow').append("<img id=\"" + id + "\" height=\"150\" width=\"150\" src=\"" + ImgUrl + "\" onclick=\"preDeleteDetailImg('" + id + "')\" alt=\"\">");
+        //     var imgMdInput = $("#detailImgInput").val();
+        //     if (imgMdInput == "") {
+        //         $("#detailImgInput").attr("value", ImgUrl);
+        //     } else {
+        //         $("#detailImgInput").attr("value", imgMdInput + "|" + ImgUrl);
+        //     }
+        // });
+        //
+        // // 测试删除节点
+        // $("#delete_detailImgMd_test").click(function () {
+        //     alert("测试删除节点");
+        //     var imgUrl = $("#wKhAC1vq1Q-AHTg7AAQgDiDK67s752").attr("src");
+        //     alert(imgUrl);
+        //     var imgMdInput = $("#wKhAC1vq1Q-AHTg7AAQgDiDK67s752").val();
+        //     imgMdInput = imgMdInput.replace(imgUrl, "")
+        //     if (imgMdInput.charAt(0) == "|") {
+        //         imgMdInput = imgMdInput.replace("|", "");
+        //     }
+        //     $("#detailImgInput").attr("value", imgMdInput);
+        // });
     });
 
     // 建立一個可存取到該file的url
@@ -177,6 +235,37 @@
             url = window.webkitURL.createObjectURL(file);
         }
         return url;
+    }
+
+    // 删除详情图片提示
+    function preDeleteDetailImg(detailImgId) {
+        // alert("predelete:  " + detailImgId);
+        $("#hintModalTitle").text("删除图片");
+        $("#hintModalBody").text("您确定要删除该图片吗？");
+        $("#hintModalConfirm").removeAttr("data-dismiss");
+        $("#hintModalConfirm").attr("href", "javascript:deleteDetailImg(\'" + detailImgId + "\')");
+        $("#hintModal").modal();
+    }
+
+    // 删除详情图片
+    function deleteDetailImg(detailImgId) {
+        // alert("delete:  " + detailImgId);
+        $('#hintModal').modal("hide");
+        var imgUrl = $("#" + detailImgId).attr("src");
+        // alert(imgUrl);
+        $("#" + detailImgId).remove();
+        var detailImgInput = $("#detailImgInput").val();
+        detailImgInput = detailImgInput.replace(imgUrl, "");
+        // alert("first:  " + detailImgInput);
+        if (detailImgInput.charAt(0) == "|") {
+            detailImgInput = detailImgInput.replace("|", "");
+        }
+        // alert("second:  " + detailImgInput);
+        if (detailImgInput.charAt(detailImgInput.length - 1) == "|") {
+            detailImgInput = detailImgInput.substr(0, detailImgInput.length - 1);
+        }
+        // alert("third:  " + detailImgInput);
+        $("#detailImgInput").attr("value", detailImgInput);
     }
 
 </script>
