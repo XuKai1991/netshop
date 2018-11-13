@@ -61,8 +61,6 @@
                         <br><br><br>
                         <div class="input-group" style="float: left;width: 100%">
                             <span class="input-group-addon">描述</span>
-                        <#--<input type="text" name="productDescription" style="width: 74.2%" class="form-control"-->
-                        <#--placeholder="" value="${(productInfo.productDescription)!''}">-->
                             <textarea type="text" name="productDescription" style="width: 74.2%" class="form-control"
                                       placeholder=""
                                       value="${(productInfo.productDescription)!''}">${(productInfo.productDescription)!''}</textarea>
@@ -81,15 +79,6 @@
                         <br>
                         <div class="input-group">
                             <span class="input-group-addon">详情图</span>
-                            &nbsp;
-                            <img id="productDetailImg" height="150" width="150" src="/netshop/img/add.png" alt="">
-                            <input id="detailImg" name="file" accept="image/*" type="file" style="display: none"/>
-                            <button id="submit_detailImgMd" type="button" class="btn btn-default btn-sm">确定添加图片
-                            </button>
-                        <#--<button id="submit_detailImgMd_test" type="button" class="btn btn-default btn-sm">添加图片测试-->
-                        <#--</button>-->
-                        <#--<button id="delete_detailImgMd_test" type="button" class="btn btn-default btn-sm">删除图片测试-->
-                        <#--</button>-->
                             <div id="detailImgShow" style="float: left">
                                 <#if productInfo?? && productInfo.productDetailImg?? && productInfo.productDetailImg != "">
                                     <#list productInfo.productDetailImg?split("|") as detailImgUrl>
@@ -99,6 +88,12 @@
                                                   onclick="preDeleteDetailImg('${detailImgUrl[(detailImgUrl?index_of("M00")+10)..(detailImgUrl?length-5)]}')"
                                                   alt="">
                                     </#list>
+                                    <img id="productDetailImg" height="150" width="150" src="/netshop/img/add.png"
+                                         alt="">
+                                    <input id="detailImg" name="file" accept="image/*" type="file"
+                                           style="display: none"/>
+                                    <button id="submit_detailImgMd" type="button" class="btn btn-default btn-sm">确定添加图片
+                                    </button>
                                 </#if>
                             </div>
                         </div>
@@ -179,7 +174,7 @@
                             $("#detailImgInput").attr("value", imgMdInput + "|" + imgUrl);
                         }
                         var id = imgUrl.substr(imgUrl.indexOf("M00") + 10, imgUrl.length - imgUrl.indexOf("M00") - 14);
-                        $('#detailImgShow').append("<img id=\"" + id + "\" height=\"150\" width=\"150\" src=\"" + imgUrl + "\" onclick=\"preDeleteDetailImg('" + id + "')\" alt=\"\">");
+                        $('#productDetailImg').before("<img id=\"" + id + "\" height=\"150\" width=\"150\" src=\"" + imgUrl + "\" onclick=\"preDeleteDetailImg('" + id + "')\" alt=\"\">");
                         // 将添加图片的符号恢复
                         $("#productDetailImg").attr("src", "/netshop/img/add.png");
                         $("#hintModalTitle").text("修改图片");
