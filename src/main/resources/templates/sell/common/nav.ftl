@@ -24,7 +24,7 @@
             </ul>
         </li>
         <li>
-            <a href="/netshop/seller/category/list"><i class="fa fa-fw fa-list-alt"></i><span class="icon-price-tags"></span>&nbsp;&nbsp;类目管理</a>
+            <a href="/netshop/seller/category/list"><i class="fa fa-fw fa-list-alt"></i><span class="icon-database"></span>&nbsp;&nbsp;类目管理</a>
         </li>
     <#--<li class="dropdown open">-->
     <#--<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i-->
