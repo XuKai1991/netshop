@@ -84,6 +84,7 @@
                                     <#list productInfo.productDetailImg?split("|") as detailImgUrl>
                                              <img id="${detailImgUrl[(detailImgUrl?index_of("M00")+10)..(detailImgUrl?length-5)]}"
                                                   height="150" width="150"
+                                                  style="padding-bottom: 1px;padding-top: 1px"
                                                   src="${detailImgUrl}"
                                                   onclick="preDeleteDetailImg('${detailImgUrl[(detailImgUrl?index_of("M00")+10)..(detailImgUrl?length-5)]}')"
                                                   alt="">
@@ -174,7 +175,7 @@
                             $("#detailImgInput").attr("value", imgMdInput + "|" + imgUrl);
                         }
                         var id = imgUrl.substr(imgUrl.indexOf("M00") + 10, imgUrl.length - imgUrl.indexOf("M00") - 14);
-                        $('#productDetailImg').before("<img id=\"" + id + "\" height=\"150\" width=\"150\" src=\"" + imgUrl + "\" onclick=\"preDeleteDetailImg('" + id + "')\" alt=\"\">");
+                        $('#productDetailImg').before("<img id=\"" + id + "\" height=\"150\" style=\"padding-bottom: 1px;padding-top: 1px\" width=\"150\" src=\"" + imgUrl + "\" onclick=\"preDeleteDetailImg('" + id + "')\" alt=\"\">");
                         // 将添加图片的符号恢复
                         $("#productDetailImg").attr("src", "/netshop/img/add.png");
                         $("#hintModalTitle").text("修改图片");
