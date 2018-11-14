@@ -84,7 +84,7 @@
         $.get("/netshop/express/refreshLogistics", function (result) {
             if (result.msg == "success") {
                 if (result.msg == "success") {
-                    $("#hintModalBody").text("刷新物流成功！");
+                    $("#hintModalBody").text("系统开始自动刷新物流！");
                 }
                 $("#hintModalCancel").hide();
                 $("#hintModalConfirm").attr("href", "javascript:location.reload()");
