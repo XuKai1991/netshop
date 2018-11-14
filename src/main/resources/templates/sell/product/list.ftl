@@ -100,7 +100,7 @@
                             <th style="text-align: center;width: 150px">尺码</th>
                             <th style="text-align: center;width: 50px"">库存</th>
                         <#--<th>描述</th>-->
-                            <th style="text-align: center;width: 70px">类目</th>
+                            <th style="text-align: center;width: 80px">类目</th>
                             <th style="text-align: center;width: 50px">状态</th>
                         <#--<th style="text-align: center">创建时间</th>-->
                         <#--<th style="text-align: center">修改时间</th>-->

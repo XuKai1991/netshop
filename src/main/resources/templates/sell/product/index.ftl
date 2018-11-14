@@ -78,7 +78,7 @@
                         </div>
                         <br>
                         <div class="input-group">
-                            <span class="input-group-addon">详情图</span>
+                            <span class="input-group-addon">副图</span>
                             <div id="detailImgShow" style="float: left">
                                 <#if productInfo?? && productInfo.productDetailImg?? && productInfo.productDetailImg != "">
                                     <#list productInfo.productDetailImg?split("|") as detailImgUrl>
@@ -89,13 +89,13 @@
                                                   onclick="preDeleteDetailImg('${detailImgUrl[(detailImgUrl?index_of("M00")+10)..(detailImgUrl?length-5)]}')"
                                                   alt="">
                                     </#list>
-                                    <img id="productDetailImg" height="150" width="150" src="/netshop/img/add.png"
-                                         alt="">
-                                    <input id="detailImg" name="file" accept="image/*" type="file"
-                                           style="display: none"/>
-                                    <button id="submit_detailImgMd" type="button" class="btn btn-default btn-sm">确定添加图片
-                                    </button>
                                 </#if>
+                                <img id="productDetailImg" height="150" width="150" src="/netshop/img/add.png"
+                                     alt="">
+                                <input id="detailImg" name="file" accept="image/*" type="file"
+                                       style="display: none"/>
+                                <button id="submit_detailImgMd" type="button" class="btn btn-default btn-sm">确定添加图片
+                                </button>
                             </div>
                         </div>
                         <br>
