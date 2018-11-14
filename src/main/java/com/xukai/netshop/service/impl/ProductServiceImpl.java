@@ -1,7 +1,7 @@
 package com.xukai.netshop.service.impl;
 
-import com.xukai.netshop.dataobject.ProductInfo;
 import com.xukai.netshop.dataobject.CartDetail;
+import com.xukai.netshop.dataobject.ProductInfo;
 import com.xukai.netshop.enums.ProductStatusEnum;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.SellException;
@@ -10,6 +10,9 @@ import com.xukai.netshop.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import static com.xukai.netshop.constant.CacheCons.PRODUCT_INFO_CACHE_NAME;
 
 /**
  * Author: Xukai
@@ -26,12 +31,14 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@CacheConfig(cacheNames = PRODUCT_INFO_CACHE_NAME)
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductInfoRepository productInfoRepository;
 
     @Override
+    @Cacheable(value = PRODUCT_INFO_CACHE_NAME, key = "#productId")
     public ProductInfo findOne(String productId) {
         ProductInfo productInfo = productInfoRepository.findOne(productId);
         if (productInfo == null) {
@@ -72,6 +79,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CachePut(value = PRODUCT_INFO_CACHE_NAME, key = "#productInfo.productId")
     public ProductInfo save(ProductInfo productInfo) {
         return productInfoRepository.saveAndFlush(productInfo);
     }

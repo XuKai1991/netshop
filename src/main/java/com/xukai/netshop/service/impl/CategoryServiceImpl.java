@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.xukai.netshop.constant.CacheCons.PRODUCT_CATEGORY_CACHE_NAME;
+
 /**
  * Author: Xukai
  * Description: 类目接口实现类
@@ -25,7 +27,7 @@ import java.util.List;
  * Modified By:
  */
 @Service
-@CacheConfig(cacheNames = "category")
+@CacheConfig(cacheNames = PRODUCT_CATEGORY_CACHE_NAME)
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
@@ -34,10 +36,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private ProductInfoRepository productInfoRepository;
 
-    private static final String CATEGORY_CACHE_NAME = "productCategories";
-
     @Override
-    @Cacheable(value = CATEGORY_CACHE_NAME, key = "#categoryId")
+    @Cacheable(value = PRODUCT_CATEGORY_CACHE_NAME, key = "#categoryId")
     public ProductCategory findOne(Integer categoryId) {
         ProductCategory productCategory = productCategoryRepository.findOne(categoryId);
         if (productCategory == null) {
@@ -52,13 +52,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @CachePut(value = CATEGORY_CACHE_NAME, key = "#productCategory.categoryId")
+    @CachePut(value = PRODUCT_CATEGORY_CACHE_NAME, key = "#productCategory.categoryId")
     public ProductCategory save(ProductCategory productCategory) {
         return productCategoryRepository.save(productCategory);
     }
 
     @Override
-    @CacheEvict(value = CATEGORY_CACHE_NAME, key = "#categoryId")
+    @CacheEvict(value = PRODUCT_CATEGORY_CACHE_NAME, key = "#categoryId")
     @Transactional(rollbackFor = SellException.class)
     public void deleteByCategoryId(Integer categoryId) {
         // 删除类目前需要对该类目的商品做处理
