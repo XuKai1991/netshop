@@ -90,7 +90,7 @@
     function preCancelOrder(id) {
         $("#hintModalTitle").text("取消订单");
         $("#hintModalBody").text("您确定要取消该订单吗？");
-        $("#hintModalConfirm").attr("href", "/netshop/seller/order/cancel?orderId=" + id);
+        $("#hintModalConfirm").attr("href", "/seller/order/cancel?orderId=" + id);
         $("#hintModal").modal();
     }
 
@@ -98,7 +98,7 @@
     function preDeleteOrder(id) {
         $("#hintModalTitle").text("删除订单");
         $("#hintModalBody").text("您确定要删除该订单吗？");
-        $("#hintModalConfirm").attr("href", "/netshop/seller/order/delete?orderId=" + id);
+        $("#hintModalConfirm").attr("href", "/seller/order/delete?orderId=" + id);
         $("#hintModal").modal();
     }
 
@@ -121,7 +121,7 @@
     // 手动确认支付是目前因为未接入线上支付的临时方法
     // 后期需要删除
     function editOrderPayed(orderId) {
-        $.post("/netshop/seller/order/pay", {
+        $.post("/seller/order/pay", {
             orderId: orderId,
         }, function (result) {
             $("#hintModalTitle").text("支付订单");
@@ -141,7 +141,7 @@
         var orderId = $("#orderIdForEdit").val();
         var amount = $("#amountForEdit").val();
         var actualAmount = $("#actualAmountForEdit").val();
-        $.post("/netshop/seller/order/edit", {
+        $.post("/seller/order/edit", {
             orderId: orderId,
             amount: amount,
             actualAmount: actualAmount
@@ -164,7 +164,7 @@
         var orderId = $("#orderIdForExpress").val();
         var expressShipper = $("#expressShipper").val();
         var expressNumber = $("#expressNumber").val();
-        $.post("/netshop/seller/order/send", {
+        $.post("/seller/order/send", {
             orderId: orderId,
             expressShipper: expressShipper,
             expressNumber: expressNumber
@@ -188,7 +188,7 @@
      * 查看物流
      */
     function viewLogistics(orderId) {
-        $.get("/netshop/express/findOne", {
+        $.get("/express/findOne", {
             orderId: orderId
         }, function (result) {
             if (result.msg == "success") {

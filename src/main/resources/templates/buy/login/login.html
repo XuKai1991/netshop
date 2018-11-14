@@ -5,7 +5,7 @@
     <title>买家登录</title>
 </head>
 <body>
-<form name="myForm" class="form-signin" action="/netshop/buyer/login" method="post">
+<form name="myForm" class="form-signin" action="/buyer/login" method="post">
     <div>
         <input type="text" name="username" id="username" placeholder="用户名"/>
     </div>
@@ -13,10 +13,10 @@
         <input type="password" name="password" id="password" placeholder="密码"/>
     </div>
     <button type="submit" style="margin-top:15px;">登 录</button>
-    <button type="button" style="margin-top:15px;" onclick="location.href='/netshop/buyer/logout'">注 销</button>
+    <button type="button" style="margin-top:15px;" onclick="location.href='/buyer/logout'">注 销</button>
 </form>
 <a>==================================================================================================</a>
-<form name="myForm2" class="form-signin" action="/netshop/buyer/cart/add" method="post">
+<form name="myForm2" class="form-signin" action="/buyer/cart/add" method="post">
     <div>
         <input type="text" name="productId" id="productId" placeholder="商品ID"/>
     </div>
@@ -32,7 +32,7 @@
     <button type="submit" style="margin-top:15px;">添加购物车</button>
 </form>
 <a>==================================================================================================</a>
-<form name="myForm3" class="form-signin" action="/netshop/buyer/order/create" method="post">
+<form name="myForm3" class="form-signin" action="/buyer/order/create" method="post">
     <div>
         <input type="text" name="buyerId" id="buyerId" placeholder="买家ID"/>
     </div>
@@ -54,7 +54,7 @@
     <button type="submit" style="margin-top:15px;">下单</button>
 </form>
 <a>==================================================================================================</a>
-<form name="myForm4" class="form-signin" action="/netshop/buyer/address/save" method="post">
+<form name="myForm4" class="form-signin" action="/buyer/address/save" method="post">
     <div>
         <input type="text" name="buyerName" placeholder="姓名"/>
     </div>

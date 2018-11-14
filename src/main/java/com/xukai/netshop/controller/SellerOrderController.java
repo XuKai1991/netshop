@@ -70,7 +70,7 @@ public class SellerOrderController {
     @GetMapping("/cancel")
     public ModelAndView cancel(@RequestParam("orderId") String orderId) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("url", "/netshop/seller/order/list");
+        mav.addObject("url", "/seller/order/list");
         try {
             orderService.cancel(orderId);
         } catch (SellException e) {
@@ -101,7 +101,7 @@ public class SellerOrderController {
         } catch (SellException e) {
             log.error("【卖家端查询订单详情】发生异常{}", e);
             mav.addObject("msg", e.getMessage());
-            mav.addObject("url", "/netshop/seller/order/list");
+            mav.addObject("url", "/seller/order/list");
             mav.setViewName("sell/common/error");
             return mav;
         }
@@ -139,7 +139,7 @@ public class SellerOrderController {
     @GetMapping("/delete")
     public ModelAndView delete(@RequestParam("orderId") String orderId) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("url", "/netshop/seller/order/list");
+        mav.addObject("url", "/seller/order/list");
         try {
             // 删除订单信息
             orderService.sellerDelete(orderId);

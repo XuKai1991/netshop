@@ -15,7 +15,7 @@
                 <button onclick="javascript:document.getElementById('notice').pause()" type="button"
                         class="btn btn-default" data-dismiss="modal">关闭
                 </button>
-                <button onclick="javascrtpt:window.location='/netshop/seller/order/list'" type="button"
+                <button onclick="javascrtpt:window.location='/seller/order/list'" type="button"
                         class="btn btn-primary">查看新的订单
                 </button>
             </div>
@@ -25,14 +25,14 @@
 
 <#--播放音乐-->
 <audio id="notice" loop="loop">
-    <source src="/netshop/mp3/song.mp3" type="audio/mpeg"/>
+    <source src="/mp3/song.mp3" type="audio/mpeg"/>
 </audio>
 
 <script>
     var webSocket = null;
     if ('WebSocket' in window) {
-        // webSocket = new WebSocket("ws://localhost:8085/netshop/webSocket");
-        webSocket = new WebSocket("ws://106.14.183.207:8085/netshop/webSocket");
+        // webSocket = new WebSocket("ws://localhost:8085/webSocket");
+        webSocket = new WebSocket("ws://106.14.183.207:8085/webSocket");
     } else {
         alert("该浏览器不支持websocket！");
     }

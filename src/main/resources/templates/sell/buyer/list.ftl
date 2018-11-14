@@ -14,7 +14,7 @@
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-md-12 column">
-                    <form class="form-inline" role="form" id="searchForm" action="/netshop/seller/listBuyer">
+                    <form class="form-inline" role="form" id="searchForm" action="/seller/listBuyer">
                         <input id="s_page" name="page" type="hidden" class="form-control"
                                aria-describedby="basic-addon1"/>
                         <input id="s_size" name="size" type="hidden" class="form-control"
@@ -132,7 +132,7 @@
      aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
-            <form id="editForm" name="editForm" action="/netshop/buyer/save" method="post">
+            <form id="editForm" name="editForm" action="/buyer/save" method="post">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span>
@@ -264,7 +264,7 @@
     // 修改类目提示
     function preEditBuyer(buyerId) {
         $("#editModalTitle").text("修改买家用户");
-        $.get("/netshop/buyer/findByBuyerId", {buyerId: buyerId}, function (result) {
+        $.get("/buyer/findByBuyerId", {buyerId: buyerId}, function (result) {
             if (result.msg != "success") {
                 return;
             }
@@ -284,7 +284,7 @@
     function preDeleteBuyer(buyerId) {
         $("#hintModalTitle").text("删除买家用户");
         $("#hintModalBody").text("您确定要删除该买家用户吗？");
-        $("#hintModalConfirm").attr("href", "/netshop/seller/deleteBuyer?buyerId=" + buyerId);
+        $("#hintModalConfirm").attr("href", "/seller/deleteBuyer?buyerId=" + buyerId);
         $("#hintModal").modal();
     }
 

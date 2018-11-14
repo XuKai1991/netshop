@@ -60,7 +60,7 @@ public class SellerUserController {
         } catch (SellException e) {
             log.error("【卖家端登录】发生异常{}", e);
             mav.addObject("msg", ResultEnum.LOGIN_FAIL.getMessage());
-            mav.addObject("url", "/netshop/seller/");
+            mav.addObject("url", "/seller/");
             mav.setViewName("sell/common/error");
             return mav;
         }
@@ -72,7 +72,7 @@ public class SellerUserController {
         if (StringUtils.isNotEmpty(sellRequestURI)) {
             mav.setViewName("redirect:" + baseUrlConfig.getBackBaseUrl() + sellRequestURI);
         } else {
-            mav.setViewName("redirect:" + baseUrlConfig.getBackBaseUrl() + "/netshop/seller/order/list");
+            mav.setViewName("redirect:" + baseUrlConfig.getBackBaseUrl() + "/seller/order/list");
         }
         return mav;
     }
@@ -84,7 +84,7 @@ public class SellerUserController {
         String[] fields = {cookieConfig.getSellerId()};
         TokenUtils.cleanLoginTrace(fields, request, response);
         mav.addObject("msg", ResultEnum.LOGOUT_SUCCESS.getMessage());
-        mav.addObject("url", "/netshop/seller/");
+        mav.addObject("url", "/seller/");
         mav.setViewName("sell/common/success");
         return mav;
     }
@@ -105,7 +105,7 @@ public class SellerUserController {
     @GetMapping("/deleteBuyer")
     public ModelAndView deleteBuyerInfo(@RequestParam("buyerId") String buyerId) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("url", "/netshop/seller/listBuyer");
+        mav.addObject("url", "/seller/listBuyer");
         try {
             buyerService.deleteByBuyerId(buyerId);
         } catch (SellException e) {

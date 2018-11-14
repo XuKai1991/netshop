@@ -1,6 +1,5 @@
 server:
   port: 8085
-  context-path: /netshop
 
 spring:
   datasource:
@@ -78,7 +77,6 @@ fastdfs:
   psicSaveLogUrl: /netshop/logs/picSaveLog
 
 baseUrl:
-  frontBaseUrl: http://106.14.183.207:8081
   backBaseUrl: http://106.14.183.207:8085
   imageServerUrl: http://106.14.183.207/
 

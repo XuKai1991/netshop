@@ -13,7 +13,7 @@
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-md-12 column">
-                    <form class="form-inline" role="form" id="searchForm" action="/netshop/seller/product/list">
+                    <form class="form-inline" role="form" id="searchForm" action="/seller/product/list">
                         <div class="form-group input-group">
                             <span class="input-group-addon" id="basic-addon1">货号</span>
                             <input id="s_page" name="page" type="hidden" class="form-control"
@@ -136,15 +136,15 @@
                                 <#--<td style="padding-top: 20">${productInfo.getCreateTime()}</td>-->
                                 <#--<td style="padding-top: 20">${productInfo.getUpdateTime()}</td>-->
                                     <td style="vertical-align:middle">
-                                        <a href="/netshop/seller/product/index?productId=${productInfo.productId}"
+                                        <a href="/seller/product/index?productId=${productInfo.productId}"
                                            type="button"
                                            class="btn btn-default btn-danger">修改</a>
                                         <#if productInfo.getProductStatusEnum().message == "在售">
-                                            <a href="/netshop/seller/product/off_sale?productId=${productInfo.productId}"
+                                            <a href="/seller/product/off_sale?productId=${productInfo.productId}"
                                                type="button"
                                                class="btn btn-default btn-danger">下架</a>
                                         <#else>
-                                            <a href="/netshop/seller/product/on_sale?productId=${productInfo.productId}"
+                                            <a href="/seller/product/on_sale?productId=${productInfo.productId}"
                                                type="button"
                                                class="btn btn-default btn-danger">上架</a>
                                         </#if>
@@ -164,8 +164,8 @@
                             <li class="disabled"><a href="#">首页</a></li>
                             <li class="disabled"><a href="#">上一页</a></li>
                         <#else>
-                        <#--<li><a href="/netshop/seller/product/list?page=1&size=${size}">首页</a></li>-->
-                        <#--<li><a href="/netshop/seller/product/list?page=${currentPage - 1}&size=${size}">上一页</a></li>-->
+                        <#--<li><a href="/seller/product/list?page=1&size=${size}">首页</a></li>-->
+                        <#--<li><a href="/seller/product/list?page=${currentPage - 1}&size=${size}">上一页</a></li>-->
                             <li><a href="javascript:search(1, ${size})">首页</a></li>
                             <li><a href="javascript:search(${currentPage - 1}, ${size})">上一页</a></li>
                         </#if>
@@ -173,7 +173,7 @@
                             <#if currentPage == index>
                                 <li class="disabled"><a href="#">${index}</a></li>
                             <#elseif index lte (currentPage + 3) && index gte (currentPage - 3)>
-                            <#--<li><a href="/netshop/seller/product/list?page=${index}&size=${size}">${index}</a></li>-->
+                            <#--<li><a href="/seller/product/list?page=${index}&size=${size}">${index}</a></li>-->
                                     <li><a href="javascript:search(${index}, ${size})">${index}</a></li>
                             </#if>
                         </#list>
@@ -181,8 +181,8 @@
                             <li class="disabled"><a href="#">下一页</a></li>
                             <li class="disabled"><a href="#">尾页</a></li>
                         <#else>
-                        <#--<li><a href="/netshop/seller/product/list?page=${currentPage + 1}&size=${size}">下一页</a></li>-->
-                        <#--<li><a href="/netshop/seller/product/list?page=${productInfoPage.getTotalPages()}&size=${size}">尾页</a>-->
+                        <#--<li><a href="/seller/product/list?page=${currentPage + 1}&size=${size}">下一页</a></li>-->
+                        <#--<li><a href="/seller/product/list?page=${productInfoPage.getTotalPages()}&size=${size}">尾页</a>-->
                             <li><a href="javascript:search(${currentPage + 1}, ${size})">下一页</a></li>
                             <li><a href="javascript:search(${productInfoPage.getTotalPages()}, ${size})">尾页</a>
                             </li>

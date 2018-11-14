@@ -52,7 +52,7 @@ public class SellerProductController {
             mav.addObject("productInfoPage", productInfoPage);
         } catch (SellException e) {
             log.error("【卖家端商品下架】发生异常{}", e);
-            mav.addObject("url", "/netshop/seller/product/list");
+            mav.addObject("url", "/seller/product/list");
             mav.addObject("msg", e.getMessage());
             mav.setViewName("sell/common/error");
             return mav;
@@ -69,7 +69,7 @@ public class SellerProductController {
     @GetMapping("/off_sale")
     public ModelAndView offSale(@RequestParam("productId") String productId) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("url", "/netshop/seller/product/list");
+        mav.addObject("url", "/seller/product/list");
         try {
             productService.offSale(productId);
         } catch (SellException e) {
@@ -86,7 +86,7 @@ public class SellerProductController {
     @GetMapping("/on_sale")
     public ModelAndView onSale(@RequestParam("productId") String productId) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("url", "/netshop/seller/product/list");
+        mav.addObject("url", "/seller/product/list");
         try {
             productService.onSale(productId);
         } catch (SellException e) {
@@ -110,7 +110,7 @@ public class SellerProductController {
             } catch (SellException e) {
                 log.error("【卖家端查询商品详情】发生异常{}", e);
                 mav.addObject("msg", e.getMessage());
-                mav.addObject("url", "/netshop/seller/product/list");
+                mav.addObject("url", "/seller/product/list");
                 mav.setViewName("sell/common/error");
                 return mav;
             }
@@ -127,7 +127,7 @@ public class SellerProductController {
         ModelAndView mav = new ModelAndView();
         if (bindingResult.hasErrors()) {
             mav.addObject("msg", bindingResult.getFieldError().getDefaultMessage());
-            mav.addObject("url", "/netshop/seller/product/index");
+            mav.addObject("url", "/seller/product/index");
             mav.setViewName("sell/common/error");
             return mav;
         }
@@ -145,11 +145,11 @@ public class SellerProductController {
         } catch (SellException e) {
             log.error("【卖家端保存商品详情】发生异常{}", e);
             mav.addObject("msg", e.getMessage());
-            mav.addObject("url", "/netshop/seller/product/index?productId=" + productForm.getProductId());
+            mav.addObject("url", "/seller/product/index?productId=" + productForm.getProductId());
             mav.setViewName("sell/common/error");
             return mav;
         }
-        mav.addObject("url", "/netshop/seller/product/list");
+        mav.addObject("url", "/seller/product/list");
         mav.setViewName("sell/common/success");
         return mav;
     }

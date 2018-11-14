@@ -12,7 +12,7 @@
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-md-12 column">
-                    <form role="form" method="post" action="/netshop/seller/product/save">
+                    <form role="form" method="post" action="/seller/product/save">
                         <div class="input-group" style="float: left;width: 100%">
                             <span class="input-group-addon">名称</span>
                             <input type="text" name="productName" style="width: 74.2%" class="form-control"
@@ -69,7 +69,7 @@
                         <div class="input-group">
                             <span class="input-group-addon">主图</span>
                             <img id="productImgMd" height="150" width="150"
-                                 src="${(productInfo.productImgMd)!'/netshop/img/add.png'}"
+                                 src="${(productInfo.productImgMd)!'/img/add.png'}"
                                  alt="">
                             <input id="imgMd" name="file" accept="image/*" type="file" style="display: none"/>
                             <input id="imgMdInput" name="productImgMd" type="text" class="form-control"
@@ -90,7 +90,7 @@
                                                   alt="">
                                     </#list>
                                 </#if>
-                                <img id="productDetailImg" height="150" width="150" src="/netshop/img/add.png"
+                                <img id="productDetailImg" height="150" width="150" src="/img/add.png"
                                      alt="">
                                 <input id="detailImg" name="file" accept="image/*" type="file"
                                        style="display: none"/>
@@ -128,7 +128,7 @@
         //图片上传
         $("#submit_imgMd").click(function () {
             $.ajaxFileUpload({
-                url: "/netshop/seller/pic/upload",
+                url: "/seller/pic/upload",
                 fileElementId: "imgMd", // 文件上传域的ID，这里是input的ID，而不是img的
                 dataType: 'json', // 返回值类型 一般设置为json
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
@@ -160,7 +160,7 @@
         // 详情图片上传
         $("#submit_detailImgMd").click(function () {
             $.ajaxFileUpload({
-                url: "/netshop/seller/pic/upload",
+                url: "/seller/pic/upload",
                 fileElementId: "detailImg", // 文件上传域的ID，这里是input的ID，而不是img的
                 dataType: 'json', // 返回值类型 一般设置为json
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
@@ -177,7 +177,7 @@
                         var id = imgUrl.substr(imgUrl.indexOf("M00") + 10, imgUrl.length - imgUrl.indexOf("M00") - 14);
                         $('#productDetailImg').before("<img id=\"" + id + "\" height=\"150\" style=\"padding-bottom: 1px;padding-top: 1px\" width=\"150\" src=\"" + imgUrl + "\" onclick=\"preDeleteDetailImg('" + id + "')\" alt=\"\">");
                         // 将添加图片的符号恢复
-                        $("#productDetailImg").attr("src", "/netshop/img/add.png");
+                        $("#productDetailImg").attr("src", "/img/add.png");
                         $("#hintModalTitle").text("修改图片");
                         $("#hintModalBody").text("修改图片成功！");
                         $("#hintModalCancel").hide();

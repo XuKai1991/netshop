@@ -16,11 +16,6 @@ import org.springframework.stereotype.Component;
 public class BaseUrlConfig {
 
     /**
-     * 前端基础URL
-     */
-    public String frontBaseUrl;
-
-    /**
      * 后端基础URL
      */
     public String backBaseUrl;

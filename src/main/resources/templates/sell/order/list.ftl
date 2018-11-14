@@ -12,7 +12,7 @@
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-md-12 column">
-                    <form class="form-inline" role="form" id="searchForm" action="/netshop/seller/order/list">
+                    <form class="form-inline" role="form" id="searchForm" action="/seller/order/list">
                         <input id="s_page" name="page" type="hidden" class="form-control"
                                aria-describedby="basic-addon1"/>
                         <input id="s_size" name="size" type="hidden" class="form-control"
@@ -110,7 +110,7 @@
                                     <td style="vertical-align:middle">${orderDTO.createTime}</td>
                                 <#--<td style="vertical-align:middle; width:170px">-->
                                     <td style="vertical-align:middle; width:240px">
-                                        <a href="/netshop/seller/order/detail?orderId=${orderDTO.orderId}"
+                                        <a href="/seller/order/detail?orderId=${orderDTO.orderId}"
                                            type="button"
                                            class="btn btn-default btn-primary">详情</a>
                                         <#if orderDTO.getOrderStatusEnum().message == "未支付">

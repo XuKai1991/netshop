@@ -64,7 +64,7 @@ public class SellerCategoryController {
     @GetMapping("/delete")
     public ModelAndView delete(@RequestParam("categoryId") Integer categoryId) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("url", "/netshop/seller/category/list");
+        mav.addObject("url", "/seller/category/list");
         try {
             categoryService.deleteByCategoryId(categoryId);
         } catch (SellException e) {

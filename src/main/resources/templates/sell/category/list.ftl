@@ -60,7 +60,7 @@
      aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
-            <form id="editForm" name="editForm" action="/netshop/seller/category/save" method="post">
+            <form id="editForm" name="editForm" action="/seller/category/save" method="post">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span>
@@ -177,7 +177,7 @@
     // 修改类目提示
     function preEditCategory(categoryId) {
         $("#editModalTitle").text("修改类目");
-        $.get("/netshop/seller/category/detail", {categoryId: categoryId}, function (result) {
+        $.get("/seller/category/detail", {categoryId: categoryId}, function (result) {
             if (result.msg == "success") {
                 var category = result.data;
                 $("#categoryIdForEdit").val(category.categoryId);
@@ -193,7 +193,7 @@
     function preDeleteCategory(categoryId) {
         $("#hintModalTitle").text("删除类目");
         $("#hintModalBody").text("您确定要删除该类目吗？");
-        $("#hintModalConfirm").attr("href", "/netshop/seller/category/delete?categoryId=" + categoryId);
+        $("#hintModalConfirm").attr("href", "/seller/category/delete?categoryId=" + categoryId);
         $("#hintModal").modal();
     }
 </script>
