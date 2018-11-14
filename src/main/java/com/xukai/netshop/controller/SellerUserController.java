@@ -66,7 +66,7 @@ public class SellerUserController {
         }
         // 设置token至cookie
         HashMap<String, String> fieldsMap = new HashMap<>(2);
-        fieldsMap.put(cookieConfig.getSellerId(), sellerInfo.getId());
+        fieldsMap.put(cookieConfig.getSellerId(), String.valueOf(sellerInfo.getId()));
         TokenUtils.addLoginTrace(fieldsMap, cookieConfig, request, response);
         String sellRequestURI = (String) request.getSession().getAttribute("sellRequestURI");
         if (StringUtils.isNotEmpty(sellRequestURI)) {

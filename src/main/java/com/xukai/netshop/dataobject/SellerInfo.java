@@ -22,7 +22,7 @@ import javax.persistence.Table;
 public class SellerInfo {
 
     @Id
-    private String id;
+    private Integer id;
 
     private String username;
 
