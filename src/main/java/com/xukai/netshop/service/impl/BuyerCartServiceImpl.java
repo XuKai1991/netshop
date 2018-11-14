@@ -120,6 +120,7 @@ public class BuyerCartServiceImpl implements BuyerCartService {
                     // 如果货号、颜色、尺码都相同，就在原来基础上增加商品数量
                     int quantity = item.getProductQuantity() + cartDetail.getProductQuantity();
                     item.setProductQuantity(quantity);
+                    existFlag = true;
                     break;
                 }
             }
