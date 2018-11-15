@@ -59,7 +59,7 @@ public class SellerUserController {
             sellerInfo = sellerService.findByUsernameAndPassword(username, password);
         } catch (SellException e) {
             log.error("【卖家端登录】发生异常{}", e);
-            mav.addObject("msg", ResultEnum.LOGIN_FAIL.getMessage());
+            mav.addObject("msg", e.getMessage());
             mav.addObject("url", "/seller/");
             mav.setViewName("sell/common/error");
             return mav;

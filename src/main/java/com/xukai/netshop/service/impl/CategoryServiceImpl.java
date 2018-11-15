@@ -69,7 +69,7 @@ public class CategoryServiceImpl implements CategoryService {
             if (productInfo.getProductStatusEnum() == ProductStatusEnum.UP) {
                 productInfo.setProductStatus(ProductStatusEnum.Down.getCode());
             }
-            productInfo.setCategoryType("0");
+            productInfo.setCategoryType("-1");
             productInfoRepository.save(productInfo);
         }
         try {
@@ -77,5 +77,11 @@ public class CategoryServiceImpl implements CategoryService {
         } catch (Exception e) {
             throw new SellException(ResultEnum.CATEGORY_DELETE_FAIL);
         }
+    }
+
+    @Override
+    public Boolean checkCategoryTypeExist(String categoryType) {
+        ProductCategory productCategory = productCategoryRepository.findByCategoryType(categoryType);
+        return productCategory != null;
     }
 }

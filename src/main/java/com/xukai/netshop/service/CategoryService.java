@@ -19,4 +19,6 @@ public interface CategoryService {
     ProductCategory save(ProductCategory productCategory);
 
     void deleteByCategoryId(Integer categoryId);
+
+    Boolean checkCategoryTypeExist(String categoryType);
 }

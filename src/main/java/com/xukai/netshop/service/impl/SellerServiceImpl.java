@@ -1,6 +1,8 @@
 package com.xukai.netshop.service.impl;
 
 import com.xukai.netshop.dataobject.SellerInfo;
+import com.xukai.netshop.enums.ResultEnum;
+import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.repository.SellerInfoRepository;
 import com.xukai.netshop.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public SellerInfo findByUsernameAndPassword(String username, String password) {
         SellerInfo sellerInfo = sellerInfoRepository.findByUsernameAndPassword(username, password);
+        if(sellerInfo == null){
+            throw new SellException(ResultEnum.BUYER_LOGIN_FAIL);
+        }
         return sellerInfo;
     }
 }

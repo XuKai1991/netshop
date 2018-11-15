@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface ProductInfoRepository extends JpaRepository<ProductInfo, String> {
 
-    Page<ProductInfo> findByCategoryTypeAndProductStatusOrderByCreateTimeDesc(Integer categoryType, Integer productStatus, Pageable pageable);
+    Page<ProductInfo> findByCategoryTypeAndProductStatusOrderByCreateTimeDesc(String categoryType, Integer productStatus, Pageable pageable);
 
     Page<ProductInfo> findByProductStatusOrderByCreateTimeDesc(Integer productStatus, Pageable pageable);
 

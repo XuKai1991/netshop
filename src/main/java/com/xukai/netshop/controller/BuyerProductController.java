@@ -39,7 +39,7 @@ public class BuyerProductController {
      * @return
      */
     @GetMapping("/byCategory")
-    public ResultVO<Page<ProductInfo>> getProductByCategory(@RequestParam(value = "categoryType", required = false) Integer categoryType, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
+    public ResultVO<Page<ProductInfo>> getProductByCategory(@RequestParam(value = "categoryType", required = false) String categoryType, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
         Page<ProductInfo> productInfoPage = productService.findByCategory(categoryType, new PageRequest(page - 1, size));
         return ResultVOUtil.success(productInfoPage);
     }

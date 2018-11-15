@@ -63,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
                 "%" + (StringUtils.isEmpty(s_productInfo.getProductName()) ? "" : s_productInfo.getProductName()) + "%",
                 minPrice == null ? new BigDecimal("0") : minPrice,
                 maxPrice == null ? new BigDecimal("99999") : maxPrice,
-                "%" + (StringUtils.isEmpty(s_productInfo.getCategoryType()) ? "" : s_productInfo.getCategoryType()) + "%",
+                StringUtils.isEmpty(s_productInfo.getCategoryType()) ? "%%" : s_productInfo.getCategoryType(),
                 pageable
         );
     }
@@ -74,7 +74,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductInfo> findByCategory(Integer categoryType, Pageable pageable) {
+    public Page<ProductInfo> findByCategory(String categoryType, Pageable pageable) {
         return productInfoRepository.findByCategoryTypeAndProductStatusOrderByCreateTimeDesc(categoryType, ProductStatusEnum.UP.getCode(), pageable);
     }
 

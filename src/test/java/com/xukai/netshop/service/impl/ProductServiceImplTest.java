@@ -27,7 +27,7 @@ public class ProductServiceImplTest {
 
     @Test
     public void findByCategory() {
-        int categoryType = 1;
+        String categoryType = "1";
         PageRequest pageRequest = new PageRequest(1 - 1, 2);
         Page<ProductInfo> productInfos = productService.findByCategory(categoryType, pageRequest);
         for (ProductInfo productInfo : productInfos) {

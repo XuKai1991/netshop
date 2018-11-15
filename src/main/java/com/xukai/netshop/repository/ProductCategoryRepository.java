@@ -13,4 +13,5 @@ public interface ProductCategoryRepository extends JpaRepository<ProductCategory
 
     int deleteByCategoryId(Integer categoryId);
 
+    ProductCategory findByCategoryType(String categoryType);
 }

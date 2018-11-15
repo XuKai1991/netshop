@@ -8,7 +8,6 @@ import com.xukai.netshop.form.CategoryForm;
 import com.xukai.netshop.service.CategoryService;
 import com.xukai.netshop.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static com.xukai.netshop.constant.CrawlerCons.RANDOM;
 
 /**
  * @author: Xukai
@@ -53,10 +54,16 @@ public class SellerCategoryController {
         ProductCategory category;
         if (categoryForm.getCategoryId() != null) {
             category = categoryService.findOne(categoryForm.getCategoryId());
+            category.setCategoryName(categoryForm.getCategoryName());
         } else {
             category = new ProductCategory();
+            int categoryType;
+            do {
+                categoryType = RANDOM.nextInt(1000);
+            } while (categoryService.checkCategoryTypeExist(String.valueOf(categoryType)));
+            category.setCategoryType(String.valueOf(categoryType));
+            category.setCategoryName(categoryForm.getCategoryName());
         }
-        BeanUtils.copyProperties(categoryForm, category);
         categoryService.save(category);
         return ResultVOUtil.success();
     }

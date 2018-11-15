@@ -50,7 +50,7 @@ public interface ProductService {
      * @param pageable
      * @return
      */
-    Page<ProductInfo> findByCategory(Integer categoryType, Pageable pageable);
+    Page<ProductInfo> findByCategory(String categoryType, Pageable pageable);
 
     /**
      * 保存商品

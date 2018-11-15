@@ -21,7 +21,7 @@
                         <thead>
                         <tr>
                         <#--<th>类目id</th>-->
-                            <th style="text-align: center">类目编号</th>
+                        <#--<th style="text-align: center">类目编号</th>-->
                             <th style="text-align: center">类目名称</th>
                             <th style="text-align: center">创建时间</th>
                             <th style="text-align: center">修改时间</th>
@@ -33,12 +33,12 @@
                         <#list categoryList as category>
                         <tr align="center">
                         <#--<td>${category.categoryId}</td>-->
-                            <td style="vertical-align:middle">${category.categoryType}</td>
+                        <#--<td style="vertical-align:middle">${category.categoryType}</td>-->
                             <td style="vertical-align:middle">${category.categoryName}</td>
                             <td style="vertical-align:middle">${category.createTime}</td>
                             <td style="vertical-align:middle">${category.updateTime}</td>
                             <td style="vertical-align:middle">
-                                <#if category.categoryType != "0">
+                                <#if category.categoryType != "-1">
                                     <a href="javascript:preEditCategory(${category.categoryId})" type="button"
                                        class="btn btn-default btn-danger">修改</a>
                                     <a href="javascript:preDeleteCategory(${category.categoryId})" type="button"
@@ -70,11 +70,8 @@
                 <div class="modal-body">
                     <input id="categoryIdForEdit" type="hidden" class="form-control" aria-describedby="basic-addon1"
                            name="categoryId"/>
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon1">类目编号</span>
-                        <input id="categoryTypeForEdit" type="text" class="form-control" aria-describedby="basic-addon1"
-                               name="categoryType"/>
-                    </div>
+                    <input id="categoryTypeForEdit" type="hidden" class="form-control" aria-describedby="basic-addon1"
+                           name="categoryType"/>
                     </br>
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">类目名称</span>
@@ -144,14 +141,6 @@
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields: {
-                categoryTypeForEdit: {
-                    message: '类目编号验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '类目编号不能为空'
-                        }
-                    }
-                },
                 categoryNameForEdit: {
                     message: '类目名称验证失败',
                     validators: {
@@ -167,7 +156,6 @@
     // 添加类目提示
     function preAddCategory() {
         $("#editModalTitle").text("新增类目");
-        $("#categoryTypeForEdit").removeAttr("readonly");
         $("#categoryIdForEdit").val("");
         $("#categoryTypeForEdit").val("");
         $("#categoryNameForEdit").val("");
@@ -182,7 +170,6 @@
                 var category = result.data;
                 $("#categoryIdForEdit").val(category.categoryId);
                 $("#categoryTypeForEdit").val(category.categoryType);
-                $("#categoryTypeForEdit").attr("readonly", "readonly");
                 $("#categoryNameForEdit").val(category.categoryName);
                 $('#editModal').modal();
             }
