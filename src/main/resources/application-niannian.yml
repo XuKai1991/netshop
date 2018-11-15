@@ -5,10 +5,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    password: 123456
-    url: jdbc:mysql://127.0.0.1/netshop?characterEncoding=utf-8&useSSL=false
-#    password: Xukai0110@
-#    url: jdbc:mysql://106.14.183.207/netshop_niannian?characterEncoding=utf-8&useSSL=false
+    password: Xukai0110@
+    url: jdbc:mysql://106.14.183.207/netshop_niannian?characterEncoding=utf-8&useSSL=false
     type: com.alibaba.druid.pool.DruidDataSource
 
   jpa:
@@ -53,7 +51,7 @@ spring:
             port: 465
 
 logging:
-  config: classpath:logback-dev.xml
+  config: classpath:logback-niannian.xml
 
 # 发送邮件地址
 mail:
@@ -71,17 +69,16 @@ fdfs:
   thumb-image:
     width: 210
     height: 210
-  tracker-list: 192.168.64.11:22122
+  tracker-list: 106.14.183.207:22122
   pool:
     jmx-enabled: false
 
 fastdfs:
-  psicSaveLogUrl: G:/PicSaveLog.txt
+  psicSaveLogUrl: /netshop/niannian/logs/picSaveLog
 
 baseUrl:
-  frontBaseUrl: http://localhost:8081
-  backBaseUrl: http://localhost:8085
-  imageServerUrl: http://192.168.64.11/
+  backBaseUrl: http://106.14.183.207:8085
+  imageServerUrl: http://106.14.183.207/
 
 crawler:
   proxySources: http://www.xicidaili.com/nn/
@@ -92,8 +89,8 @@ crawler:
   activeProxyListMaxThreshold: 50
   expressCrawlerBaseUrl: http://www.kuaidi100.com/query?type=|&postid=
   expressCrawlerPauseWaitTime: 3000
-  expressCrawlerForceStopWaitTime: 300000   #5分钟
+  expressCrawlerForceStopWaitTime: 600000   #10分钟
 
 autoAdmin:
   autoConfirmReceiveGoodsWaitTime: 10   #10天
-  autoCancelNotPayedOrderWaitTime: 60   #单位s，2小时
+  autoCancelNotPayedOrderWaitTime: 7200   #单位s，2小时
