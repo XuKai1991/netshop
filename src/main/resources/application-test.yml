@@ -51,7 +51,7 @@ spring:
             port: 465
 
 logging:
-  config: classpath:logback-pro.xml
+  config: classpath:logback-test.xml
 
 # 发送邮件地址
 mail:
@@ -74,7 +74,7 @@ fdfs:
     jmx-enabled: false
 
 fastdfs:
-  psicSaveLogUrl: /netshop/logs/picSaveLog
+  psicSaveLogUrl: /netshop/test/logs/picSaveLog
 
 baseUrl:
   backBaseUrl: http://106.14.183.207:8085
