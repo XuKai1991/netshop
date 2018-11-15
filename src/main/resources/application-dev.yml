@@ -79,7 +79,6 @@ fastdfs:
   psicSaveLogUrl: G:/PicSaveLog.txt
 
 baseUrl:
-  frontBaseUrl: http://localhost:8081
   backBaseUrl: http://localhost:8085
   imageServerUrl: http://192.168.64.11/
 
