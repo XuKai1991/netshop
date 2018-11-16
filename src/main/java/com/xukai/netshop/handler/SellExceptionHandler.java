@@ -39,7 +39,7 @@ public class SellExceptionHandler {
         String sellRequestURI = request.getRequestURI();
         HttpSession session = request.getSession();
         session.setAttribute("sellRequestURI", sellRequestURI);
-        mav.setViewName("redirect:" + baseUrlConfig.getBackBaseUrl() + "/netshop/seller/");
+        mav.setViewName("redirect:" + baseUrlConfig.getBackBaseUrl() + "/seller/");
         return mav;
     }
 
