@@ -59,14 +59,14 @@
                             </select>
                         </div>
                         <br><br><br>
-                        <div class="input-group" style="float: left;width: 100%">
+                        <div class="input-group" style="float: left;width: 100%;margin-bottom: 20px">
                             <span class="input-group-addon">描述</span>
-                            <textarea type="text" name="productDescription" style="width: 74.2%" class="form-control"
+                            <textarea type="text" name="productDescription" style="width: 74.2%;height: 150px"
+                                      class="form-control"
                                       placeholder=""
                                       value="${(productInfo.productDescription)!''}">${(productInfo.productDescription)!''}</textarea>
                         </div>
-                        <br><br><br><br><br>
-                        <div class="input-group">
+                        <div class="input-group" style="margin-bottom: 20px">
                             <span class="input-group-addon">主图</span>
                             <img id="productImgMd" height="150" width="150"
                                  src="${(productInfo.productImgMd)!'/img/add.png'}"
@@ -76,7 +76,6 @@
                                    value="${(productInfo.productImgMd)!''}" style="display: none"/>
                             <button id="submit_imgMd" type="button" class="btn btn-default btn-sm">确定修改图片</button>
                         </div>
-                        <br>
                         <div class="input-group">
                             <span class="input-group-addon">副图</span>
                             <div id="detailImgShow" style="float: left">

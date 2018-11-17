@@ -31,7 +31,7 @@ public class SellExceptionHandler {
     /**
      * SellerAuthorizeException异常处理
      * 如果登录验证不通过，跳转登录页
-     * http:localhost/netshop/sell/
+     * http:localhost/sell/
      */
     @ExceptionHandler({SellerAuthorizeException.class})
     public ModelAndView handlerAuthorizeException(HttpServletRequest request) {
