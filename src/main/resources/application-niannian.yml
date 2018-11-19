@@ -77,7 +77,7 @@ fastdfs:
   psicSaveLogUrl: /netshop/niannian/logs/picSaveLog
 
 baseUrl:
-  backBaseUrl: http://106.14.183.207:8085
+  backBaseUrl: http://106.14.183.207:8086
   imageServerUrl: http://106.14.183.207/
 
 crawler:
