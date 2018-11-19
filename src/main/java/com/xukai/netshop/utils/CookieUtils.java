@@ -24,11 +24,11 @@ public class CookieUtils {
      */
     public static void set(String name, String value, int maxAge, HttpServletRequest request, HttpServletResponse response) {
         Cookie cookie = new Cookie(name, value);
-        //设置cookie的有效时间，以秒为单位
+        // 设置cookie的有效时间，以秒为单位
         cookie.setMaxAge(maxAge);
         cookie.setPath("/");
         // cookie.setDomain("");
-        //将cookie添加至response
+        // 将cookie添加至response
         response.addCookie(cookie);
     }
 

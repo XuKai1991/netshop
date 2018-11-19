@@ -15,6 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -56,5 +57,7 @@ public class BuyerAuthorizeAspect {
             log.error("【登录校验】Cookie或Session中查不到buyerId");
             throw new BuyerAuthorizeException();
         }
+        HttpServletResponse response = sra.getResponse();
+        CookieUtils.set(cookie.getName(), cookie.getValue(), cookieConfig.getExpire(), request, response);
     }
 }

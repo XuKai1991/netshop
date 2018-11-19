@@ -34,4 +34,12 @@ public interface BuyerAddressService {
      * @return
      */
     List<BuyerAddress> findByBuyerId(String buyerId);
+
+    /**
+     * 根据主键删除
+     *
+     * @param buyerAddressId
+     * @return
+     */
+    void delete(String buyerAddressId);
 }

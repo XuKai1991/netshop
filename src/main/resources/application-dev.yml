@@ -63,7 +63,7 @@ cookieConfig:
   buyerId: buyerId
   buyerName: buyerName
   sellerId: sellerId
-  expire: 3600  #一小时
+  expire: 604800  #一星期
 
 fdfs:
   so-timeout: 1500

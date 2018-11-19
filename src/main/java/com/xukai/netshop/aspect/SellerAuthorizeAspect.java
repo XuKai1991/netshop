@@ -47,5 +47,6 @@ public class SellerAuthorizeAspect {
             log.error("【登录校验】Cookie中查不到token");
             throw new SellerAuthorizeException();
         }
+        CookieUtils.set(cookie.getName(), cookie.getValue(), cookieConfig.getExpire(), request, sra.getResponse());
     }
 }

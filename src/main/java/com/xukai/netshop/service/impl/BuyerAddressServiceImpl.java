@@ -53,4 +53,14 @@ public class BuyerAddressServiceImpl implements BuyerAddressService {
         List<BuyerAddress> buyerAddressList = buyerAddressRepository.findByBuyerId(buyerId);
         return buyerAddressList;
     }
+
+    @Override
+    public void delete(String buyerAddressId) {
+        try {
+            buyerAddressRepository.delete(buyerAddressId);
+        } catch (Exception e) {
+            log.error("【删除常用地址】发生异常{}", ResultEnum.BUYER_ADDRESS_DELETE_FAIL.getMessage());
+            throw new BuyException(ResultEnum.BUYER_ADDRESS_DELETE_FAIL);
+        }
+    }
 }

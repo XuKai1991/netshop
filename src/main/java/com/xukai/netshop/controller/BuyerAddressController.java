@@ -6,8 +6,8 @@ import com.xukai.netshop.dataobject.BuyerAddress;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.BuyException;
 import com.xukai.netshop.service.BuyerAddressService;
-import com.xukai.netshop.utils.TokenUtils;
 import com.xukai.netshop.utils.ResultVOUtil;
+import com.xukai.netshop.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,5 +95,17 @@ public class BuyerAddressController {
         }
         List<BuyerAddress> buyerAddressList = buyerAddressService.findByBuyerId(buyerId);
         return ResultVOUtil.success(buyerAddressList);
+    }
+
+    /**
+     * 根据主键删除用户常用地址
+     *
+     * @param buyerAddressId
+     * @return
+     */
+    @GetMapping("/delete")
+    public ResultVO delete(String buyerAddressId) {
+        buyerAddressService.delete(buyerAddressId);
+        return ResultVOUtil.success();
     }
 }

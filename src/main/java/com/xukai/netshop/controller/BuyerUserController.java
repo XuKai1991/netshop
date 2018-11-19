@@ -7,8 +7,8 @@ import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.BuyException;
 import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.service.BuyerService;
-import com.xukai.netshop.utils.TokenUtils;
 import com.xukai.netshop.utils.ResultVOUtil;
+import com.xukai.netshop.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,7 +133,6 @@ public class BuyerUserController {
         // 设置token至cookie和session
         HashMap<String, String> fieldsMap = new HashMap<>(2);
         fieldsMap.put(cookieConfig.getBuyerId(), buyerInfo.getBuyerId());
-        fieldsMap.put(cookieConfig.getBuyerName(), buyerInfo.getUsername());
         TokenUtils.addLoginTrace(fieldsMap, cookieConfig, request, response);
         return ResultVOUtil.success();
     }

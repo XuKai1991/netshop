@@ -49,4 +49,9 @@ public class BuyerAddressServiceImplTest {
             log.info(buyerAddress.toString());
         }
     }
+
+    @Test
+    public void delete() {
+        buyerAddressService.delete("111");
+    }
 }
