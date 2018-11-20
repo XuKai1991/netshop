@@ -32,7 +32,7 @@
     var webSocket = null;
     if ('WebSocket' in window) {
         // webSocket = new WebSocket("ws://localhost:8085/webSocket");
-        webSocket = new WebSocket("ws://106.14.183.207:8086/webSocket");
+        webSocket = new WebSocket("ws://106.14.183.207:8085/webSocket");
     } else {
         alert("该浏览器不支持websocket！");
     }
@@ -47,10 +47,12 @@
     };
 
     webSocket.onmessage = function (event) {
-        console.log("收到消息：" + event.data)
-        // 弹窗提醒、播放音乐
-        $("#myModal").modal('show');
-        document.getElementById('notice').play();
+        console.log("收到消息：" + event.data);
+        if ($.cookie('shopId') == event.data) {
+            // 弹窗提醒、播放音乐
+            $("#myModal").modal('show');
+            document.getElementById('notice').play();
+        }
     };
 
     webSocket.onerror = function () {

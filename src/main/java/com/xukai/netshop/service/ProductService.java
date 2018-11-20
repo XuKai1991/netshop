@@ -1,7 +1,7 @@
 package com.xukai.netshop.service;
 
-import com.xukai.netshop.dataobject.ProductInfo;
 import com.xukai.netshop.dataobject.CartDetail;
+import com.xukai.netshop.dataobject.ProductInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,14 +16,22 @@ import java.util.List;
  */
 public interface ProductService {
 
+    /**
+     * 根据主键ID查询商品
+     *
+     * @param productId
+     * @return
+     */
     ProductInfo findOne(String productId);
 
     /**
      * 查询在售的全部商品
      *
+     * @param shopId
+     * @param pageable
      * @return
      */
-    Page<ProductInfo> findUpAll(Pageable pageable);
+    Page<ProductInfo> findUpAll(String shopId, Pageable pageable);
 
     /**
      * 按条件搜索商品
@@ -37,20 +45,21 @@ public interface ProductService {
     Page<ProductInfo> findOnCondition(ProductInfo s_productInfo, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 
     /**
-     * 查询所有商品，带分页
+     * 查询所有商品
      *
-     * @param pageable
      * @return
      */
-    Page<ProductInfo> findAll(Pageable pageable);
+    List<ProductInfo> findAll();
 
     /**
      * 查询特定类别下的商品，带分页
      *
+     * @param shopId
+     * @param categoryType
      * @param pageable
      * @return
      */
-    Page<ProductInfo> findByCategory(String categoryType, Pageable pageable);
+    Page<ProductInfo> findByCategory(String shopId, String categoryType, Pageable pageable);
 
     /**
      * 保存商品

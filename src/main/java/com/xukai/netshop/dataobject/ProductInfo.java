@@ -85,6 +85,11 @@ public class ProductInfo {
      */
     private String categoryType;
 
+    /**
+     * 店铺编号
+     */
+    private String shopId;
+
     private Date createTime;
 
     private Date updateTime;

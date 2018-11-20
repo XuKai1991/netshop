@@ -1,6 +1,5 @@
 package com.xukai.netshop.service.impl;
 
-import com.xukai.netshop.converter.OrderMaster2OrderDTOConverter;
 import com.xukai.netshop.dataobject.CartDetail;
 import com.xukai.netshop.dataobject.OrderDetail;
 import com.xukai.netshop.dataobject.OrderMaster;
@@ -17,7 +16,7 @@ import com.xukai.netshop.repository.ProductInfoRepository;
 import com.xukai.netshop.service.ExpressService;
 import com.xukai.netshop.service.OrderService;
 import com.xukai.netshop.service.ProductService;
-import com.xukai.netshop.service.WebSocket;
+import com.xukai.netshop.controller.WebSocket;
 import com.xukai.netshop.utils.KeyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +32,6 @@ import org.springframework.util.CollectionUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -107,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
         productService.decreaseStock(cartDetailList);
         // 发送websocket消息
-        webSocket.sendMessage(orderDTO.getOrderId());
+        webSocket.sendMessage(orderDTO.getShopId());
         return orderDTO;
     }
 
@@ -136,8 +134,9 @@ public class OrderServiceImpl implements OrderService {
         if (minAmount != null && maxAmount != null && minAmount.compareTo(maxAmount) == 1) {
             throw new SellException(ResultEnum.PARAM_ERROR);
         }
-        Page<OrderMaster> orderMasterPage = orderMasterRepository.findByOrderStatusLikeAndOrderIdLikeAndBuyerIdLikeAndBuyerNameLikeAndBuyerAddressLikeAndBuyerPhoneLikeAndOrderAmountBetweenOrderByCreateTimeDesc(
-                "%" + (StringUtils.isEmpty(s_order.getOrderStatus()) ? "" : s_order.getOrderStatus()) + "%",
+        Page<OrderMaster> orderMasterPage = orderMasterRepository.findByShopIdLikeAndOrderStatusLikeAndOrderIdLikeAndBuyerIdLikeAndBuyerNameLikeAndBuyerAddressLikeAndBuyerPhoneLikeAndOrderAmountBetweenOrderByCreateTimeDesc(
+                StringUtils.isEmpty(s_order.getShopId()) ? "%%" : s_order.getShopId(),
+                StringUtils.isEmpty(s_order.getOrderStatus()) ? "%%" : s_order.getOrderStatus(),
                 "%" + (StringUtils.isEmpty(s_order.getOrderId()) ? "" : s_order.getOrderId()) + "%",
                 "%" + (StringUtils.isEmpty(s_order.getBuyerId()) ? "" : s_order.getBuyerId()) + "%",
                 "%" + (StringUtils.isEmpty(s_order.getBuyerName()) ? "" : s_order.getBuyerName()) + "%",
@@ -163,13 +162,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderDTO> findList(String buyerId, Pageable pageable) {
-        Page<OrderMaster> orderMasterPage = orderMasterRepository.findByBuyerIdOrderByCreateTimeDesc(buyerId, pageable);
-        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
-        return new PageImpl<>(orderDTOList, pageable, orderMasterPage.getTotalElements());
-    }
-
-    @Override
     @Transactional(rollbackFor = SellException.class)
     public void cancel(String orderId) {
         OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
@@ -189,7 +181,9 @@ public class OrderServiceImpl implements OrderService {
         // TODO
         // 如果取消已付款的订单，需要退款
         if (hasPayFlag) {
-            orderMaster.setOrderStatus(OrderStatusEnum.IN_REFUND.getCode());
+
+            // orderMaster.setOrderStatus(OrderStatusEnum.IN_REFUND.getCode());
+            orderMaster.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
 
         }
         // 返回库存
@@ -239,13 +233,6 @@ public class OrderServiceImpl implements OrderService {
         }
         // 修改物流状态
         expressService.receive(orderId);
-    }
-
-    @Override
-    public Page<OrderDTO> findList(Pageable pageable) {
-        Page<OrderMaster> orderMasterPage = orderMasterRepository.findByCreateTimeBeforeOrderByCreateTimeDesc(new Date(), pageable);
-        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
-        return new PageImpl<>(orderDTOList, pageable, orderMasterPage.getTotalElements());
     }
 
     @Override

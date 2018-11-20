@@ -1,6 +1,7 @@
 package com.xukai.netshop.controller;
 
 import com.xukai.netshop.VO.ResultVO;
+import com.xukai.netshop.config.CookieConfig;
 import com.xukai.netshop.dataobject.ExpressInfo;
 import com.xukai.netshop.dataobject.OrderMaster;
 import com.xukai.netshop.dto.OrderDTO;
@@ -15,6 +16,7 @@ import com.xukai.netshop.service.OrderService;
 import com.xukai.netshop.service.PayService;
 import com.xukai.netshop.utils.EnumUtils;
 import com.xukai.netshop.utils.ResultVOUtil;
+import com.xukai.netshop.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Map;
 
@@ -42,10 +45,15 @@ public class SellerOrderController {
     @Autowired
     private ExpressService expressService;
 
+    @Autowired
+    private CookieConfig cookieConfig;
+
     @GetMapping("/list")
-    public ModelAndView list(OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount,
+    public ModelAndView list(OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount, HttpServletRequest request,
                              @RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "size", defaultValue = "8") Integer size) {
+        String shopId = TokenUtils.getToken(cookieConfig.getShopId(), request);
+        s_order.setShopId(shopId);
         Page<OrderDTO> orderDTOPage = orderService.findOnCondition(s_order, minAmount, maxAmount, new PageRequest(page - 1, size));
         ModelAndView mav = new ModelAndView("sell/order/list");
         Map<String, String> OrderStatusEnumMap = EnumUtils.listEnum(OrderStatusEnum.class);

@@ -40,9 +40,9 @@ public class BuyerCartController {
      * @return
      */
     @GetMapping("/list")
-    public ResultVO findByBuyerId(HttpServletRequest request) {
+    public ResultVO findByBuyerId(HttpServletRequest request, String shopId) {
         String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
-        CartMaster cartMaster = buyerCartService.list(buyerId);
+        CartMaster cartMaster = buyerCartService.list(buyerId, shopId);
         return ResultVOUtil.success(cartMaster);
     }
 
@@ -53,9 +53,9 @@ public class BuyerCartController {
      * @param request
      */
     @PostMapping("/add")
-    public ResultVO addToCart(CartDetail cartDetail, HttpServletRequest request) {
+    public ResultVO addToCart(CartDetail cartDetail, String shopId, HttpServletRequest request) {
         String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
-        buyerCartService.addItem(cartDetail, buyerId);
+        buyerCartService.addItem(cartDetail, buyerId, shopId);
         return ResultVOUtil.success();
     }
 
@@ -66,9 +66,9 @@ public class BuyerCartController {
      * @param request
      */
     @GetMapping("/increase")
-    public ResultVO increaseCartItemNum(String itemId, HttpServletRequest request) {
+    public ResultVO increaseCartItemNum(String itemId, String shopId, HttpServletRequest request) {
         String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
-        buyerCartService.increaseItemNum(itemId, buyerId);
+        buyerCartService.increaseItemNum(itemId, buyerId, shopId);
         return ResultVOUtil.success();
     }
 
@@ -79,9 +79,9 @@ public class BuyerCartController {
      * @param request
      */
     @GetMapping("/decrease")
-    public ResultVO decreaseCartItemNum(String itemId, HttpServletRequest request) {
+    public ResultVO decreaseCartItemNum(String itemId, String shopId, HttpServletRequest request) {
         String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
-        buyerCartService.decreaseItemNum(itemId, buyerId);
+        buyerCartService.decreaseItemNum(itemId, buyerId, shopId);
         return ResultVOUtil.success();
     }
 
@@ -94,9 +94,9 @@ public class BuyerCartController {
      * @return
      */
     @GetMapping("/editQuantity")
-    public ResultVO editItemNum(String itemId, Integer quantity, HttpServletRequest request) {
+    public ResultVO editItemNum(String itemId, Integer quantity, String shopId, HttpServletRequest request) {
         String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
-        buyerCartService.editItemNum(itemId, quantity, buyerId);
+        buyerCartService.editItemNum(itemId, quantity, buyerId, shopId);
         return ResultVOUtil.success();
     }
 
@@ -107,9 +107,9 @@ public class BuyerCartController {
      * @param request
      */
     @GetMapping("/delete")
-    public ResultVO deleteCartItem(String itemId, HttpServletRequest request) {
+    public ResultVO deleteCartItem(String itemId, String shopId, HttpServletRequest request) {
         String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
-        buyerCartService.deleteItem(itemId, buyerId);
+        buyerCartService.deleteItem(itemId, buyerId, shopId);
         return ResultVOUtil.success();
     }
 
@@ -120,9 +120,9 @@ public class BuyerCartController {
      * @param request
      */
     @GetMapping("/batchDelete")
-    public ResultVO deleteCartItems(String itemIds, HttpServletRequest request) {
+    public ResultVO deleteCartItems(String itemIds, String shopId, HttpServletRequest request) {
         String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
-        buyerCartService.deleteItems(itemIds, buyerId);
+        buyerCartService.deleteItems(itemIds, buyerId, shopId);
         return ResultVOUtil.success();
     }
 }

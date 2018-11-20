@@ -48,8 +48,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductInfo> findUpAll(Pageable pageable) {
-        return productInfoRepository.findByProductStatusOrderByCreateTimeDesc(ProductStatusEnum.UP.getCode(), pageable);
+    public Page<ProductInfo> findUpAll(String shopId, Pageable pageable) {
+        return productInfoRepository.findByShopIdAndProductStatusOrderByCreateTimeDesc(shopId, ProductStatusEnum.UP.getCode(), pageable);
     }
 
     @Override
@@ -57,25 +57,26 @@ public class ProductServiceImpl implements ProductService {
         if (minPrice != null && maxPrice != null && minPrice.compareTo(maxPrice) == 1) {
             throw new SellException(ResultEnum.PARAM_ERROR);
         }
-        return productInfoRepository.findByProductStatusNotAndProductIdLikeAndProductNameLikeAndProductPriceBetweenAndCategoryTypeLikeOrderByCreateTimeDesc(
+        return productInfoRepository.findByProductStatusNotAndProductIdLikeAndProductNameLikeAndProductPriceBetweenAndCategoryTypeLikeAndShopIdLikeOrderByCreateTimeDesc(
                 (s_productInfo.getProductStatus() == null || s_productInfo.getProductStatus() == -1) ? -1 : (1 - s_productInfo.getProductStatus()),
                 "%" + (StringUtils.isEmpty(s_productInfo.getProductId()) ? "" : s_productInfo.getProductId()) + "%",
                 "%" + (StringUtils.isEmpty(s_productInfo.getProductName()) ? "" : s_productInfo.getProductName()) + "%",
                 minPrice == null ? new BigDecimal("0") : minPrice,
                 maxPrice == null ? new BigDecimal("99999") : maxPrice,
                 StringUtils.isEmpty(s_productInfo.getCategoryType()) ? "%%" : s_productInfo.getCategoryType(),
+                StringUtils.isEmpty(s_productInfo.getShopId()) ? "%%" : s_productInfo.getShopId(),
                 pageable
         );
     }
 
     @Override
-    public Page<ProductInfo> findAll(Pageable pageable) {
-        return productInfoRepository.findAll(pageable);
+    public List<ProductInfo> findAll() {
+        return productInfoRepository.findAll();
     }
 
     @Override
-    public Page<ProductInfo> findByCategory(String categoryType, Pageable pageable) {
-        return productInfoRepository.findByCategoryTypeAndProductStatusOrderByCreateTimeDesc(categoryType, ProductStatusEnum.UP.getCode(), pageable);
+    public Page<ProductInfo> findByCategory(String shopId, String categoryType, Pageable pageable) {
+        return productInfoRepository.findByShopIdAndCategoryTypeAndProductStatusOrderByCreateTimeDesc(shopId, categoryType, ProductStatusEnum.UP.getCode(), pageable);
     }
 
     @Override

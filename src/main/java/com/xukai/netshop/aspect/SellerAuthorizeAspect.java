@@ -42,11 +42,13 @@ public class SellerAuthorizeAspect {
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = sra.getRequest();
         // 查询cookie
-        Cookie cookie = CookieUtils.get(cookieConfig.getSellerId(), request);
-        if (cookie == null) {
+        Cookie sellerIdCookie = CookieUtils.get(cookieConfig.getSellerId(), request);
+        Cookie shopIdCookie = CookieUtils.get(cookieConfig.getShopId(), request);
+        if (sellerIdCookie == null || shopIdCookie == null) {
             log.error("【登录校验】Cookie中查不到token");
             throw new SellerAuthorizeException();
         }
-        CookieUtils.set(cookie.getName(), cookie.getValue(), cookieConfig.getExpire(), request, sra.getResponse());
+        CookieUtils.set(sellerIdCookie.getName(), sellerIdCookie.getValue(), cookieConfig.getExpire(), request, sra.getResponse());
+        CookieUtils.set(shopIdCookie.getName(), shopIdCookie.getValue(), cookieConfig.getExpire(), request, sra.getResponse());
     }
 }

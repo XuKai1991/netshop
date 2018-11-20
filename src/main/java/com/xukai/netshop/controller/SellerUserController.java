@@ -66,7 +66,8 @@ public class SellerUserController {
         }
         // 设置token至cookie
         HashMap<String, String> fieldsMap = new HashMap<>(2);
-        fieldsMap.put(cookieConfig.getSellerId(), String.valueOf(sellerInfo.getId()));
+        fieldsMap.put(cookieConfig.getSellerId(), String.valueOf(sellerInfo.getSellerId()));
+        fieldsMap.put(cookieConfig.getShopId(), sellerInfo.getShopId());
         TokenUtils.addLoginTrace(fieldsMap, cookieConfig, request, response);
         String sellRequestURI = (String) request.getSession().getAttribute("sellRequestURI");
         if (StringUtils.isNotEmpty(sellRequestURI)) {
@@ -81,7 +82,7 @@ public class SellerUserController {
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView();
         // 清除cookie和session
-        String[] fields = {cookieConfig.getSellerId()};
+        String[] fields = {cookieConfig.getSellerId(), cookieConfig.getShopId()};
         TokenUtils.cleanLoginTrace(fields, request, response);
         mav.addObject("msg", ResultEnum.LOGOUT_SUCCESS.getMessage());
         mav.addObject("url", "/seller/");

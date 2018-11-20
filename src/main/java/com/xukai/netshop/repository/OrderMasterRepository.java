@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * Author: Xukai
@@ -16,13 +15,9 @@ import java.util.Date;
  */
 public interface OrderMasterRepository extends JpaRepository<OrderMaster, String> {
 
-    Page<OrderMaster> findByBuyerIdOrderByCreateTimeDesc(String buyerId, Pageable pageable);
-
-    Page<OrderMaster> findByCreateTimeBeforeOrderByCreateTimeDesc(Date date, Pageable pageable);
-
     int deleteByOrderId(String orderId);
 
-    Page<OrderMaster> findByOrderStatusLikeAndOrderIdLikeAndBuyerIdLikeAndBuyerNameLikeAndBuyerAddressLikeAndBuyerPhoneLikeAndOrderAmountBetweenOrderByCreateTimeDesc(
-            String orderStatus, String orderId, String buyerId, String buyerName, String buyerAddress, String buyerPhone, BigDecimal minAmount, BigDecimal maxAmount, Pageable pageable
+    Page<OrderMaster> findByShopIdLikeAndOrderStatusLikeAndOrderIdLikeAndBuyerIdLikeAndBuyerNameLikeAndBuyerAddressLikeAndBuyerPhoneLikeAndOrderAmountBetweenOrderByCreateTimeDesc(
+            String shopId, String orderStatus, String orderId, String buyerId, String buyerName, String buyerAddress, String buyerPhone, BigDecimal minAmount, BigDecimal maxAmount, Pageable pageable
     );
 }

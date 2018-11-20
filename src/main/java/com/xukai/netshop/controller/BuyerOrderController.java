@@ -65,7 +65,8 @@ public class BuyerOrderController {
      * @return
      */
     @PostMapping("/create")
-    public ResultVO<Map<String, String>> create(HttpServletRequest request, @Valid OrderForm orderForm, BindingResult bindingResult) {
+    public ResultVO<Map<String, String>> create(HttpServletRequest request, @Valid OrderForm orderForm,
+                                                BindingResult bindingResult) {
         String buyerId = TokenUtils.getToken(cookieConfig.getBuyerId(), request);
         if (StringUtils.isEmpty(buyerId)) {
             log.error("【创建订单】buyerId为空");
@@ -93,7 +94,7 @@ public class BuyerOrderController {
         }
         String itemIdsStr = itemIdsBf.toString().replaceFirst("_", "");
         if (StringUtils.isNotEmpty(itemIdsStr)) {
-            buyerCartService.deleteItems(itemIdsStr, buyerId);
+            buyerCartService.deleteItems(itemIdsStr, buyerId, orderForm.getShopId());
         }
         Map<String, String> map = new HashMap<>();
         map.put("orderId", createResult.getOrderId());

@@ -94,8 +94,8 @@
                             <th style="text-align: center;width: 300px">名称</th>
                             <th style="text-align: center">图片</th>
                         <#--<th>展示图</th>-->
-                            <th style="text-align: center">单价</th>
-                            <th style="text-align: center">进价</th>
+                            <th style="text-align: center;width: 35px">单价</th>
+                            <th style="text-align: center;width: 35px">进价</th>
                             <th style="text-align: center;width: 150px">颜色</th>
                             <th style="text-align: center;width: 150px">尺码</th>
                             <th style="text-align: center;width: 50px"">库存</th>

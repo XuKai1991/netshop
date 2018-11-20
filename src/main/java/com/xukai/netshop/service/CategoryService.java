@@ -14,11 +14,11 @@ public interface CategoryService {
 
     ProductCategory findOne(Integer categoryId);
 
-    List<ProductCategory> findAll();
+    List<ProductCategory> findByShopId(String shopId);
 
     ProductCategory save(ProductCategory productCategory);
 
     void deleteByCategoryId(Integer categoryId);
 
-    Boolean checkCategoryTypeExist(String categoryType);
+    Boolean checkCategoryTypeExist(String categoryType, String shopId);
 }

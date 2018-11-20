@@ -1,5 +1,6 @@
 package com.xukai.netshop.controller;
 
+import com.xukai.netshop.config.CookieConfig;
 import com.xukai.netshop.dataobject.ProductCategory;
 import com.xukai.netshop.dataobject.ProductInfo;
 import com.xukai.netshop.enums.ProductStatusEnum;
@@ -9,6 +10,7 @@ import com.xukai.netshop.form.ProductForm;
 import com.xukai.netshop.service.CategoryService;
 import com.xukai.netshop.service.ProductService;
 import com.xukai.netshop.utils.KeyUtils;
+import com.xukai.netshop.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
@@ -40,14 +43,20 @@ public class SellerProductController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private CookieConfig cookieConfig;
+
     @GetMapping("/list")
     public ModelAndView list(ProductInfo s_productInfo, BigDecimal minPrice, BigDecimal maxPrice,
                              @RequestParam(value = "page", defaultValue = "1") Integer page,
-                             @RequestParam(value = "size", defaultValue = "7") Integer size) {
+                             @RequestParam(value = "size", defaultValue = "7") Integer size,
+                             HttpServletRequest request) {
+        String shopId = TokenUtils.getToken(cookieConfig.getShopId(), request);
+        s_productInfo.setShopId(shopId);
         ModelAndView mav = new ModelAndView();
         try {
             Page<ProductInfo> productInfoPage = productService.findOnCondition(s_productInfo, minPrice, maxPrice, new PageRequest(page - 1, size));
-            List<ProductCategory> categoryList = categoryService.findAll();
+            List<ProductCategory> categoryList = categoryService.findByShopId(shopId);
             mav.addObject("categoryList", categoryList);
             mav.addObject("productInfoPage", productInfoPage);
         } catch (SellException e) {
@@ -101,7 +110,7 @@ public class SellerProductController {
     }
 
     @GetMapping("/index")
-    public ModelAndView index(@RequestParam(value = "productId", required = false) String productId) {
+    public ModelAndView index(@RequestParam(value = "productId", required = false) String productId, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         ProductInfo productInfo;
         if (!StringUtils.isEmpty(productId)) {
@@ -116,14 +125,20 @@ public class SellerProductController {
             }
             mav.addObject("productInfo", productInfo);
         }
-        List<ProductCategory> categoryList = categoryService.findAll();
+        String shopId = TokenUtils.getToken(cookieConfig.getShopId(), request);
+        List<ProductCategory> categoryList = categoryService.findByShopId(shopId);
         mav.addObject("categoryList", categoryList);
         mav.setViewName("sell/product/index");
         return mav;
     }
 
     @PostMapping("/save")
-    public ModelAndView save(@Valid ProductForm productForm, BindingResult bindingResult) {
+    public ModelAndView save(@Valid ProductForm productForm, BindingResult bindingResult, HttpServletRequest request) {
+        String shopId = TokenUtils.getToken(cookieConfig.getShopId(), request);
+        if (StringUtils.isEmpty(shopId)) {
+            log.error("【卖家保存商品】shopId为空");
+            throw new SellException(ResultEnum.PARAM_ERROR);
+        }
         ModelAndView mav = new ModelAndView();
         if (bindingResult.hasErrors()) {
             mav.addObject("msg", bindingResult.getFieldError().getDefaultMessage());
@@ -137,6 +152,7 @@ public class SellerProductController {
                 productInfo = new ProductInfo();
                 productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
                 productForm.setProductId(KeyUtils.genUniqueKey());
+                productForm.setShopId(shopId);
             } else {
                 productInfo = productService.findOne(productForm.getProductId());
             }

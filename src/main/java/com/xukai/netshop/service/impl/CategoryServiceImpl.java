@@ -47,8 +47,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<ProductCategory> findAll() {
-        return productCategoryRepository.findAll();
+    public List<ProductCategory> findByShopId(String shopId) {
+        return productCategoryRepository.findByShopIdOrderByCategoryType(shopId);
     }
 
     @Override
@@ -80,8 +80,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Boolean checkCategoryTypeExist(String categoryType) {
-        ProductCategory productCategory = productCategoryRepository.findByCategoryType(categoryType);
+    public Boolean checkCategoryTypeExist(String categoryType, String shopId) {
+        ProductCategory productCategory = productCategoryRepository.findByCategoryTypeAndShopId(categoryType, shopId);
         return productCategory != null;
     }
 }

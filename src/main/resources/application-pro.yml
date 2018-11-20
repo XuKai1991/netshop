@@ -6,7 +6,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: Xukai0110@
-    url: jdbc:mysql://106.14.183.207/netshop_niannian?characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://106.14.183.207/netshop_pro?characterEncoding=utf-8&useSSL=false
     type: com.alibaba.druid.pool.DruidDataSource
 
   jpa:
@@ -51,7 +51,7 @@ spring:
             port: 465
 
 logging:
-  config: classpath:logback-niannian.xml
+  config: classpath:logback-pro.xml
 
 # 发送邮件地址
 mail:
@@ -61,6 +61,7 @@ cookieConfig:
   buyerId: buyerId
   buyerName: buyerName
   sellerId: sellerId
+  shopId: shopId
   expire: 604800  #一星期
 
 fdfs:
@@ -74,7 +75,7 @@ fdfs:
     jmx-enabled: false
 
 fastdfs:
-  psicSaveLogUrl: /netshop/niannian/logs/picSaveLog
+  psicSaveLogUrl: /netshop/pro/picSaveLog
 
 baseUrl:
   backBaseUrl: http://106.14.183.207:8086

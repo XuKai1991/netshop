@@ -17,13 +17,13 @@ import java.util.List;
  */
 public interface ProductInfoRepository extends JpaRepository<ProductInfo, String> {
 
-    Page<ProductInfo> findByCategoryTypeAndProductStatusOrderByCreateTimeDesc(String categoryType, Integer productStatus, Pageable pageable);
+    Page<ProductInfo> findByShopIdAndCategoryTypeAndProductStatusOrderByCreateTimeDesc(String shopId, String categoryType, Integer productStatus, Pageable pageable);
 
-    Page<ProductInfo> findByProductStatusOrderByCreateTimeDesc(Integer productStatus, Pageable pageable);
+    Page<ProductInfo> findByShopIdAndProductStatusOrderByCreateTimeDesc(String shopId, Integer productStatus, Pageable pageable);
 
     List<ProductInfo> findByCategoryType(String categoryType);
 
-    Page<ProductInfo> findByProductStatusNotAndProductIdLikeAndProductNameLikeAndProductPriceBetweenAndCategoryTypeLikeOrderByCreateTimeDesc(
-            Integer productStatus, String productId, String productName, BigDecimal minPrice, BigDecimal maxPrice, String categoryType, Pageable pageable
+    Page<ProductInfo> findByProductStatusNotAndProductIdLikeAndProductNameLikeAndProductPriceBetweenAndCategoryTypeLikeAndShopIdLikeOrderByCreateTimeDesc(
+            Integer productStatus, String productId, String productName, BigDecimal minPrice, BigDecimal maxPrice, String categoryType, String shopId, Pageable pageable
     );
 }

@@ -11,5 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface CartMasterRepository extends JpaRepository<CartMaster, String> {
 
-    CartMaster findByBuyerId(String buyerId);
+    CartMaster findByBuyerIdAndShopId(String buyerId, String shopId);
+
 }

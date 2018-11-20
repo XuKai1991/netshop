@@ -33,6 +33,11 @@ public class OrderMaster {
     private String orderId;
 
     /**
+     * 店铺编号
+     */
+    private String shopId;
+
+    /**
      * 买家id
      */
     private String buyerId;
