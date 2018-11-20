@@ -16,7 +16,7 @@ import com.xukai.netshop.repository.ProductInfoRepository;
 import com.xukai.netshop.service.ExpressService;
 import com.xukai.netshop.service.OrderService;
 import com.xukai.netshop.service.ProductService;
-import com.xukai.netshop.service.WebSocket;
+import com.xukai.netshop.controller.WebSocket;
 import com.xukai.netshop.utils.KeyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -105,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
         productService.decreaseStock(cartDetailList);
         // 发送websocket消息
-        webSocket.sendMessage(orderDTO.getOrderId());
+        webSocket.sendMessage(orderDTO.getShopId());
         return orderDTO;
     }
 

@@ -47,10 +47,12 @@
     };
 
     webSocket.onmessage = function (event) {
-        console.log("收到消息：" + event.data)
-        // 弹窗提醒、播放音乐
-        $("#myModal").modal('show');
-        document.getElementById('notice').play();
+        console.log("收到消息：" + event.data);
+        if ($.cookie('shopId') == event.data) {
+            // 弹窗提醒、播放音乐
+            $("#myModal").modal('show');
+            document.getElementById('notice').play();
+        }
     };
 
     webSocket.onerror = function () {
