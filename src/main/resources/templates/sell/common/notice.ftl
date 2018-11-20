@@ -36,7 +36,6 @@
     } else {
         alert("该浏览器不支持websocket！");
     }
-    ;
 
     webSocket.onopen = function (event) {
         console.log("建立连接");
@@ -62,5 +61,4 @@
     webSocket.onbeforeunload = function () {
         webSocket.close();
     };
-
 </script>
