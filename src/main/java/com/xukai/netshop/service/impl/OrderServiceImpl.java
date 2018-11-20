@@ -181,7 +181,9 @@ public class OrderServiceImpl implements OrderService {
         // TODO
         // 如果取消已付款的订单，需要退款
         if (hasPayFlag) {
-            orderMaster.setOrderStatus(OrderStatusEnum.IN_REFUND.getCode());
+
+            // orderMaster.setOrderStatus(OrderStatusEnum.IN_REFUND.getCode());
+            orderMaster.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
 
         }
         // 返回库存
