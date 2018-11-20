@@ -23,7 +23,7 @@
             </pattern>
         </layout>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/netshop/niannian/logs/log-%d/info-%i.log</fileNamePattern>
+            <fileNamePattern>/netshop/pro/logs/log-%d/info-%i.log</fileNamePattern>
             <maxHistory>5</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
@@ -42,7 +42,7 @@
             </pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/netshop/niannian/logs/log-%d/error-%i.log</fileNamePattern>
+            <fileNamePattern>/netshop/pro/logs/log-%d/error-%i.log</fileNamePattern>
             <maxHistory>5</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>

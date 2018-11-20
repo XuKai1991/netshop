@@ -51,7 +51,7 @@ spring:
             port: 465
 
 logging:
-  config: classpath:logback-niannian.xml
+  config: classpath:logback-pro.xml
 
 # 发送邮件地址
 mail:
@@ -74,7 +74,7 @@ fdfs:
     jmx-enabled: false
 
 fastdfs:
-  psicSaveLogUrl: /netshop/niannian/logs/picSaveLog
+  psicSaveLogUrl: /netshop/pro/picSaveLog
 
 baseUrl:
   backBaseUrl: http://106.14.183.207:8086
