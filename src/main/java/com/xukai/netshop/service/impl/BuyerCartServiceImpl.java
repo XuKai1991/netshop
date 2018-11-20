@@ -35,10 +35,10 @@ public class BuyerCartServiceImpl implements BuyerCartService {
     private ProductInfoRepository productInfoRepository;
 
     @Override
-    public CartMaster list(String buyerId) {
-        CartMaster cartMaster = cartMasterRepository.findByBuyerId(buyerId);
+    public CartMaster list(String buyerId, String shopId) {
+        CartMaster cartMaster = cartMasterRepository.findByBuyerIdAndShopId(buyerId, shopId);
         if (cartMaster == null) {
-            cartMaster = add(buyerId);
+            cartMaster = add(buyerId, shopId);
         } else {
             // 需要根据购物车中的商品ID重新查询商品是否在售，如果有改变就需要更新购物车内容
             String cartItems = cartMaster.getCartItems();
@@ -98,15 +98,15 @@ public class BuyerCartServiceImpl implements BuyerCartService {
     }
 
     @Override
-    public CartMaster add(String buyerId) {
-        CartMaster cartMaster = new CartMaster(buyerId, "");
+    public CartMaster add(String buyerId, String shopId) {
+        CartMaster cartMaster = new CartMaster(buyerId, shopId, "");
         CartMaster master = cartMasterRepository.save(cartMaster);
         return master;
     }
 
     @Override
-    public void addItem(CartDetail cartDetail, String buyerId) {
-        CartMaster cartMaster = list(buyerId);
+    public void addItem(CartDetail cartDetail, String buyerId, String shopId) {
+        CartMaster cartMaster = list(buyerId, shopId);
         String cartItems = cartMaster.getCartItems();
         List<CartDetail> itemList;
         // 判断购物车是否为空
@@ -145,8 +145,8 @@ public class BuyerCartServiceImpl implements BuyerCartService {
     }
 
     @Override
-    public void deleteItem(String itemId, String buyerId) {
-        CartMaster cartMaster = list(buyerId);
+    public void deleteItem(String itemId, String buyerId, String shopId) {
+        CartMaster cartMaster = list(buyerId, shopId);
         String cartItems = cartMaster.getCartItems();
         List<CartDetail> itemList = JSONObject.parseArray(cartItems, CartDetail.class);
         for (CartDetail item : itemList) {
@@ -163,9 +163,9 @@ public class BuyerCartServiceImpl implements BuyerCartService {
     }
 
     @Override
-    public void deleteItems(String itemIds, String buyerId) {
+    public void deleteItems(String itemIds, String buyerId, String shopId) {
         List<String> itemIdList = Arrays.asList(itemIds.split("_"));
-        CartMaster cartMaster = list(buyerId);
+        CartMaster cartMaster = list(buyerId, shopId);
         String cartItems = cartMaster.getCartItems();
         List<CartDetail> itemList = JSONObject.parseArray(cartItems, CartDetail.class);
         List<CartDetail> toDel = new ArrayList<>();
@@ -186,8 +186,8 @@ public class BuyerCartServiceImpl implements BuyerCartService {
     }
 
     @Override
-    public void increaseItemNum(String itemId, String buyerId) {
-        CartMaster cartMaster = list(buyerId);
+    public void increaseItemNum(String itemId, String buyerId, String shopId) {
+        CartMaster cartMaster = list(buyerId, shopId);
         String cartItems = cartMaster.getCartItems();
         List<CartDetail> itemList = JSONObject.parseArray(cartItems, CartDetail.class);
         for (CartDetail item : itemList) {
@@ -206,8 +206,8 @@ public class BuyerCartServiceImpl implements BuyerCartService {
     }
 
     @Override
-    public void decreaseItemNum(String itemId, String buyerId) {
-        CartMaster cartMaster = list(buyerId);
+    public void decreaseItemNum(String itemId, String buyerId, String shopId) {
+        CartMaster cartMaster = list(buyerId, shopId);
         String cartItems = cartMaster.getCartItems();
         List<CartDetail> itemList = JSONObject.parseArray(cartItems, CartDetail.class);
         for (CartDetail item : itemList) {
@@ -230,8 +230,8 @@ public class BuyerCartServiceImpl implements BuyerCartService {
     }
 
     @Override
-    public void editItemNum(String itemId, Integer quantity, String buyerId) {
-        CartMaster cartMaster = list(buyerId);
+    public void editItemNum(String itemId, Integer quantity, String buyerId, String shopId) {
+        CartMaster cartMaster = list(buyerId, shopId);
         String cartItems = cartMaster.getCartItems();
         List<CartDetail> itemList = JSONObject.parseArray(cartItems, CartDetail.class);
         for (CartDetail item : itemList) {

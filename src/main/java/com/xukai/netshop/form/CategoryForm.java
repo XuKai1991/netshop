@@ -3,8 +3,6 @@ package com.xukai.netshop.form;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * @author: Xukai
  * @description:
@@ -25,6 +23,10 @@ public class CategoryForm {
     /**
      * 类目编号.
      */
-    @NotNull
     private String categoryType;
+
+    /**
+     * 店铺编号
+     */
+    private String shopId;
 }

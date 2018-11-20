@@ -109,7 +109,7 @@
                                     <td style="vertical-align:middle; width:64px">${orderDTO.getOrderStatusEnum().message}</td>
                                     <td style="vertical-align:middle">${orderDTO.createTime}</td>
                                 <#--<td style="vertical-align:middle; width:170px">-->
-                                    <td style="vertical-align:middle; width:240px">
+                                    <td style="vertical-align:middle; width:245px">
                                         <a href="/seller/order/detail?orderId=${orderDTO.orderId}"
                                            type="button"
                                            class="btn btn-default btn-primary">详情</a>

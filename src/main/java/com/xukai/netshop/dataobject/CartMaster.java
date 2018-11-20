@@ -5,6 +5,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -22,9 +23,15 @@ import javax.persistence.Table;
 public class CartMaster {
 
     /**
-     * 买家id.
+     * 购物车ID
      */
     @Id
+    @GeneratedValue
+    private Integer cartId;
+
+    /**
+     * 买家ID
+     */
     private String buyerId;
 
     /**
@@ -32,8 +39,14 @@ public class CartMaster {
      */
     private String cartItems;
 
-    public CartMaster(String buyerId, String cartItems) {
+    /**
+     * 店铺编号
+     */
+    private String shopId;
+
+    public CartMaster(String buyerId, String shopId, String cartItems) {
         this.buyerId = buyerId;
+        this.shopId = shopId;
         this.cartItems = cartItems;
     }
 }

@@ -25,6 +25,7 @@ public class OrderForm2OrderDTOConverter {
         orderDTO.setBuyerAddress(orderForm.getBuyerAddress());
         orderDTO.setBuyerName(orderForm.getBuyerName());
         orderDTO.setBuyerPhone(orderForm.getBuyerPhone());
+        orderDTO.setShopId(orderForm.getShopId());
         if (StringUtils.isNotEmpty(orderForm.getOrderRemark())) {
             orderDTO.setOrderRemark(orderForm.getOrderRemark());
         }

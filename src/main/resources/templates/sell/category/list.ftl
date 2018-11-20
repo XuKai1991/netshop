@@ -35,8 +35,8 @@
                         <#--<td>${category.categoryId}</td>-->
                         <#--<td style="vertical-align:middle">${category.categoryType}</td>-->
                             <td style="vertical-align:middle">${category.categoryName}</td>
-                            <td style="vertical-align:middle">${category.createTime}</td>
-                            <td style="vertical-align:middle">${category.updateTime}</td>
+                            <td style="vertical-align:middle">${category.createTime!''}</td>
+                            <td style="vertical-align:middle">${category.updateTime!''}</td>
                             <td style="vertical-align:middle">
                                 <#if category.categoryType != "-1">
                                     <a href="javascript:preEditCategory(${category.categoryId})" type="button"
@@ -72,6 +72,8 @@
                            name="categoryId"/>
                     <input id="categoryTypeForEdit" type="hidden" class="form-control" aria-describedby="basic-addon1"
                            name="categoryType"/>
+                    <input id="shopIdForEdit" type="hidden" class="form-control" aria-describedby="basic-addon1"
+                           name="shopId"/>
                     </br>
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">类目名称</span>
@@ -159,6 +161,7 @@
         $("#categoryIdForEdit").val("");
         $("#categoryTypeForEdit").val("");
         $("#categoryNameForEdit").val("");
+        $("#shopIdForEdit").val("");
         $('#editModal').modal();
     }
 
@@ -171,6 +174,7 @@
                 $("#categoryIdForEdit").val(category.categoryId);
                 $("#categoryTypeForEdit").val(category.categoryType);
                 $("#categoryNameForEdit").val(category.categoryName);
+                $("#shopIdForEdit").val(category.shopId);
                 $('#editModal').modal();
             }
         });

@@ -36,16 +36,6 @@ public interface OrderService {
     Page<OrderDTO> findOnCondition(OrderMaster s_order, BigDecimal minAmount, BigDecimal maxAmount, Pageable pageable);
 
     /**
-     * 根据买家ID查询订单列表.
-     */
-    Page<OrderDTO> findList(String buyerId, Pageable pageable);
-
-    /**
-     * 查询所有订单列表.
-     */
-    Page<OrderDTO> findList(Pageable pageable);
-
-    /**
      * 取消订单.
      */
     void cancel(String orderId);

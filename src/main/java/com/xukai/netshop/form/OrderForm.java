@@ -13,6 +13,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class OrderForm {
 
     /**
+     * 店铺编号
+     */
+    @NotEmpty(message = "店铺ID必填")
+    private String shopId;
+
+    /**
      * 买家姓名
      */
     @NotEmpty(message = "姓名必填")

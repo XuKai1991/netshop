@@ -30,35 +30,11 @@ public class BuyerProductController {
     @Autowired
     private ProductService productService;
 
-    /**
-     * 获得根据商品类别获得类别下的所有上架商品
-     *
-     * @param categoryType
-     * @param page
-     * @param size
-     * @return
-     */
-    @GetMapping("/byCategory")
-    public ResultVO<Page<ProductInfo>> getProductByCategory(@RequestParam(value = "categoryType", required = false) String categoryType, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        Page<ProductInfo> productInfoPage = productService.findByCategory(categoryType, new PageRequest(page - 1, size));
-        return ResultVOUtil.success(productInfoPage);
-    }
-
-    /**
-     * 获得所有商品
-     *
-     * @param page
-     * @param size
-     * @return
-     */
-    @GetMapping("/all")
-    public ResultVO<Page<ProductInfo>> getAllProduct(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "6") Integer size) {
-        Page<ProductInfo> productInfoPage = productService.findUpAll(new PageRequest(page - 1, size));
-        return ResultVOUtil.success(productInfoPage);
-    }
-
     @GetMapping("/list")
-    public ResultVO<Page<ProductInfo>> list(ProductInfo s_productInfo, BigDecimal minPrice, BigDecimal maxPrice, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "6") Integer size) {
+    public ResultVO<Page<ProductInfo>> list(ProductInfo s_productInfo,
+                                            BigDecimal minPrice, BigDecimal maxPrice,
+                                            @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                            @RequestParam(value = "size", defaultValue = "6") Integer size) {
         // 只让用户查到在售的商品
         s_productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
         Page<ProductInfo> productInfoPage = productService.findOnCondition(s_productInfo, minPrice, maxPrice, new PageRequest(page - 1, size));

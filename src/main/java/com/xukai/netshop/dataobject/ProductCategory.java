@@ -43,6 +43,11 @@ public class ProductCategory implements Serializable {
      */
     private String categoryType;
 
+    /**
+     * 店铺编号
+     */
+    private String shopId;
+
     private Date createTime;
 
     private Date updateTime;
@@ -51,15 +56,10 @@ public class ProductCategory implements Serializable {
         super();
     }
 
-    public ProductCategory(String categoryName, String categoryType) {
+    public ProductCategory(String categoryName, String categoryType, String shopId) {
         this.categoryName = categoryName;
         this.categoryType = categoryType;
-    }
-
-    public ProductCategory(Integer categoryId, String categoryName, String categoryType) {
-        this.categoryId = categoryId;
-        this.categoryName = categoryName;
-        this.categoryType = categoryType;
+        this.shopId = shopId;
     }
 }
 

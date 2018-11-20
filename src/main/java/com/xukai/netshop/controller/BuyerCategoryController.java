@@ -32,8 +32,8 @@ public class BuyerCategoryController {
      * @return
      */
     @GetMapping("/list")
-    public ResultVO<List<ProductCategory>> list() {
-        List<ProductCategory> categoryList = categoryService.findAll();
+    public ResultVO<List<ProductCategory>> list(String shopId) {
+        List<ProductCategory> categoryList = categoryService.findByShopId(shopId);
         if (categoryList == null || categoryList.size() == 0) {
             return ResultVOUtil.error(0, "fail");
         }

@@ -102,6 +102,7 @@
                                style="width: 95%"
                                placeholder="" value="${(productInfo.productDetailImg)!''}">
                         <input hidden="hidden" type="text" name="productId" value="${(productInfo.productId)!''}">
+                        <input hidden="hidden" type="text" name="shopId" value="${(productInfo.shopId)!''}">
                         <button type="submit" class="btn btn-default btn-primary">确认</button>
                     </form>
                 </div>

@@ -1,13 +1,16 @@
 package com.xukai.netshop.controller;
 
 import com.xukai.netshop.VO.ResultVO;
+import com.xukai.netshop.config.CookieConfig;
 import com.xukai.netshop.dataobject.ProductCategory;
 import com.xukai.netshop.enums.ResultEnum;
 import com.xukai.netshop.exception.SellException;
 import com.xukai.netshop.form.CategoryForm;
 import com.xukai.netshop.service.CategoryService;
 import com.xukai.netshop.utils.ResultVOUtil;
+import com.xukai.netshop.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +35,17 @@ public class SellerCategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private CookieConfig cookieConfig;
+
     @GetMapping("/list")
-    public ModelAndView list() {
-        List<ProductCategory> categoryList = categoryService.findAll();
+    public ModelAndView list(HttpServletRequest request) {
+        String shopId = TokenUtils.getToken(cookieConfig.getShopId(), request);
+        // 如果默认分类不存在则添加
+        if (!categoryService.checkCategoryTypeExist("-1", shopId)) {
+            categoryService.save(new ProductCategory("未分类", "-1", shopId));
+        }
+        List<ProductCategory> categoryList = categoryService.findByShopId(shopId);
         ModelAndView mav = new ModelAndView("sell/category/list");
         mav.addObject("categoryList", categoryList);
         return mav;
@@ -47,10 +58,11 @@ public class SellerCategoryController {
     }
 
     @PostMapping("/save")
-    public ResultVO save(@Valid CategoryForm categoryForm, BindingResult bindingResult) {
+    public ResultVO save(@Valid CategoryForm categoryForm, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             throw new SellException(ResultEnum.PARAM_ERROR);
         }
+        String shopId = TokenUtils.getToken(cookieConfig.getShopId(), request);
         ProductCategory category;
         if (categoryForm.getCategoryId() != null) {
             category = categoryService.findOne(categoryForm.getCategoryId());
@@ -60,8 +72,9 @@ public class SellerCategoryController {
             int categoryType;
             do {
                 categoryType = RANDOM.nextInt(1000);
-            } while (categoryService.checkCategoryTypeExist(String.valueOf(categoryType)));
+            } while (categoryService.checkCategoryTypeExist(String.valueOf(categoryType), shopId));
             category.setCategoryType(String.valueOf(categoryType));
+            category.setShopId(shopId);
             category.setCategoryName(categoryForm.getCategoryName());
         }
         categoryService.save(category);

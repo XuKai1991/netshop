@@ -1,6 +1,5 @@
 package com.xukai.netshop.service.impl;
 
-import com.xukai.netshop.converter.OrderMaster2OrderDTOConverter;
 import com.xukai.netshop.dataobject.CartDetail;
 import com.xukai.netshop.dataobject.OrderDetail;
 import com.xukai.netshop.dataobject.OrderMaster;
@@ -33,7 +32,6 @@ import org.springframework.util.CollectionUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -136,8 +134,9 @@ public class OrderServiceImpl implements OrderService {
         if (minAmount != null && maxAmount != null && minAmount.compareTo(maxAmount) == 1) {
             throw new SellException(ResultEnum.PARAM_ERROR);
         }
-        Page<OrderMaster> orderMasterPage = orderMasterRepository.findByOrderStatusLikeAndOrderIdLikeAndBuyerIdLikeAndBuyerNameLikeAndBuyerAddressLikeAndBuyerPhoneLikeAndOrderAmountBetweenOrderByCreateTimeDesc(
-                "%" + (StringUtils.isEmpty(s_order.getOrderStatus()) ? "" : s_order.getOrderStatus()) + "%",
+        Page<OrderMaster> orderMasterPage = orderMasterRepository.findByShopIdLikeAndOrderStatusLikeAndOrderIdLikeAndBuyerIdLikeAndBuyerNameLikeAndBuyerAddressLikeAndBuyerPhoneLikeAndOrderAmountBetweenOrderByCreateTimeDesc(
+                StringUtils.isEmpty(s_order.getShopId()) ? "%%" : s_order.getShopId(),
+                StringUtils.isEmpty(s_order.getOrderStatus()) ? "%%" : s_order.getOrderStatus(),
                 "%" + (StringUtils.isEmpty(s_order.getOrderId()) ? "" : s_order.getOrderId()) + "%",
                 "%" + (StringUtils.isEmpty(s_order.getBuyerId()) ? "" : s_order.getBuyerId()) + "%",
                 "%" + (StringUtils.isEmpty(s_order.getBuyerName()) ? "" : s_order.getBuyerName()) + "%",
@@ -159,13 +158,6 @@ public class OrderServiceImpl implements OrderService {
             orderDTO.setOrderDetailList(orderDetailList);
             return orderDTO;
         }).collect(Collectors.toList());
-        return new PageImpl<>(orderDTOList, pageable, orderMasterPage.getTotalElements());
-    }
-
-    @Override
-    public Page<OrderDTO> findList(String buyerId, Pageable pageable) {
-        Page<OrderMaster> orderMasterPage = orderMasterRepository.findByBuyerIdOrderByCreateTimeDesc(buyerId, pageable);
-        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
         return new PageImpl<>(orderDTOList, pageable, orderMasterPage.getTotalElements());
     }
 
@@ -239,13 +231,6 @@ public class OrderServiceImpl implements OrderService {
         }
         // 修改物流状态
         expressService.receive(orderId);
-    }
-
-    @Override
-    public Page<OrderDTO> findList(Pageable pageable) {
-        Page<OrderMaster> orderMasterPage = orderMasterRepository.findByCreateTimeBeforeOrderByCreateTimeDesc(new Date(), pageable);
-        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
-        return new PageImpl<>(orderDTOList, pageable, orderMasterPage.getTotalElements());
     }
 
     @Override

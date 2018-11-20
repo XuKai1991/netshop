@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.Page;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.*;
@@ -78,8 +77,8 @@ public class FastdfsPicTask {
             savedPicUrls.add(savePicUrl);
         }
         ArrayList<String> existPicUrls = new ArrayList<>();
-        Page<ProductInfo> productInfos = productService.findAll(null);
-        for (ProductInfo productInfo : productInfos) {
+        List<ProductInfo> productInfoList = productService.findAll();
+        for (ProductInfo productInfo : productInfoList) {
             if (StringUtils.isNotEmpty(productInfo.getProductImgMd())) {
                 existPicUrls.add(productInfo.getProductImgMd().replace(baseUrlConfig.imageServerUrl, ""));
             }

@@ -61,6 +61,7 @@ cookieConfig:
   buyerId: buyerId
   buyerName: buyerName
   sellerId: sellerId
+  shopId: shopId
   expire: 604800  #一星期
 
 fdfs:
@@ -92,5 +93,5 @@ crawler:
   expressCrawlerForceStopWaitTime: 300000   #5分钟
 
 autoAdmin:
-  autoConfirmReceiveGoodsWaitTime: 10   #10天
-  autoCancelNotPayedOrderWaitTime: 60   #单位s，2小时
+  autoConfirmReceiveGoodsWaitTime: 3600   #10天
+  autoCancelNotPayedOrderWaitTime: 3600   #单位s，2小时

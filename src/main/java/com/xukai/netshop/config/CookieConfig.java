@@ -31,6 +31,11 @@ public class CookieConfig {
     public String sellerId;
 
     /**
+     * shopId标识
+     */
+    public String shopId;
+
+    /**
      * 超时时间
      */
     public Integer expire;
