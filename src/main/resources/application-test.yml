@@ -61,6 +61,7 @@ cookieConfig:
   buyerId: buyerId
   buyerName: buyerName
   sellerId: sellerId
+  shopId: shopId
   expire: 604800  #一星期
 
 fdfs:
