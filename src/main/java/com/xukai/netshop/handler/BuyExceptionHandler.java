@@ -30,7 +30,7 @@ public class BuyExceptionHandler {
     /**
      * SellerAuthorizeException异常处理
      * 如果登录验证不通过，跳转登录页
-     * http:localhost/netshop/buyer/
+     * http:localhost/buyer/
      */
     @ExceptionHandler({BuyerAuthorizeException.class})
     public ResultVO handlerAuthorizeException(HttpServletRequest request) {

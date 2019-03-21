@@ -1,6 +1,6 @@
 <head>
     <meta charset="utf-8">
-    <title>卖家后端管理系统</title>
+    <title>卖家管理系统</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/bootstrapValidator.min.css">

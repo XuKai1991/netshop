@@ -44,9 +44,9 @@ public enum ResultEnum {
     PRODUCT_NOT_ENOUGH(305, "商品库存不足"),
 
     // 商品类目类 4**
-    CATEGORY_NOT_EXIST(35, "商品类目不存在"),
-    CATEGORY_DELETE_SUCCESS(36, "商品类目删除成功"),
-    CATEGORY_DELETE_FAIL(37, "商品类目删除失败"),
+    CATEGORY_NOT_EXIST(401, "商品类目不存在"),
+    CATEGORY_DELETE_SUCCESS(402, "商品类目删除成功"),
+    CATEGORY_DELETE_FAIL(403, "商品类目删除失败"),
 
     // 购物车类 5**
     CART_NOT_EXIST(501, "购物车不存在"),
